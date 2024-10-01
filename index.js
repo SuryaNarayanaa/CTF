@@ -14,13 +14,14 @@ const homeRoutes = require('./routers/homeRoutes');
 const authRoutes = require('./routers/authRoutes');
 const adminRoutes = require('./routers/adminRoutes');
 const ctfRoutes = require('./routers/ctfRoutes');
-
+const teamRoutes = require('./routers/teamRoutes');
 
 
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/ctf', ctfRoutes);
 app.use('/home', homeRoutes);
+app.use('/team', teamRoutes);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
