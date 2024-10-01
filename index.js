@@ -11,8 +11,15 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 const homeRoutes = require('./routers/homeRoutes');
+const authRoutes = require('./routers/authRoutes');
+const adminRoutes = require('./routers/adminRoutes');
+const ctfRoutes = require('./routers/ctfRoutes');
 
 
+
+app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
+app.use('/ctf', ctfRoutes);
 app.use('/home', homeRoutes);
 
 app.use(bodyParser.json());
