@@ -22,7 +22,7 @@
     Create a `.env` file in the root directory and add the following:
     ```env
     MONGODB_URI=your_mongodb_uri
-    SECRET_KEY=your_secret_key
+    PORT=3000
     ```
 
 ## Running the Server
