@@ -26,6 +26,4 @@ const ctfSubmissionSchema = new Schema({
     }
 });
 
-const CtfSubmission = mongoose.model('CtfSubmission', ctfSubmissionSchema);
-
-module.exports = CtfSubmission;
+module.exports = mongoose.models.CtfSubmission || mongoose.model('CtfSubmission', ctfSubmissionSchema);

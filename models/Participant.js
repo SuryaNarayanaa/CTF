@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const participantSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
     team: {
         type: Schema.Types.ObjectId,
         ref: 'Team',
         required: true
     },
+    user: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }],
     ctfSubmissions: [{
         type: Schema.Types.ObjectId,
         ref: 'CtfSubmission'
@@ -19,10 +19,6 @@ const participantSchema = new Schema({
     score: {
         type: Number,
         default: 0
-    },
-    lastActive: {
-        type: Date,
-        default: Date.now
     }
 });
 

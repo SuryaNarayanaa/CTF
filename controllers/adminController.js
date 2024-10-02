@@ -86,30 +86,32 @@ const adminController = {
 
 
 
-    getParticipants: (req, res) => {
-        res.send("Admin: Get all participants");
+    getParticipants:async  (req, res) => {
+        res.send(await adminService.getParticipants())
     },
 
 
 
-
-    getLeaderboard: (req, res) => {
-        res.send("Admin: Get leaderboard");
-    },
-
-
-
-
-    getDashboard: (req, res) => {
-        res.send("Admin: Get dashboard");
-    },
-
-
-
-
-    // New methods for updating and deleting questions
+    getLeaderboard: async (req, res) => {
+        try {
+            const leaderboard = await adminService.getLeaderboard();
+            res.send(leaderboard);
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+            res.status(500).send("Error fetching leaderboard");
+        }
     
-    // New methods for getting and deleting participants
+    },
+
+
+
+
+    
+
+
+
+
+   
     getParticipantById: (req, res) => {
         const participantId = req.params.id;
         res.send(`Admin: Get participant with ID ${participantId}`);
@@ -118,9 +120,17 @@ const adminController = {
 
 
 
-    deleteParticipant: (req, res) => {
-        const participantId = req.params.id;
-        res.send(`Admin: Delete participant with ID ${participantId}`);
+    
+
+
+    getDashboard: async (req, res) => {
+        try {
+            const statistics = await adminService.getDashboard();
+            res.send(statistics);
+        } catch (error) {
+            console.error('Error fetching portal statistics:', error);
+            res.status(500).send("Error fetching portal statistics");
+        }
     }
 };
 
