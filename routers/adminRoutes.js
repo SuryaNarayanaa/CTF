@@ -4,7 +4,7 @@ const adminController = require('../controllers/adminController');
 
 router.get('/questions', adminController.getQuestions);
 router.post('/questions', adminController.createQuestion);
-router.put('/questions/:id', adminController.updateQuestion);
+router.put('/questions', adminController.updateQuestion);
 router.delete('/questions/:id', adminController.deleteQuestion);
 
 router.get('/participants', adminController.getParticipants);

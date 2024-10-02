@@ -61,7 +61,7 @@ const authController = {
                 res.status(500).json({ error: err.message });
                 }
             },
-
+            //TODO Logic for logout
             logout: (req, res) => {
                 // Assuming you are using sessions
                 req.session.destroy(err => {
