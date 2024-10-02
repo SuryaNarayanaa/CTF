@@ -38,8 +38,3 @@
 3. **Access the application:**
     Open your web browser and navigate to `http://localhost:3000`.
 
-## Contributing
-Feel free to submit issues and pull requests. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-This project is licensed under the MIT License.
