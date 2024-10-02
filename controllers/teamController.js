@@ -1,9 +1,45 @@
+const teamService = require("../service/teamService");
+const userService = require("../service/userService");
 const teamController = {
-    createTeam: (req, res) => {
-        res.send("Team: Create a new team");
+    createTeam: async (req, res) => {
+        const { name, leader } = req.body;
+        if (!name || !leader) {
+            return res.status(400).send("Both name and leader are required");
+        }
+        try {
+            const leaderObj = await userService.findUserByUsername(leader);
+            if (!leaderObj) {
+                return res.status(404).send("Leader not found");
+            }
+            const leaderId = leaderObj._id;
+            const team = await teamService.createTeam({name, leaderId, members: [leaderId]});
+            res.status(201).send(team);
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     },
     joinTeam: (req, res) => {
-        res.send("Team: Join an existing team");
+        const { teamName, userName } = req.body;
+        if (!teamName || !userName) {
+            return res.status(400).send("Both teamName and userName are required");
+        }
+        teamService.findTeamByName(teamName)
+            .then(async (team) => {
+                if (!team) {
+                    return res.status(404).send("Team not found");
+                }
+                const user = await userService.findUserByUsername(userName);
+                if (!user) {
+                    return res.status(404).send("User not found");
+                }
+
+                const teamId = team._id;
+                const userId = user._id;
+                team =await  teamService.joinTeam(teamId, userId);
+                res.status(200).send(team);
+            })
+            .catch((err) => {
+                res.status(500).send(err.message);})
     }
 };
 

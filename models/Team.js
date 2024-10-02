@@ -8,7 +8,7 @@ const teamSchema = new Schema({
         unique: true,
         trim: true
     },
-    leader: {
+    leaderId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
