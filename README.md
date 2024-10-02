@@ -9,8 +9,8 @@
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/<yourusername>/the-eye-ctf.git
-    cd the-eye-ctf
+    git clone https://github.com/SuryaNarayanaa/CTF.git
+    cd CTF
     ```
 
 2. **Install dependencies:**
@@ -22,7 +22,7 @@
     Create a `.env` file in the root directory and add the following:
     ```env
     MONGODB_URI=your_mongodb_uri
-    SECRET_KEY=your_secret_key
+    PORT=3000
     ```
 
 ## Running the Server
@@ -37,4 +37,6 @@
 
 3. **Access the application:**
     Open your web browser and navigate to `http://localhost:3000`.
+
+
 
