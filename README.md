@@ -9,8 +9,8 @@
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/SuryaNarayanaa/the-eye-ctf.git
-    cd the-eye-ctf
+    git clone https://github.com/SuryaNarayanaa/CTF.git
+    cd CTF
     ```
 
 2. **Install dependencies:**
