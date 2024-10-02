@@ -9,7 +9,7 @@
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/<yourusername>/the-eye-ctf.git
+    git clone https://github.com/SuryaNarayanaa/the-eye-ctf.git
     cd the-eye-ctf
     ```
 
