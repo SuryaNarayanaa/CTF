@@ -1,5 +1,5 @@
-const CtfQuestion = require('../models/ctfQuestion');
-const CtfSubmission = require('../models/ctfSubmission'); 
+const CtfQuestion = require('../models/CtfQuestion');
+const CtfSubmission = require('../models/CtfSubmission'); 
 const {getQuestionByName} = require('./adminService');
 const {findTeamByName} = require('./teamService');
 

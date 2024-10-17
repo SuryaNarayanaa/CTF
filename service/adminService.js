@@ -1,10 +1,10 @@
 const { get } = require('mongoose');
-const CtfQuestion = require('../models/ctfQuestion');
-const { getTeamScoreById} = require('./ctfService');
+const CtfQuestion = require('../models/CtfQuestion');
+
 const Team  = require('../models/Team');
-const Participant = require('../models/participant');
+const Participant = require('../models/Participant');
 const User = require('../models/User');
-const CtfSubmission = require('../models/ctfSubmission');
+const CtfSubmission = require('../models/CtfSubmission');
 const ctfQuestionService = 
     {
         getAllQuestions : async ()=>
