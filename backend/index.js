@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
-connectDB();
+connectDB(); 
 
 const homeRoutes = require('./routers/homeRoutes');
 const authRoutes = require('./routers/authRoutes');
