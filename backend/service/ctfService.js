@@ -18,7 +18,10 @@ const CtfService =
     {
         const question = await getQuestionByName(questionTitle);
         const team = await findTeamByName(teamName);
-        const isCorrect =  submittedAnswer === question.answer;
+        if (!question) {
+            return null;
+        }
+        const isCorrect = submittedAnswer === question.answer;
 
         if(!team || !question)
         {
