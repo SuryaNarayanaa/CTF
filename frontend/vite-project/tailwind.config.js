@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./index.html",
@@ -7,5 +8,32 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [addVariablesForColors],
 };
+
+function addVariablesForColors({ addBase, theme }) {
+  let allColors = theme("colors");
+  let flattenedColors = flattenColors(allColors);
+  let newVars = Object.fromEntries(
+    Object.entries(flattenedColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}
+
+function flattenColors(colors, prefix = '') {
+  return Object.keys(colors).reduce((acc, key) => {
+    const value = colors[key];
+    const newKey = prefix ? `${prefix}-${key}` : key;
+
+    if (typeof value === 'object') {
+      Object.assign(acc, flattenColors(value, newKey));
+    } else {
+      acc[newKey] = value;
+    }
+
+    return acc;
+  }, {});
+}
