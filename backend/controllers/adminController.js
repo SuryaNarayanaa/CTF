@@ -23,14 +23,19 @@ const adminController = {
 
 
 
-    createQuestion:async (req, res) => {
-        const { title, description, points , answer } = req.body;
+    createQuestion: async (req, res) => {
+        const { title, description, points, answer } = req.body;
         if (!title || !description || !points || !answer) {
-            return res.status(400).send("All fields are required");
+           return res.status(400).send("All fields are required");
         }
-        const newQuestion =await  adminService.createQuestion({title, description, points, answer});
-        res.status(201).send(newQuestion);
-    },
+        try {
+           const newQuestion = await adminService.createQuestion({ title, description, points, answer });
+           res.status(201).send(newQuestion);
+        } catch (error) {
+           console.error("Error creating question:", error);
+           res.status(500).send("Error creating question");
+        }
+     },
 
 
 

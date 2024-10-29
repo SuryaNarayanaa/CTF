@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
-import ViewTeams from '../components/ViewTeams';
+import ViewTeams from '../components/ViewTeams'; // Ensure correct paths
 import CreateQuestion from '../components/CreateQuestion';
 import ViewQuestions from '../components/ViewQuestions';
 

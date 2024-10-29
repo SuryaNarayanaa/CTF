@@ -5,7 +5,8 @@ const connectDB = require('./config/db');
 
 const path = require('path');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
+app.use(cors());
 
 
 
@@ -30,7 +31,7 @@ const teamRoutes = require('./routers/teamRoutes');
 
 
 app.use('/auth', authRoutes);
-app.use('/admin', adminRoutes);
+app.use('/Admin', adminRoutes);
 app.use('/ctf', ctfRoutes);
 app.use('/home', homeRoutes);
 app.use('/team', teamRoutes);

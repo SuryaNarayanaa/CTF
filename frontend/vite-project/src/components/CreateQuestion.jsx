@@ -19,8 +19,8 @@ const CreateQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/questions', formData);
-      if (response.status === 200) {
+      const response = await axios.post('/Admin/questions', formData); // Proxy will handle routing to http://localhost:3000/questions
+      if (response.status === 201) {
         alert("Question created successfully!");
         setFormData({ title: '', description: '', points: '', answer: '' });
       }
