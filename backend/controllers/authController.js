@@ -61,17 +61,24 @@ const authController = {
                 res.status(500).json({ error: err.message });
                 }
             },
-            //TODO Logic for logout
+            
             logout: (req, res) => {
-                // Assuming you are using sessions
-                req.session.destroy(err => {
-                if (err) {
-                    return res.status(500).json({ error: 'Failed to logout' });
+              try {
+                if (!req.session) {
+                  return res.status(400).json({ error: 'No active session' });
                 }
-                res.status(200).json({ message: 'User logged out' });
+                req.session.destroy(err => {
+                  if (err) {
+                    console.error('Error during logout:', err); // Log the error for debugging
+                    return res.status(500).json({ error: 'Failed to logout' });
+                  }
+                  res.status(200).json({ message: 'User logged out' });
                 });
-        res.send("Auth: User logout");
-    }
-};
+              } catch (err) {
+                console.error('Error during logout:', err); // Log the error for debugging
+                res.status(500).json({ error: 'Internal Server Error' });
+              }
+            }
+          };
 
 module.exports = authController;
