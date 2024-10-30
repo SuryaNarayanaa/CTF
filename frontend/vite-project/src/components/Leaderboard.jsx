@@ -11,13 +11,12 @@ const Leaderboard = () => {
         };
         fetchLeaderboard();
     }, []);
-
     return (
         <div>
-            <h2>Leaderboard</h2>
+            <h2 style={{ color: 'black' }}>Leaderboard</h2>
             <ul>
                 {leaderboard.map((entry) => (
-                    <li key={entry.team}>
+                    <li key={entry.team} style={{ color: 'black' }}>
                         {entry.team}: {entry.score}
                     </li>
                 ))}
