@@ -24,6 +24,7 @@ const Leaderboard = () => {
                         <th className="retro-header">Place</th>
                         <th className="retro-header">Team</th>
                         <th className="retro-header">Flags Captured</th>
+                        <th class name="retro-header">Score</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,7 @@ const Leaderboard = () => {
                         <tr key={entry.team}>
                             <td className="retro-cell">{index + 1}</td>
                             <td className="retro-cell">{entry.team}</td>
+                            <td className="retro-cell">{entry.flags}</td>
                             <td className="retro-cell">{entry.score}</td>
                         </tr>
                     ))}

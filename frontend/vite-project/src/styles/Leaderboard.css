@@ -1,45 +1,49 @@
 /* src/styles/Leaderboard.css */
+
 .leaderboard {
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
-    font-family: 'Press Start 2P', cursive; /* Ensure to include the font */
+    font-family: 'Press Start 2P', cursive; /* Custom font */
     text-align: left;
+    border: 2px dashed black; /* Dashed black border for the entire table */
 }
 
-.leaderboard th, .leaderboard td {
-    border: 1px dashed black; /* Thin dashed black line */
-    padding: 8px;
-    transition: background-color 0.3s;
+.leaderboard th, 
+.leaderboard td {
+    border: none; /* Remove individual cell borders */
+    padding: 12px; /* Increased padding for better spacing */
+    background-color: white; /* White background for each row */
+    transition: border-color 0.3s ease; /* Smooth transition for border color */
 }
 
 .leaderboard th {
-    background-color: #f2f2f2; /* Light background for header */
+    background-color: #464646; /* Dark background for header */
+    color: #fff; /* White text for contrast */
+}
+
+.leaderboard tr:hover {
+    border: 2px solid #339c14; /* Neon green border on hover for the entire row */
 }
 
 .leaderboard tr:hover td {
-    background-color: neon green; /* Highlight on hover */
-    color: black; /* Change text color on hover if needed */
+    color: #000000; /* Change text color to neon green on hover */
 }
 
 .leaderboard td {
-    color: #666; /* Retro styled text color */
+    color: #666; /* Retro text color */
 }
 
-.leaderboard th:first-child, .leaderboard td:first-child {
-    text-align: center; /* Center align the first column */
-}
-
-.leaderboard th:last-child, .leaderboard td:last-child {
-    text-align: right; /* Right align the last column */
+.leaderboard th,
+.leaderboard td {
+    text-align: center; /* Center align all columns */
 }
 
 /* Responsive styles */
 @media (max-width: 600px) {
     .leaderboard {
-        font-size: 12px; /* Smaller font size for smaller screens */
+        font-size: 14px; /* Slightly larger font size for better readability */
     }
 }
 
 /* End of Leaderboard.css */
-
