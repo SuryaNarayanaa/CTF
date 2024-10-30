@@ -1,45 +1,33 @@
-const API_BASE_URL = '/api/auth';
+// src/api/auth.js
+import axios from 'axios';
+
+// Set the base URL for all axios requests
+const api = axios.create({
+  baseURL: `${import.meta.env.VITE_API_URL}/auth`,
+});
 
 // Function to sign up a user
 export const signup = async (userData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to sign up');
-    }
-
-    return response.json();
+    const { data } = await api.post('/signup', userData);
+    return data;
   } catch (error) {
-    console.error(error);
+    console.error('Error signing up:', error);
     throw error;
   }
 };
 
 // Function to log in a user
-export const login = async (credentials) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(credentials),
-    });
+export const login = async (credentials) => { try {
+  const response = await axios.post('/login', {
+    email: credentials.email,
+    password: credentials.password, // Replace with actual password input
+  });
 
-    if (!response.ok) {
-      throw new Error('Failed to log in');
-    }
-
-    return response.json();
+  localStorage.setItem('token', response.data.token);
+  return response.data;
   } catch (error) {
-    console.error(error);
+    console.error('Error logging in:', error);
     throw error;
   }
 };
@@ -47,17 +35,14 @@ export const login = async (credentials) => {
 // Function to log out a user
 export const logout = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/logout`, {
-      method: 'POST',
+    await axios.post('/logout', {}, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to log out');
-    }
-
-    return response.json();
+    localStorage.removeItem('token');
+    return true;
   } catch (error) {
-    console.error(error);
+    console.error('Error logging out:', error);
     throw error;
   }
 };
