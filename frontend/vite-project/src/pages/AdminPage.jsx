@@ -7,11 +7,11 @@ import { Shield, Database, Eye } from 'lucide-react';
 
 const AdminPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Cyber-themed Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 sticky top-0 bg-gradient-to-b from-gray-900 to-gray-900/95 backdrop-blur-sm py-4 z-10">
             <h1 className="text-4xl font-bold text-cyan-400 mb-2 tracking-wider">
               SECURITY ADMIN PORTAL
             </h1>
@@ -19,9 +19,9 @@ const AdminPage = () => {
           </div>
 
           {/* Main Dashboard Container */}
-          <div className="bg-gray-800 rounded-lg shadow-2xl border border-cyan-400/20 p-6 backdrop-blur-sm">
+          <div className="bg-gray-800/90 rounded-lg shadow-2xl border border-cyan-400/20 p-6 backdrop-blur-sm mb-8">
             {/* Navigation Grid */}
-            <div className="grid grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <Link
                 to="view-teams"
                 className="flex flex-col items-center p-6 rounded-lg bg-gray-900 border border-cyan-400/30 hover:border-cyan-400 transition-all hover:shadow-lg hover:shadow-cyan-400/20 group"
@@ -48,13 +48,18 @@ const AdminPage = () => {
             </div>
 
             {/* Content Area */}
-            <div className="bg-gray-900 rounded-lg p-6 border border-cyan-400/20">
+            <div className="bg-gray-900/95 rounded-lg p-6 border border-cyan-400/20 min-h-[60vh]">
               <Routes>
                 <Route path="view-teams" element={<ViewTeams />} />
                 <Route path="create-question" element={<CreateQuestion />} />
                 <Route path="view-questions" element={<ViewQuestions />} />
               </Routes>
             </div>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center text-cyan-400/60 py-4">
+            <p className="text-sm">Secure Administration Portal • Version 2.0</p>
           </div>
         </div>
       </div>
