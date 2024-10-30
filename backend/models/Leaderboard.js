@@ -11,6 +11,11 @@ const leaderboardSchema = new Schema({
         type: Number,
         default: 0
     },
+    flags:
+    {
+        type: Number,
+        default: 0
+    },
     lastUpdated: {
         type: Date,
         default: Date.now

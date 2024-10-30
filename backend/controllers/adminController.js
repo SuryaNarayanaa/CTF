@@ -24,12 +24,12 @@ const adminController = {
 
 
     createQuestion: async (req, res) => {
-        const { title, description, points, answer } = req.body;
-        if (!title || !description || !points || !answer) {
+        const { title, description, points, answer ,links} = req.body;
+        if (!title || !description || !points || !answer || !links) {
            return res.status(400).send("All fields are required");
         }
         try {
-           const newQuestion = await adminService.createQuestion({ title, description, points, answer });
+           const newQuestion = await adminService.createQuestion({ title, description, points, answer,links });
            res.status(201).send(newQuestion);
         } catch (error) {
            console.error("Error creating question:", error);

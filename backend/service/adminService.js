@@ -9,11 +9,17 @@ const ctfQuestionService = {
     // Helper function to calculate the score for a team
     getTeamScoreById: async (teamId) => {
         // Count only the correct submissions associated with the team
-        const correctSubmissions = await CtfSubmission.countDocuments({
+        const correctSubmissions = await CtfSubmission.find({
             team: teamId,
             isCorrect: true
         });
-        return correctSubmissions; // You may adjust this to include points for each correct answer if needed
+
+        let score = 0;
+        for (const submission of correctSubmissions) {
+            const question = await CtfQuestion.findById(submission.question);
+            score += question.points;
+        }
+        return { correctSubmissions: correctSubmissions.length, score };
     },
 
     getAllQuestions: async () => {
@@ -78,8 +84,8 @@ const ctfQuestionService = {
         const teams = await Team.find();
         const leaderboard = [];
         for (const team of teams) {
-            const score = await ctfQuestionService.getTeamScoreById(team._id);
-            leaderboard.push({ team: team.name, score });
+            const scores_and_flags = await ctfQuestionService.getTeamScoreById(team._id);
+            leaderboard.push({ team: team.name, flags :scores_and_flags.correctSubmissions, score:  scores_and_flags.score});
         }
         leaderboard.sort((a, b) => b.score - a.score);
         return leaderboard;

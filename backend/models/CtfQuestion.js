@@ -10,6 +10,10 @@ const ctfQuestionSchema = new Schema({
         type: String,
         required: true
     },
+    links: {
+        type: [String],
+        required: true
+    },
     points: {
         type: Number,
         required: true
