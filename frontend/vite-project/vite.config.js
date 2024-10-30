@@ -19,6 +19,10 @@ export default defineConfig({
         target: 'http://localhost:3000',
         changeOrigin: true,
       },
+      '/Admin/participants':{
+        target: 'http://localhost:3000', // Make sure this matches your backend server
+        changeOrigin: true,
+      }
     },
   },
 })
