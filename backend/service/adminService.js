@@ -57,9 +57,11 @@ const ctfQuestionService = {
             for (const team of teams) {
                 let existingParticipant = await Participant.findOne({ team: team._id });
                 const ctfSubmissionIds = await CtfSubmission.find({ team: team._id }).select('_id');
+                score_and_flags = await ctfQuestionService.getTeamScoreById(team._id);
 
                 if (existingParticipant) {
-                    existingParticipant.score = await ctfQuestionService.getTeamScoreById(team._id);
+                    existingParticipant.score = score_and_flags.score;
+                    existingParticipant.flags = score_and_flags.correctSubmissions;
                     existingParticipant.ctfSubmissions = ctfSubmissionIds;
                     await existingParticipant.save();
                 } else {
@@ -67,7 +69,8 @@ const ctfQuestionService = {
                         team: team._id,
                         user: users.map(user => user._id),
                         ctfSubmissions: ctfSubmissionIds,
-                        score: await ctfQuestionService.getTeamScoreById(team._id)
+                        score: score_and_flags.score,
+                        flags: score_and_flags.correctSubmissions
                     });
                     await newParticipant.save();
                 }

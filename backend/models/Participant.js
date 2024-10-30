@@ -19,7 +19,9 @@ const participantSchema = new Schema({
     score: {
         type: Number,
         default: 0
-    }
+    },
+    flags : { type: Number,
+    default: 0}
 });
 
 const Participant = mongoose.model('Participant', participantSchema);
