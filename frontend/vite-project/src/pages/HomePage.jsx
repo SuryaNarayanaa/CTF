@@ -30,6 +30,10 @@ const HomePage = () => {
     }
   };
 
+  const handleScoreboard = async () => 
+    {  
+      window.location.href = '/leaderboard';}
+
   return (
     <>
       <div className="">
@@ -71,7 +75,7 @@ const HomePage = () => {
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Log Out
               </button>
-              <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
+              <button onClick={handleScoreboard} className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 → Scoreboard
               </button>
             </>
