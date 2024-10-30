@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { login, signup } from "@/api/auth";
+import {  signup ,login } from "@/api/auth";
+import {createTeam} from "@/api/createteam";
 
 const SuccessMessage = ({ message }) => (
   <div className="fixed top-4 right-4 z-50 animate-fade-in">
@@ -147,6 +148,13 @@ const RegisterForm = ({ onClose }) => {
       };
       console.log('Sending signup data:', signupData); // Log the data being sent
       await signup(signupData);
+      
+      const teamData = {        
+        name: formData.email.split('@')[0],
+        leader: formData.username
+      };
+      await createTeam(teamData);
+
       setShowSuccess(true);
       setTimeout(() => {
         onClose();

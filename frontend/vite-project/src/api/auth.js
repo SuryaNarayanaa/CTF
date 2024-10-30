@@ -6,16 +6,8 @@ const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/auth`,
 });
 
-// Function to sign up a user
-export const signup = async (userData) => {
-  try {
-    const { data } = await api.post('/signup', userData);
-    return data;
-  } catch (error) {
-    console.error('Error signing up:', error);
-    throw error;
-  }
-};
+
+
 
 // Function to log in a user
 export const login = async (credentials) => { 
@@ -29,6 +21,17 @@ export const login = async (credentials) => {
     return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
+    throw error;
+  }
+};
+
+
+export const signup = async (userData) => {
+  try {
+    const { data } = await api.post('/signup', userData);
+    return data;
+  } catch (error) {
+    console.error('Error signing up:', error);
     throw error;
   }
 };
