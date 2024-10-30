@@ -22,21 +22,32 @@
     color: #fff; /* White text for contrast */
 }
 
+.leaderboard tr {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
 .leaderboard tr:hover {
-    border: 2px solid #339c14; /* Neon green border on hover for the entire row */
+    transform: translateY(-5px) scale(1.02); /* Lift and slightly enlarge the row */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+    border: 2px solid #1bb300; /* Neon green border on hover */
 }
 
 .leaderboard tr:hover td {
-    color: #000000; /* Change text color to neon green on hover */
+    color: #000000; /* Change text color to black on hover */
 }
 
 .leaderboard td {
     color: #666; /* Retro text color */
 }
 
-.leaderboard th,
-.leaderboard td {
-    text-align: center; /* Center align all columns */
+.leaderboard th:first-child, 
+.leaderboard td:first-child {
+    text-align: center; /* Center align first column */
+}
+
+.leaderboard th:last-child, 
+.leaderboard td:last-child {
+    text-align: right; /* Right align last column */
 }
 
 /* Responsive styles */
