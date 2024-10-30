@@ -1,4 +1,9 @@
-/* src/styles/Leaderboard.css */
+/* Add this new class to your existing Leaderboard.css */
+.scrollable-container {
+    max-height: 100vh; /* Set a maximum height for the scrollable area */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 2px dashed black; /* Optional: Add border to the scrollable area */
+}
 
 .leaderboard {
     border-collapse: collapse;
@@ -6,7 +11,7 @@
     margin: 20px 0;
     font-family: 'Press Start 2P', cursive; /* Custom font */
     text-align: left;
-    border: 2px dashed black; /* Dashed black border for the entire table */
+    /* Remove the dashed border from here to apply it to the container */
 }
 
 .leaderboard th, 
