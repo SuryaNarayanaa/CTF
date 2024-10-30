@@ -74,3 +74,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* Global CSS (styles.css or similar) */
+body {
+  background-color: white; /* Set the background color to white */
+  margin: 0; /* Remove default margins */
+  height: 100vh; /* Ensure the body covers the full height */
+  overflow: hidden; /* Prevent scrolling */
+}
