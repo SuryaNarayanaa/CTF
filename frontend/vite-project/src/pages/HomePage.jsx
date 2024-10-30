@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BackgroundBeams } from '../components/ui/background-beams';
 import { Boxes } from '../components/ui/background-boxes';
 import './HomePage.css';
+import GifElement from '../components/Gifelement';
 import { 
   Shield, 
   Trophy, 
@@ -61,6 +62,20 @@ const HomePage = () =>
         → Scoreboard</button>
           </div>
         </div>
+
+        <GifElement 
+                position="top-right" 
+                path="GLITCH.gif" 
+            />
+
+<GifElement 
+                position="top-left" 
+                path="GLITCH-2.gif" 
+            />
+            <GifElement 
+                position="bottom-right" 
+                path="GLITCH-3.gif" 
+            />
       </>
     );
   

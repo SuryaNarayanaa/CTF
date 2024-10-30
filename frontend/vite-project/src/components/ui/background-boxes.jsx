@@ -7,17 +7,29 @@ export const BoxesCore = ({ className, ...rest }) => {
   const rows = new Array(300).fill(1);
   const cols = new Array(150).fill(1);
   let colors = [
+    "--gray-900", // Very Dark Gray
     "--gray-800", // Dark Gray
     "--gray-700", // Medium Dark Gray
     "--gray-600", // Medium Gray
+    "--gray-500", // Light Gray
+    "--gray-400", // Lighter Gray
+    "--gray-300", // Very Light Gray
     "--black",    // Black
-    "--slate-700", // Slate Gray
-    "--slate-800", // Dark Slate Gray
     "--slate-900", // Very Dark Slate Gray
-    "--green-600", // Dark Green
+    "--slate-800", // Dark Slate Gray
+    "--slate-700", // Slate Gray
+    "--slate-600", // Medium Slate Gray
+    "--slate-500", // Light Slate Gray
+    "--green-900", // Very Dark Green
+    "--green-800", // Darker Green
     "--green-700", // Medium Dark Green
+    "--green-600", // Dark Green
     "--green-500", // Neon Green
-  ];
+    "--green-400", // Medium Green
+    "--green-300", // Light Green
+    "--green-200", // Very Light Green
+];
+
   
   const getRandomColor = () => {
     return colors[Math.floor(Math.random() * colors.length)];
