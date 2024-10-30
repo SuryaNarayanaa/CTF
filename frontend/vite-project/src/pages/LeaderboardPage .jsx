@@ -21,7 +21,15 @@ const LeaderboardPage = () => {
                 </div>
 
                 {/* Right vertical space (for additional content or margin) */}
-                <div className="right-space"></div>
+                <div className="right-space">
+                    <div className='top-part'>
+
+                    </div>
+                       <div className='bottom-part'>
+                       <img src="/challenges.png" alt="Scoreboard" />
+
+                        </div>
+                </div>
             </div>
         </div>
     );
