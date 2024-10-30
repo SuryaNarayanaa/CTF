@@ -3,21 +3,14 @@ import { BackgroundBeams } from '../components/ui/background-beams';
 import { Boxes } from '../components/ui/background-boxes';
 import './HomePage.css';
 import GifElement from '../components/Gifelement';
-import axios from 'axios';
-import {logout , login  , signup} from '../api/auth';
-import {
-  Shield, 
-  Trophy, 
-  ScrollText, 
-  HelpCircle,
-  Users,
-  Flag
-} from 'lucide-react';
+import { logout } from '../api/auth';
+import { AuthModal, LoginForm, RegisterForm } from '../components/authmodels';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  // Check for a token on component mount to update login status
   useEffect(() => {
     document.body.style.backgroundImage = "url('bg.png')";
     document.body.style.backgroundSize = 'cover';
@@ -28,22 +21,9 @@ const HomePage = () => {
     setIsLoggedIn(!!token);
   }, []);
 
-  // Login handler
-  const handleLogin = async () => {
-    try {
-      login({
-        "email" : "3-2", 
-        "password"  :"urtwe87ftgwss" });
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
-  };
-
-  // Logout handler
   const handleLogout = async () => {
     try {
-      logout();
+      await logout();
       setIsLoggedIn(false);
     } catch (error) {
       console.error('Logout failed:', error);
@@ -79,7 +59,6 @@ const HomePage = () => {
         </div>
       </div>
   
-      {/* Button Container */}
       <div className="absolute transform -translate-x-1/2 flex space-x-4 z-10"
         style={{
           top: '58%', 
@@ -103,17 +82,40 @@ const HomePage = () => {
           ) : (
             <>
               <button 
-                onClick={handleLogin}
+                onClick={() => setShowLoginModal(true)}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Login
               </button>
-              <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
+              <button 
+                onClick={() => setShowRegisterModal(true)}
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Register
               </button>
             </>
           )}
         </div>
       </div>
+
+      <AuthModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)}
+        title="Login"
+      >
+        <LoginForm 
+          onClose={() => setShowLoginModal(false)}
+          onSuccess={() => setIsLoggedIn(true)}
+        />
+      </AuthModal>
+
+      <AuthModal 
+        isOpen={showRegisterModal} 
+        onClose={() => setShowRegisterModal(false)}
+        title="Register"
+      >
+        <RegisterForm 
+          onClose={() => setShowRegisterModal(false)}
+        />
+      </AuthModal>
 
       <GifElement 
         position="top-right" 

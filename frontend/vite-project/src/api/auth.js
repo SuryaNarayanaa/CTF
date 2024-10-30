@@ -18,14 +18,15 @@ export const signup = async (userData) => {
 };
 
 // Function to log in a user
-export const login = async (credentials) => { try {
-  const response = await axios.post('/login', {
-    email: credentials.email,
-    password: credentials.password, // Replace with actual password input
-  });
+export const login = async (credentials) => { 
+  try {
+    const response = await api.post('/login', {
+      email: credentials.email,
+      password: credentials.password,
+    });
 
-  localStorage.setItem('token', response.data.token);
-  return response.data;
+    localStorage.setItem('token', response.data.token);
+    return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
     throw error;
@@ -35,10 +36,12 @@ export const login = async (credentials) => { try {
 // Function to log out a user
 export const logout = async () => {
   try {
-    await axios.post('/logout', {}, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No token found');
 
+    await api.post('/logout', {}, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     localStorage.removeItem('token');
     return true;
   } catch (error) {
