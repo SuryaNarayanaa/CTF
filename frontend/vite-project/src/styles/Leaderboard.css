@@ -1,0 +1,45 @@
+/* src/styles/Leaderboard.css */
+.leaderboard {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    font-family: 'Press Start 2P', cursive; /* Ensure to include the font */
+    text-align: left;
+}
+
+.leaderboard th, .leaderboard td {
+    border: 1px dashed black; /* Thin dashed black line */
+    padding: 8px;
+    transition: background-color 0.3s;
+}
+
+.leaderboard th {
+    background-color: #f2f2f2; /* Light background for header */
+}
+
+.leaderboard tr:hover td {
+    background-color: neon green; /* Highlight on hover */
+    color: black; /* Change text color on hover if needed */
+}
+
+.leaderboard td {
+    color: #666; /* Retro styled text color */
+}
+
+.leaderboard th:first-child, .leaderboard td:first-child {
+    text-align: center; /* Center align the first column */
+}
+
+.leaderboard th:last-child, .leaderboard td:last-child {
+    text-align: right; /* Right align the last column */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .leaderboard {
+        font-size: 12px; /* Smaller font size for smaller screens */
+    }
+}
+
+/* End of Leaderboard.css */
+
