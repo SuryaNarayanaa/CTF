@@ -1,39 +1,43 @@
-const API_BASE_URL = '/api/admin/questions';
+import axios from 'axios';
 
-export const fetchQuestions = async () => {
+const api = axios.create({
+  baseURL: `${import.meta.env.VITE_API_URL}/admin/questions`
+});
+
+export const getAllQuestions = async () => {
   try {
-    const response = await fetch(API_BASE_URL, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch questions');
-    }
-
-    return response.json();
+    const response = await api.get('/'); 
+    return response.data;
   } catch (error) {
-    console.error(error);
+    console.error('Failed to fetch questions', error);
     throw error;
   }
 };
 
 export const createQuestion = async (questionData) => {
   try {
-    const response = await fetch(API_BASE_URL, {
-      method: 'POST',
+    const response = await api.post('/', questionData, {
       headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(questionData),
+        'Content-Type': 'application/json'
+      }
     });
-
-    if (!response.ok) {
-      throw new Error('Failed to create question');
-    }
-
-    return response.json();
+    return response.data;
   } catch (error) {
-    console.error(error);
+    console.error('Failed to create question', error);
     throw error;
   }
 };
+
+export const updateQuestion = async (questionData) => {
+  try {
+    const response = await api.put("/", questionData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update question', error);
+    throw error;
+  }
+}
