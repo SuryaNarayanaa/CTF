@@ -39,19 +39,6 @@
 .leaderboard tr {
     transition: transform 0.3s ease, box-shadow  0.3s ease; /* Smooth transition for hover effects */
 }
-/* Add a subtle hover animation for each row */
-&:hover {
-    animation: pulse 0.5s infinite alternate;
-}
-
-@keyframes pulse {
-0% {
-    transform: scale(1);
-}
-100% {
-    transform: scale(1.02);
-}
-}
 
 .leaderboard tr:hover {
     transform: translateY(-5px) scale(1.02); /* Lift and slightly enlarge the row */
