@@ -12,10 +12,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/Admin': {
-        target: 'http://localhost:3000', // Make sure this matches your backend server
+        target: 'http://localhost:3000', 
         changeOrigin: true,
       },
-      '/questions': {
+      '/Admin/questions': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       },

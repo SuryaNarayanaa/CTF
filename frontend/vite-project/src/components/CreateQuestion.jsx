@@ -8,22 +8,23 @@ const CreateQuestion = () => {
     description: '',
     points: '',
     answer: '',
+    links: [''], // Adding 'links' field as an array for compatibility with backend schema
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.name === 'links' ? [e.target.value] : e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/Admin/questions', formData);
+      const response = await axios.post('/admin/questions', formData); // Ensure endpoint matches backend
       if (response.status === 201) {
         alert("Question created successfully!");
-        setFormData({ title: '', description: '', points: '', answer: '' });
+        setFormData({ title: '', description: '', points: '', answer: '', links: [''] });
       }
     } catch (error) {
       console.error("Error creating question:", error);
@@ -105,6 +106,22 @@ const CreateQuestion = () => {
                 placeholder="Provide answer"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-cyan-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+              Links
+            </label>
+            <input
+              type="text"
+              name="links"
+              value={formData.links}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-100 border border-cyan-500/30 rounded-md text-gray-800 
+                       focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500
+                       placeholder-gray-500 transition-all font-['Press_Start_2P']"
+              placeholder="Provide resource links (separate by commas if multiple)"
+            />
           </div>
         </div>
 
