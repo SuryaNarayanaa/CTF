@@ -10,12 +10,12 @@
 .top-space {
     height: 26vh; /* 26% of viewport height */
     width: 100vw; /* Full viewport width */
-    border: 1.3px dashed black; /* Thin dashed black border for all div elements */
+    border: 1.3px dashed black; /* dashed dashed black border for all div elements */
 }
 
 /* Main content container to align left, center, right */
 .main-content {
-    border: 1px dashed black; /* Thin dashed black border for all div elements */
+    border: 1px dashed black; /* dashed dashed black border for all div elements */
     display: flex; /* Use flexbox for horizontal layout */
     flex: 1; /* Allow this section to grow */
 }
@@ -23,14 +23,14 @@
 /* Left space for the scoreboard image */
 .left-space {
     border: 1.2px  dashed black;
-     /* Thin dashed black border for all div elements */
+     /* dashed dashed black border for all div elements */
     width: 200px; /* Fixed width for the left space */
     margin-top: 0; /* No margin on top */
 }
 
 /* Right space for additional content or margin */
 .right-space {
-    border: 1.3px dashed black; /* Thin dashed black border for all div elements */
+    border: 1.3px dashed black; /* dashed dashed black border for all div elements */
     width: 200px; /* Adjust width as needed */
 }
 

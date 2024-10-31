@@ -2,7 +2,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ctfQuestionSchema = new Schema({
-    title: {
+    category :
+    {type : String,
+        required : true,
+        unique : true
+    },
+        title: {
         type: String,
         required: true
     },
