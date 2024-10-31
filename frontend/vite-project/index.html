@@ -1,14 +1,85 @@
 <!doctype html>
 <html lang="en">
-  <head>
-      <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<head>
+    <script type="module">
+        import RefreshRuntime from "/@react-refresh"
+        RefreshRuntime.injectIntoGlobalHook(window)
+        window.$RefreshReg$ = () => {}
+        window.$RefreshSig$ = () => (type) => type
+        window.__vite_plugin_react_preamble_installed__ = true
+    </script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HiddenX</title>
-  </head>
-  <body>
-    <div id="root"></div>
+
+    <style>
+        /* Style for the mobile blocker */
+        .mobile-blocker {
+    font-family: 'Digital', monospace; /* Font family */
+    font-size: 2.5rem; /* Adjusted font size for better readability */
+    
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position to cover the screen */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset to truly center */
+    width: 100%;
+    height: 100%;
+    background-color: white; /* Background color */
+    color: black; /* Text color */
+    z-index: 1000; /* On top of other content */
+    padding: 20px; /* Some padding */
+    text-align: center; /* Center text horizontally */
+}
+
+        /* Main content */
+        .main-content {
+            display: block; /* Show main content */
+        }
+    </style>
+</head>
+<body>
+    <!-- Blocker for smaller screens -->
+    <div class="mobile-blocker">
+        <p>This site is best viewed on a laptop or desktop. Please access it on a larger screen.</p>
+        <img src="/RED_FLAG.gif" alt="RED_FLAG" style="display: block; margin: 0 auto;" />
+    </div>
+    
+    <script>
+      function checkDeviceAndScreenSize() {
+          const mobileBlocker = document.querySelector(".mobile-blocker");
+          const mainContent = document.querySelector(".main-content");
+          const width = window.innerWidth;
+
+          const isMobileDevice = /Mobi|Android/i.test(navigator.userAgent); // Check for mobile devices
+
+          // Check if width is between 920 and 925
+          if (width >= 920 && width <= 925) {
+              location.reload(); // Refresh the page
+          } else if (isMobileDevice || width < 920) {
+              mobileBlocker.style.display = "block"; // Show the blocker
+              mainContent.style.display = "none"; // Hide main content
+          } else {
+              mobileBlocker.style.display = "none"; // Hide the blocker
+              mainContent.style.display = "bloack"; // Hide main content
+
+          }
+      }
+
+      // Check the device type and screen size on load and on resize
+      window.addEventListener("load", checkDeviceAndScreenSize);
+      window.addEventListener("resize", checkDeviceAndScreenSize);
+  </script>
+
+    <!-- Main content container -->
+    <div id="root" class="main-content"></div>
+
+
     <script type="module" src="/src/main.jsx"></script>
-  </body>
+</body>
 </html>
