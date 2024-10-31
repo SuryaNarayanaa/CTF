@@ -8,7 +8,7 @@ const CreateQuestion = () => {
     description: '',
     points: '',
     answer: '',
-    links: [''], // Adding 'links' field as an array for compatibility with backend schema
+    links: [''],
   });
 
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ const CreateQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/admin/questions', formData); // Ensure endpoint matches backend
+      const response = await axios.post('/admin/questions', formData);
       if (response.status === 201) {
         alert("Question created successfully!");
         setFormData({ title: '', description: '', points: '', answer: '', links: [''] });
@@ -35,8 +35,8 @@ const CreateQuestion = () => {
   return (
     <div className="max-w-2xl mx-auto py-4">
       <div className="flex items-center justify-center mb-8">
-        <Shield className="w-8 h-8 text-cyan-500 mr-2" />
-        <h2 className="text-2xl font-bold text-cyan-500 font-['Press_Start_2P']">
+        <Shield className="w-8 h-8 text-green-500 mr-2" />
+        <h2 className="text-2xl font-bold text-green-500 font-['Press_Start_2P']">
           Create New Question
         </h2>
       </div>
@@ -44,7 +44,7 @@ const CreateQuestion = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div className="group">
-            <label className="block text-cyan-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+            <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
               Title
             </label>
             <input
@@ -52,23 +52,23 @@ const CreateQuestion = () => {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-100 border border-cyan-500/30 rounded-md text-gray-800 
-                       focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500
+              className="w-full px-4 py-3 bg-gray-100 border border-green-500/30 rounded-md text-gray-800 
+                       focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500
                        placeholder-gray-500 transition-all font-['Press_Start_2P']"
               placeholder="Enter question title"
             />
           </div>
 
           <div>
-            <label className="block text-cyan-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+            <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
               Description
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-100 border border-cyan-500/30 rounded-md text-gray-800 
-                       focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500
+              className="w-full px-4 py-3 bg-gray-100 border border-green-500/30 rounded-md text-gray-800 
+                       focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500
                        placeholder-gray-500 transition-all h-32 resize-y font-['Press_Start_2P']"
               placeholder="Enter question description"
             ></textarea>
@@ -76,7 +76,7 @@ const CreateQuestion = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-cyan-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+              <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
                 Points
               </label>
               <input
@@ -84,15 +84,15 @@ const CreateQuestion = () => {
                 name="points"
                 value={formData.points}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-100 border border-cyan-500/30 rounded-md text-gray-800 
-                         focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500
+                className="w-full px-4 py-3 bg-gray-100 border border-green-500/30 rounded-md text-gray-800 
+                         focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500
                          placeholder-gray-500 transition-all font-['Press_Start_2P']"
                 placeholder="Assign points"
               />
             </div>
 
             <div>
-              <label className="block text-cyan-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+              <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
                 Answer
               </label>
               <input
@@ -100,8 +100,8 @@ const CreateQuestion = () => {
                 name="answer"
                 value={formData.answer}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-100 border border-cyan-500/30 rounded-md text-gray-800 
-                         focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500
+                className="w-full px-4 py-3 bg-gray-100 border border-green-500/30 rounded-md text-gray-800 
+                         focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500
                          placeholder-gray-500 transition-all font-['Press_Start_2P']"
                 placeholder="Provide answer"
               />
@@ -109,7 +109,7 @@ const CreateQuestion = () => {
           </div>
 
           <div>
-            <label className="block text-cyan-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+            <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
               Links
             </label>
             <input
@@ -117,8 +117,8 @@ const CreateQuestion = () => {
               name="links"
               value={formData.links}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-100 border border-cyan-500/30 rounded-md text-gray-800 
-                       focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500
+              className="w-full px-4 py-3 bg-gray-100 border border-green-500/30 rounded-md text-gray-800 
+                       focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500
                        placeholder-gray-500 transition-all font-['Press_Start_2P']"
               placeholder="Provide resource links (separate by commas if multiple)"
             />
@@ -127,10 +127,10 @@ const CreateQuestion = () => {
 
         <button
           type="submit"
-          className="w-full py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-bold rounded-md
+          className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-md
                    transition-all duration-300 ease-in-out transform hover:scale-[1.02]
-                   focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50
-                   shadow-lg hover:shadow-cyan-500/50 mt-8 font-['Press_Start_2P']"
+                   focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50
+                   shadow-lg hover:shadow-green-500/50 mt-8 font-['Press_Start_2P']"
         >
           <div className="flex items-center justify-center">
             <AlertTriangle className="w-5 h-5 mr-2" />
@@ -139,11 +139,10 @@ const CreateQuestion = () => {
         </button>
       </form>
 
-      {/* Decorative Elements */}
       <div className="mt-12 flex justify-center space-x-2">
-        <div className="w-2 h-2 bg-cyan-500/50 rounded-full animate-pulse"></div>
-        <div className="w-2 h-2 bg-cyan-500/50 rounded-full animate-pulse delay-75"></div>
-        <div className="w-2 h-2 bg-cyan-500/50 rounded-full animate-pulse delay-150"></div>
+        <div className="w-2 h-2 bg-green-500/50 rounded-full animate-pulse"></div>
+        <div className="w-2 h-2 bg-green-500/50 rounded-full animate-pulse delay-75"></div>
+        <div className="w-2 h-2 bg-green-500/50 rounded-full animate-pulse delay-150"></div>
       </div>
     </div>
   );
