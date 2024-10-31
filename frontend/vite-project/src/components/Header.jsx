@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/Header.css'; // Assuming you have a CSS file for styling
+import MouseTracker from './ui/MouseTracker';
 
 const Header = () => {
   return (
@@ -23,8 +24,7 @@ const Header = () => {
           <span>(0)</span>
         </div>
         <div className="ctf-info">
-          <p>60.65</p>
-          <p>27.61</p>
+         <MouseTracker />
         </div>
         <div className="status">
           <p>CTF Closed</p>
