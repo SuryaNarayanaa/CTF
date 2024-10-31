@@ -12,9 +12,13 @@ const app = express();
 connectDB();
 
 // Middleware setup
-app.use(cors({
-  origin: 'https://hiddenx.vercel.app', // Allow only your frontend domain
-}));
+app.use(
+  cors({
+    origin: 'https://hiddenx.vercel.app', // allow your frontend origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // specify allowed methods
+    credentials: true, // if you're using cookies with CORS
+  })
+);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
