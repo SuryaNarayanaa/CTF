@@ -29,7 +29,7 @@ const ScreenCheck = () => {
       let index = 0;
 
       const intervalId = setInterval(() => {
-        if (index < randomCharacters.length) {
+        if (index < 20) {
           setDisplayedText((prev) => prev + randomCharacters[index]);
           index++;
         } else {
