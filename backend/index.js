@@ -12,15 +12,17 @@ const app = express();
 connectDB();
 
 // Middleware setup
-app.use(
-  cors({
-    origin: 'https://hiddenx.vercel.app', // allow your frontend origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // specify allowed methods
-    credentials: true, // if you're using cookies with CORS
-  })
-);
-app.options('*', cors()); // Allow preflight across all routes
+const corsOptions = {
+  origin: 'https://hiddenx.vercel.app', // Allow this origin to access the resource
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Include OPTIONS
+  credentials: true // Allow cookies and credentials
+};
 
+// Use CORS middleware
+app.use(cors(corsOptions));
+
+// Enable preflight across-the-board
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
