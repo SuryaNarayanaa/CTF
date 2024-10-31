@@ -2,13 +2,13 @@
 import React from 'react';
 import Question from '../components/Question';
 import '../styles/QuestionPage.css'; // Import the CSS file for styling
-
+import Header from '../components/Header';
 const QuestionPage = () => {
     return (
         <div className="question-page">
             {/* Div for additional vertical spacing at the top */}
             <div className='top-space'>
-                <img src="/TIMER.gif" alt="Top Space" />
+                <Header />
             </div>
 
             <div className="main-content">
