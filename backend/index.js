@@ -19,6 +19,8 @@ app.use(
     credentials: true, // if you're using cookies with CORS
   })
 );
+app.options('*', cors()); // Allow preflight across all routes
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
