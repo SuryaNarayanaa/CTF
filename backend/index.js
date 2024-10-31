@@ -10,24 +10,15 @@ const app = express();
 
 // Connect to the database
 connectDB();
-
-const allowedOrigins = ['https://hiddenx.vercel.app',"https://hidden-x-backend.onrender.com","https://hashx-ruby.vercel.app/" ,'http://localhost:5173'];
-
 const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or Postman)
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true); // Allow the request
-        } else {
-            callback(new Error('Not allowed by CORS')); // Reject the request
-        }
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
+  origin: 'https://hashx-ruby.vercel.app', // Allow this origin to access the resource
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
+  credentials: true // Allow cookies and credentials
 };
 
 // Use CORS middleware
 app.use(cors(corsOptions));
+
 app.options('*', cors(corsOptions)); // Enable preflight across-the-board
 
 
