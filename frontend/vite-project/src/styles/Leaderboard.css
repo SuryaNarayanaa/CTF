@@ -11,17 +11,23 @@
     width: 100%;
     margin: 20px 0;
     font-family: 'Press Start 2P', cursive; /* Custom font */
+    /* font-family: 'VT323', monospace; Alternative retro font */
+    /* font-family: 'Pixelated MS Sans Serif', sans-serif; */
+    font-style: normal; /* Another retro style font */
     text-align: left;
     /* Remove the dashed border from here to apply it to the container */
 }
 
+/* Add thin lines for every column and row */
 .leaderboard th, 
 .leaderboard td {
-    border: none; /* Remove individual cell borders */
+    border: 1px dashed #000000; /* Add thin border */
     padding: 12px; /* Increased padding for better spacing */
     background-color: white; /* White background for each row */
     transition: border-color 0.3s ease; /* Smooth transition for border color */
+    text-align: center; /* Center align items */
 }
+
 
 .leaderboard th {
     background-color: #464646; /* Dark background for header */
@@ -44,6 +50,7 @@
 
 .leaderboard td {
     color: #666; /* Retro text color */
+    text-align: center;
 }
 
 .leaderboard th:first-child, 
@@ -53,7 +60,7 @@
 
 .leaderboard th:last-child, 
 .leaderboard td:last-child {
-    text-align: right; /* Right align last column */
+    text-align: center; /* Right align last column */
 }
 
 /* Responsive styles */

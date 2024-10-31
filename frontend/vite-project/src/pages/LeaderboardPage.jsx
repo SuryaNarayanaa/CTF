@@ -2,12 +2,15 @@
 import React from 'react';
 import Leaderboard from '../components/Leaderboard';
 import '../styles/LeaderboardPage.css'; // Import the CSS file for styling
+import Header from '../components/Header';
 
 const LeaderboardPage = () => {
     return (
         <div className="leaderboard-page">
             {/* Div for additional vertical spacing at the top */}
-            <div className='top-space'></div>
+            <div className='top-space'>
+                <Header />
+            </div>
 
             <div className="main-content">
                 {/* Left vertical space with an image */}

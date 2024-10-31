@@ -1,0 +1,60 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    background-color: #ffffff;
+    color: black;
+    font-family: 'Press Start 2P', cursive; /* Custom font */
+  }
+  
+  .header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-left {
+    flex: 1;
+  }
+  
+  .header-center {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .header-right {
+    flex: 1;
+    justify-content: flex-end;
+  }
+  
+  .flag-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .ctf-title {
+    margin-left: 10px;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .team-info, .google-link {
+    margin: 0;
+  }
+  
+  .google {
+    color: #4285f4;
+  }
+  
+  .ascii-box {
+    font-family: monospace;
+    text-align: center;
+  }
+  
+  .announcements, .ctf-info, .status {
+    margin-left: 20px;
+    text-align: right;
+  }

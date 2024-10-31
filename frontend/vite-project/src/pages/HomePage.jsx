@@ -12,11 +12,7 @@ const HomePage = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   useEffect(() => {
-    document.body.style.backgroundImage = "url('bg.png')";
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundRepeat = 'no-repeat';
-    document.body.style.backgroundAttachment = 'fixed';
-
+  
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
@@ -30,9 +26,9 @@ const HomePage = () => {
     }
   };
 
-  const handleScoreboard = async () => 
+  const handleChallenge = async () => 
     {  
-      window.location.href = '/leaderboard';}
+      window.location.href = '/challenges';}
 
   return (
     <>
@@ -75,8 +71,8 @@ const HomePage = () => {
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Log Out
               </button>
-              <button onClick={handleScoreboard} className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
-                → Scoreboard
+              <button onClick={handleChallenge} className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
+                → Challenges
               </button>
             </>
           ) : (
