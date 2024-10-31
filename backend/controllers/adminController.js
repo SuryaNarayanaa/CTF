@@ -30,7 +30,6 @@ const adminController = {
             return acc;
           }, {});
       
-          // Send the structured response
           res.json(categorizedQuestions);
         } catch (error) {
           console.error('Error fetching categorized questions:', error);

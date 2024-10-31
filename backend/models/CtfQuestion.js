@@ -5,7 +5,6 @@ const ctfQuestionSchema = new Schema({
     category :
     {type : String,
         required : true,
-        unique : true
     },
         title: {
         type: String,

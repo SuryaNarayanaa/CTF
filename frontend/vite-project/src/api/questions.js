@@ -40,4 +40,16 @@ export const updateQuestion = async (questionData) => {
     console.error('Failed to update question', error);
     throw error;
   }
+};
+
+export const getQuestionsByCategory = async () => {
+try{
+  const resposne  = await api.get('/questionsByCategory');
+  return response.data;
 }
+catch(error){
+  console.error('Failed to fetch questions by category', error);
+  throw error;
+
+}
+};
