@@ -11,18 +11,26 @@ const app = express();
 // Connect to the database
 connectDB();
 
-// Middleware setup
+const allowedOrigins = ['https://hiddenx.vercel.app', 'http://localhost:5173'];
+
 const corsOptions = {
-  origin: 'https://hiddenx.vercel.app', // Allow this origin to access the resource
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Include OPTIONS
-  credentials: true // Allow cookies and credentials
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or Postman)
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error('Not allowed by CORS')); // Reject the request
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
 };
 
 // Use CORS middleware
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Enable preflight across-the-board
 
-// Enable preflight across-the-board
-app.options('*', cors(corsOptions));
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
