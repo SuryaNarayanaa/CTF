@@ -21,7 +21,7 @@ const CreateQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/admin/questions', formData);
+      const response = await axios.post('/Admin/questions', formData);
       if (response.status === 201) {
         alert("Question created successfully!");
         setFormData({ title: '', description: '', points: '', answer: '', links: [''] });
