@@ -11,7 +11,7 @@ const app = express();
 // Connect to the database
 connectDB();
 const corsOptions = {
-  origin: ['https://hashx-ruby.vercel.app', 'http://localhost:5173'], // Allow these origins to access the resource
+  origin: ['https://hidden-x.vercel.app', 'http://localhost:5173'], // Allow these origins to access the resource
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
   credentials: true // Allow cookies and credentials
 };
