@@ -21,6 +21,7 @@ const ctfQuestionService = {
         }
         return { correctSubmissions: correctSubmissions.length, score };
     },
+    
 
     getAllQuestions: async () => {
         return await CtfQuestion.find();

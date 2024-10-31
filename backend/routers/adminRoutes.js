@@ -6,6 +6,7 @@ router.get('/questions', adminController.getQuestions);
 router.post('/questions', adminController.createQuestion);
 router.put('/questions', adminController.updateQuestion);
 router.delete('/questions/:id', adminController.deleteQuestion);
+router.get('/questionsByCategory', adminController.fetchQuestionsByCategory);
 
 router.get('/participants', adminController.getParticipants);
 router.get('/participants/:id', adminController.getParticipantById);

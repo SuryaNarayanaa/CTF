@@ -1,5 +1,5 @@
 const adminService = require("../service/adminService");
-
+const Question = require("../models/CtfQuestion");
 
 
 
@@ -17,9 +17,26 @@ const adminController = {
         res.send(allQuestions);
     },
 
-
-
-
+    fetchQuestionsByCategory : async (req, res) => {
+        try {
+          const questions = await Question.find();
+      
+          const categorizedQuestions = questions.reduce((acc, question) => {
+            const { category, ...questionData } = question.toObject();
+            if (!acc[category]) {
+              acc[category] = { questions: [] };
+            }
+            acc[category].questions.push(questionData);
+            return acc;
+          }, {});
+      
+          // Send the structured response
+          res.json(categorizedQuestions);
+        } catch (error) {
+          console.error('Error fetching categorized questions:', error);
+          res.status(500).json({ error: 'Failed to fetch categorized questions' });
+        }
+      },
 
 
 
