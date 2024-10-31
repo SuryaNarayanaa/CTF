@@ -1,60 +1,97 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    background-color: #ffffff;
-    color: black;
-    font-family: 'Press Start 2P', cursive; /* Custom font */
-  }
-  
-  .header-left, .header-center, .header-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  .header-left {
-    flex: 1;
-  }
-  
-  .header-center {
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .header-right {
-    flex: 1;
-    justify-content: flex-end;
-  }
-  
-  .flag-icon {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .ctf-title {
-    margin-left: 10px;
-  }
-  
-  .title {
-    font-size: 24px;
-    margin: 0;
-  }
-  
-  .team-info, .google-link {
-    margin: 0;
-  }
-  
-  .google {
-    color: #4285f4;
-  }
-  
-  .ascii-box {
-    font-family: monospace;
-    text-align: center;
-  }
-  
-  .announcements, .ctf-info, .status {
-    margin-left: 20px;
-    text-align: right;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  background-color: #ffffff;
+  color: black;
+  font-family: 'Digital', monospace;
+}
+
+.header-left, .header-center, .header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.header-center {
+  flex: 1;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.header-right {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.title {
+  font-size: 25px;
+  margin: 0;
+  text-align: center;
+}
+
+
+.home-button {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.home-button:hover {
+  transform: scale(1.1);
+}
+
+/* Cyber-styled animation for buttons */
+.cyber-button {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: 'Digital', monospace;
+  color: #000;
+  background: #f2f2f2;
+  border: 2px solid #000;
+  overflow: hidden;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.cyber-button:before, .cyber-button:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(45deg, #00ffcc, #00ccff);
+  z-index: -1;
+  transition: transform 0.5s;
+}
+
+.cyber-button:before {
+  transform: translateX(-100%) skewX(-15deg);
+}
+
+.cyber-button:after {
+  transform: translateX(100%) skewX(15deg);
+}
+
+.cyber-button:hover:before {
+  transform: translateX(100%) skewX(-15deg);
+}
+
+.cyber-button:hover:after {
+  transform: translateX(-100%) skewX(15deg);
+}
+
+.cyber-button:hover {
+  color: #fff;
+}
