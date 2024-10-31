@@ -11,7 +11,7 @@ const app = express();
 // Connect to the database
 connectDB();
 
-const allowedOrigins = ['https://hiddenx.vercel.app',"https://hidden-x-backend.onrender.com" ,'http://localhost:5173'];
+const allowedOrigins = ['https://hiddenx.vercel.app',"https://hidden-x-backend.onrender.com","https://hashx-ruby.vercel.app/" ,'http://localhost:5173'];
 
 const corsOptions = {
     origin: function (origin, callback) {
