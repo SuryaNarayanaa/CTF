@@ -4,8 +4,7 @@ import React from 'react';
 const ScoreboardBanner = () => {
     return (
         <div>
-            <div className="top-part"></div>
-            <div className="bottom-part">
+            <div className="top-part">
                 <a href="/leaderboard" className="challenges-link">
                     <img
                         src="/scoreboard.png"
