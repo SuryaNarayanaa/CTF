@@ -3,6 +3,8 @@ import React from 'react';
 import Leaderboard from '../components/Leaderboard';
 import '../styles/LeaderboardPage.css'; // Import the CSS file for styling
 import Header from '../components/Header';
+import ScoreboardBanner from '../components/ScoreboardBanner';
+import ChallengesBanner from '../components/ChallengesBanner';
 
 const LeaderboardPage = () => {
     return (
@@ -15,7 +17,7 @@ const LeaderboardPage = () => {
             <div className="main-content">
                 {/* Left vertical space with an image */}
                 <div className="left-space">
-                    <img src="/scoreboard.png" alt="Scoreboard" />
+                    <ScoreboardBanner />
                 </div>
 
                 {/* Leaderboard table */}
@@ -29,8 +31,7 @@ const LeaderboardPage = () => {
 
                     </div>
                        <div className='bottom-part'>
-                       <img src="/challenges.png" alt="Scoreboard" />
-
+                        <ChallengesBanner />
                         </div>
                 </div>
             </div>

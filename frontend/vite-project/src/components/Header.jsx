@@ -1,35 +1,29 @@
 import React from 'react';
-import '../styles/Header.css'; // Assuming you have a CSS file for styling
+import '../styles/Header.css';
+import MouseTracker from './ui/MouseTracker';
+import { Home } from 'lucide-react';
 
 const Header = () => {
   return (
     <div className="header">
       <div className="header-left">
-        <img src="/FLAG_LOGO.gif" alt="flag icon" className="flag-icon" />
-        <div className="ctf-title">
-          <h1 className="title">theeyesctf</h1>
-          <p className="team-info">Logout Team</p>
-          <p className="google-link">Opportunities at <span className="google">Google</span></p>
-        </div>
-      </div>
-      
+        <img src="/LIGHT_BANNER_TRANSP.png" alt="flag icon" className="flag-icon" style={{ width: '160px', height: '50px' }} />  
+        <h2>Team Name</h2>
+        <button 
+          onClick={() => window.location.href = '/'}
+          className="home-button bg-white">
+          <Home />
+        </button>
+      </div>    
+
       <div className="header-center">
-        <div className="ascii-box">ASCII Art Here</div>
+        <h1 className="title font-['Press_Start_2P']">HiddenX!</h1>
       </div>
 
       <div className="header-right">
-        <div className="announcements">
-          <span>ANNOUNCEMENTS</span>
-          <span>(0)</span>
-        </div>
-        <div className="ctf-info">
-          <p>60.65</p>
-          <p>27.61</p>
-        </div>
-        <div className="status">
-          <p>CTF Closed</p>
-          <p>31/10/2024</p>
-        </div>
+        <button className="cyber-button">Rules</button>
+        <button className="cyber-button">FAQ</button>
+        <MouseTracker />
       </div>
     </div>
   );

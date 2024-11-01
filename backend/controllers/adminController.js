@@ -1,5 +1,5 @@
 const adminService = require("../service/adminService");
-
+const Question = require("../models/CtfQuestion");
 
 
 
@@ -17,19 +17,35 @@ const adminController = {
         res.send(allQuestions);
     },
 
-
-
-
+    fetchQuestionsByCategory : async (req, res) => {
+        try {
+          const questions = await Question.find();
+      
+          const categorizedQuestions = questions.reduce((acc, question) => {
+            const { category, ...questionData } = question.toObject();
+            if (!acc[category]) {
+              acc[category] = { questions: [] };
+            }
+            acc[category].questions.push(questionData);
+            return acc;
+          }, {});
+      
+          res.json(categorizedQuestions);
+        } catch (error) {
+          console.error('Error fetching categorized questions:', error);
+          res.status(500).json({ error: 'Failed to fetch categorized questions' });
+        }
+      },
 
 
 
     createQuestion: async (req, res) => {
-        const { title, description, points, answer ,links} = req.body;
-        if (!title || !description || !points || !answer || !links) {
+        const { category, title,description, points, answer ,links} = req.body;
+        if (!title || !category|| !description || !points || !answer || !links) {
            return res.status(400).send("All fields are required");
         }
         try {
-           const newQuestion = await adminService.createQuestion({ title, description, points, answer,links });
+           const newQuestion = await adminService.createQuestion({ category, title, description, points, answer,links });
            res.status(201).send(newQuestion);
         } catch (error) {
            console.error("Error creating question:", error);
@@ -40,7 +56,7 @@ const adminController = {
 
 
     updateQuestion: async (req, res) => {
-        const { title, description, points, answer } = req.body;
+        const { category, title, description, points, answer } = req.body;
 
     try {
         const question = await adminService.getQuestionByName(title);
@@ -54,6 +70,7 @@ const adminController = {
 
         const updatedQuestion = await adminService.updateQuestion({
             id,
+            category,
             title,
             description,
             points,

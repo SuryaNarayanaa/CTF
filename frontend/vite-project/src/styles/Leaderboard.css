@@ -2,26 +2,33 @@
 .scrollable-container {
     max-height: 84vh; /* Set a maximum height for the scrollable area */
     overflow-y: auto; /* Enable vertical scrolling */
-    border: 2px dashed black; /* Optional: Add border to the scrollable area */
+    border: 1px dashed black; /* Optional: Add border to the scrollable area */
     border-top: none;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.scrollable-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
 }
 
 .leaderboard {
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
-    font-family: 'Press Start 2P', cursive; /* Custom font */
+    font-family: 'Digital', monospace; /* Ensures the retro feel */
     /* font-family: 'VT323', monospace; Alternative retro font */
     /* font-family: 'Pixelated MS Sans Serif', sans-serif; */
-    font-style: normal; /* Another retro style font */
     text-align: left;
+    font-size: 20px;
+    font-weight: 1000;
     /* Remove the dashed border from here to apply it to the container */
 }
 
-/* Add thin lines for every column and row */
+/* Add dashed lines for every column and row */
 .leaderboard th, 
 .leaderboard td {
-    border: 1px dashed #000000; /* Add thin border */
+    border: 1px dashed #000000; /* Add dashed border */
     padding: 12px; /* Increased padding for better spacing */
     background-color: white; /* White background for each row */
     transition: border-color 0.3s ease; /* Smooth transition for border color */
@@ -32,10 +39,11 @@
 .leaderboard th {
     background-color: #464646; /* Dark background for header */
     color: #fff; /* White text for contrast */
+    font-weight: bold; /* Bold font weight for header */
 }
 
 .leaderboard tr {
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    transition: transform 0.3s ease, box-shadow  0.3s ease; /* Smooth transition for hover effects */
 }
 
 .leaderboard tr:hover {
