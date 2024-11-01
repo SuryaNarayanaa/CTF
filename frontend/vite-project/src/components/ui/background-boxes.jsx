@@ -4,23 +4,16 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const BoxesCore = ({ className, ...rest }) => {
-  const rows = new Array(300).fill(1);
-  const cols = new Array(150).fill(1);
+  const rows = new Array(75).fill(1);
+  const cols = new Array(30).fill(1);
   let colors = [
-    "--gray-900", // Very Dark Gray
-    "--gray-800", // Dark Gray
-    "--gray-700", // Medium Dark Gray
     "--gray-600", // Medium Gray
     "--gray-500", // Light Gray
     "--gray-400", // Lighter Gray
     "--gray-300", // Very Light Gray
     "--black",    // Black
-    "--slate-900", // Very Dark Slate Gray
-    "--slate-800", // Dark Slate Gray
-    "--slate-700", // Slate Gray
     "--slate-600", // Medium Slate Gray
     "--slate-500", // Light Slate Gray
-    "--green-900", // Very Dark Green
     "--green-800", // Darker Green
     "--green-700", // Medium Dark Green
     "--green-600", // Dark Green
@@ -61,7 +54,7 @@ export const BoxesCore = ({ className, ...rest }) => {
                 transition: { duration: 0 },
               }}
               animate={{
-                transition: { duration: 2 },
+                transition: { duration: 6 },
               }}
               key={`col` + j}
               className="w-16 h-8  border-r border-t border-slate-700 relative"
