@@ -22,6 +22,11 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Enable preflight across-the-board
 
 
+
+// Middleware setup
+app.use(cors({
+// Allow only your frontend domain
+}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
