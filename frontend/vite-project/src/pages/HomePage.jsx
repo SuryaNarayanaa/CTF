@@ -5,14 +5,17 @@ import './HomePage.css';
 import GifElement from '../components/Gifelement';
 import { logout } from '../api/auth';
 import { AuthModal, LoginForm, RegisterForm } from '../components/authmodels';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const location = useLocation();
+  const teamName = location.state?.teamName || localStorage.getItem('teamName') || ''; // Get teamName from state or localStorage
+  const navigate = useNavigate();
 
   useEffect(() => {
-  
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
@@ -21,14 +24,15 @@ const HomePage = () => {
     try {
       await logout();
       setIsLoggedIn(false);
+      localStorage.removeItem('teamName'); // Remove teamName from localStorage on logout
     } catch (error) {
       console.error('Logout failed:', error);
     }
   };
 
-  const handleChallenge = async () => 
-    {  
-      window.location.href = '/challenges';}
+  const handleNavigate = (path) => {
+    navigate(path, { state: { teamName } });
+  };
 
   return (
     <>
@@ -71,7 +75,14 @@ const HomePage = () => {
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Log Out
               </button>
-              <button onClick={handleChallenge} className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
+              <button 
+                onClick={() => handleNavigate('/leaderboard')}
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
+                → Leaderboard
+              </button>
+              <button 
+                onClick={() => handleNavigate('/challenges')}
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 → Challenges
               </button>
             </>
