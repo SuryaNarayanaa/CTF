@@ -23,7 +23,7 @@ export default defineConfig({
         target: 'http://localhost:3000', // Make sure this matches your backend server
         changeOrigin: true,
       },
-      '/ctf': {
+      '/ctf/submit': {
         target: 'http://localhost:3000', 
         changeOrigin: true,
       },

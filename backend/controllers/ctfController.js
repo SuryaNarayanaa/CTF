@@ -7,7 +7,7 @@ const ctfController = {
        res.send(await CtfService.getAllQuestions());
     },
 
-
+    
 
 
     submitAnswer: async (req, res) => {
