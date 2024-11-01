@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Question from './popup';
-import { Database, Trash2, Edit2 } from 'lucide-react';
+import { Database, Trash2, Edit2, AlertCircle } from 'lucide-react';
 
 const ViewQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -26,73 +26,161 @@ const ViewQuestions = () => {
   };
 
   const handleDeleteQuestion = async () => {
-    if (selectedQuestion) {
-      try {
-        await axios.delete(`/Admin/questions/${selectedQuestion._id}`);
-        setQuestions(questions.filter((q) => q._id !== selectedQuestion._id));
-        setSelectedQuestion(null);
-        alert("Question deleted successfully.");
-      } catch (error) {
-        console.error("Error deleting question:", error);
-      }
+    if (!selectedQuestion) return;
+
+    try {
+      await axios.delete(`/Admin/questions/${selectedQuestion._id}`);
+      setQuestions(questions.filter((q) => q._id !== selectedQuestion._id));
+      setSelectedQuestion(null);
+      setShowDetails(false);
+      
+      // Toast notification instead of alert
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-4 right-4 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg';
+      notification.textContent = 'Question deleted successfully';
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 3000);
+    } catch (error) {
+      console.error("Error deleting question:", error);
     }
   };
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-center mb-6">
-        <Database className="w-8 h-8 text-green-500 mr-2" />
-        <h2 className="text-2xl font-bold text-green-500 font-['Press_Start_2P']">
-          Question Database
+      {/* Header */}
+      <div className="flex items-center justify-center mb-8">
+        <Database className="w-6 h-6 text-emerald-500" />
+        <h2 className="ml-2 text-xl font-['Press_Start_2P'] text-emerald-600">
+          Questions Database
         </h2>
       </div>
 
-      <div className="grid gap-4">
-        {questions.map((question) => (
-          <div
-            key={question._id}
-            className="p-4 bg-gray-100 rounded-lg border border-green-500/30 hover:border-green-500 
-                     transition-all duration-300 cursor-pointer group"
-            onClick={() => handleSelectQuestion(question)}
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-green-500 group-hover:text-green-400 font-['Press_Start_2P']">
-                {question.title}
-              </h3>
-              <span className="text-sm text-green-500/70 font-['Press_Start_2P']">
-                Points: {question.points}
-              </span>
-            </div>
-            <p className="text-sm text-gray-600 mt-2 font-['Press_Start_2P']">
-              {question.description.substring(0, 100)}...
-            </p>
+      {/* Questions Grid */}
+      <div className="space-y-4">
+        {questions.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+            <AlertCircle className="w-12 h-12 mb-4 text-emerald-400" />
+            <p className="text-lg font-medium">No questions available</p>
           </div>
-        ))}
+        ) : (
+          questions.map((question) => (
+            <div
+              key={question._id}
+              onClick={() => handleSelectQuestion(question)}
+              className="bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 
+                       hover:border-emerald-400 transition-all duration-200 cursor-pointer"
+            >
+              <div className="p-4">
+                {/* Question Header */}
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-gray-900 mb-1">
+                      {question.title}
+                    </h3>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                      {question.category}
+                    </span>
+                  </div>
+                  <div className="ml-4">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      {question.points} Points
+                    </span>
+                  </div>
+                </div>
+
+                {/* Question Description */}
+                <p className="text-sm text-gray-600 line-clamp-2">
+                  {question.description}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
-      {selectedQuestion && (
-        <div className="flex space-x-4 mt-6 justify-center">
-          <button
-            onClick={() => setShowDetails(true)}
-            className="px-6 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 
-                     transition-all duration-300 flex items-center space-x-2 font-['Press_Start_2P']"
-          >
-            <Edit2 className="w-4 h-4" />
-            <span>Update</span>
-          </button>
-          <button
-            onClick={handleDeleteQuestion}
-            className="px-6 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 
-                     transition-all duration-300 flex items-center space-x-2 font-['Press_Start_2P']"
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>Delete</span>
-          </button>
-        </div>
-      )}
+      {/* Question Details Modal */}
+      {showDetails && selectedQuestion && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              {/* Modal Header */}
+              <div className="flex justify-between items-start mb-6">
+                <h3 className="text-lg font-medium text-gray-900">
+                  Question Details
+                </h3>
+                <button
+                  onClick={() => setShowDetails(false)}
+                  className="text-gray-400 hover:text-gray-500 transition-colors"
+                >
+                  <span className="sr-only">Close</span>
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
 
-      {showDetails && (
-        <Question question={selectedQuestion} onClose={() => setShowDetails(false)} />
+              {/* Question Content */}
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Title</h4>
+                  <p className="mt-1 text-sm text-gray-900">{selectedQuestion.title}</p>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Category</h4>
+                  <p className="mt-1 text-sm text-gray-900">{selectedQuestion.category}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Description</h4>
+                  <p className="mt-1 text-sm text-gray-900">{selectedQuestion.description}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Points</h4>
+                  <p className="mt-1 text-sm text-gray-900">{selectedQuestion.points}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Answer</h4>
+                  <p className="mt-1 text-sm text-gray-900">{selectedQuestion.answer}</p>
+                </div>
+
+                {selectedQuestion.links?.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">Resource Links</h4>
+                    <div className="mt-1 space-y-1">
+                      {selectedQuestion.links.map((link, index) => (
+                        <p key={index} className="text-sm text-emerald-600 hover:text-emerald-700">
+                          {link}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowDetails(false)}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md
+                           transition-colors duration-200 font-medium text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeleteQuestion}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md
+                           transition-colors duration-200 font-medium text-sm flex items-center"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Question
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

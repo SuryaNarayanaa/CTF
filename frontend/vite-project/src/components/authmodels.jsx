@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {  signup ,login } from "@/api/auth";
-import {createTeam} from "@/api/createteam";
+import { signup, login } from "@/api/auth";
+import { createTeam } from "@/api/createteam";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SuccessMessage = ({ message }) => (
   <div className="fixed top-4 right-4 z-50 animate-fade-in">
@@ -42,6 +44,7 @@ const LoginForm = ({ onClose, onSuccess }) => {
   });
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -55,11 +58,15 @@ const LoginForm = ({ onClose, onSuccess }) => {
     setError('');
     
     try {
-      await login(formData);
+      const response = await login(formData);
+      const { email } = response.user;
+      const teamName = email.split('@')[0]; // Extract team name from email
+      localStorage.setItem('teamName', teamName); // Store teamName in localStorage
       setShowSuccess(true);
       setTimeout(() => {
         onSuccess();
         onClose();
+        navigate('/'); // Navigate to home
       }, 1500);
     } catch (err) {
       setError('Wrong email or password!');
@@ -122,6 +129,7 @@ const RegisterForm = ({ onClose }) => {
   });
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -148,16 +156,21 @@ const RegisterForm = ({ onClose }) => {
       };
       console.log('Sending signup data:', signupData); // Log the data being sent
       await signup(signupData);
-      
-      const teamData = {        
-        name: formData.email.split('@')[0],
+
+      // Extract team name from email
+      const teamName = formData.email.split('@')[0];
+      const teamData = {
+        name: teamName,
         leader: formData.username
       };
+      console.log('Creating team with data:', teamData); // Log the team data being sent
       await createTeam(teamData);
+      localStorage.setItem('teamName', teamName); // Store teamName in localStorage
 
       setShowSuccess(true);
       setTimeout(() => {
         onClose();
+        navigate('/'); // Navigate to home
       }, 1500);
     } catch (err) {
       console.error('Registration error:', err); // Log the error for debugging
@@ -168,7 +181,7 @@ const RegisterForm = ({ onClose }) => {
   return (
     <>
       {showSuccess && (
-        <SuccessMessage message="Registration successful! Welcome aboard!" />
+        <SuccessMessage message="Registration and team creation successful! Welcome aboard!" />
       )}
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
