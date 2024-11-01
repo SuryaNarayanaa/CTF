@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import ScoreboardBanner from '../components/ScoreboardBanner';
 import ChallengesBanner from '../components/ChallengesBanner';
 
+const teamName = localStorage.getItem('teamName') || 'Team Name';
 const QuestionPage = () => {
     const [categories, setCategories] = useState([]);
     const [questions, setQuestions] = useState([]);
@@ -20,6 +21,17 @@ const QuestionPage = () => {
             })
             .catch((error) => console.error('Error fetching categories:', error));
     }, []);
+
+    useEffect(() => {
+        // If a question is selected, load its answer status from localStorage
+        if (selectedQuestion) {
+            const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
+            if (savedStatus[selectedQuestion._id] === true) {
+                setAnswerStatus('correct');
+                setUserAnswer(''); // Clear the input if already answered correctly
+            }
+        }
+    }, [selectedQuestion]);
 
     const handleCategoryClick = (category) => {
         fetch(`/Admin/questions/questionsByCategory?category=${category}`)
@@ -43,16 +55,19 @@ const QuestionPage = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                teamName: 'YourTeamName', // Replace with the actual team name
+                teamName: teamName,
                 title: selectedQuestion.title,
                 answer: userAnswer,
             }),
         })
             .then((res) => res.json())
             .then((data) => {
-                // Assuming `data.correct` will indicate if the answer is correct
-                if (data.correct) {
+                if (data.isCorrect) {
                     setAnswerStatus('correct');
+                    // Store the correct answer status in localStorage
+                    const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
+                    savedStatus[selectedQuestion._id] = true;
+                    localStorage.setItem('answeredQuestions', JSON.stringify(savedStatus));
                 } else {
                     setAnswerStatus('incorrect');
                 }
@@ -73,7 +88,6 @@ const QuestionPage = () => {
 
                 <div className="question-table">
                     <div className="question-tabs">
-                        {/* Categories Section */}
                         <div className="tab-1">
                             <h2>Categories</h2>
                             {categories.map((category, index) => (
@@ -87,7 +101,6 @@ const QuestionPage = () => {
                             ))}
                         </div>
 
-                        {/* Questions Section */}
                         <div className="tab-2">
                             <h2>Questions</h2>
                             {questions.map((question, index) => (
@@ -101,7 +114,6 @@ const QuestionPage = () => {
                             ))}
                         </div>
 
-                        {/* Question Details Section */}
                         <div className="tab-3">
                             <h2>Question Details</h2>
                             {selectedQuestion ? (
@@ -124,7 +136,7 @@ const QuestionPage = () => {
                                         type="text"
                                         value={userAnswer}
                                         onChange={(e) => setUserAnswer(e.target.value)}
-                                        className={`answer-input ${answerStatus}`}
+                                        className={`answer-input ${answerStatus === 'correct' ? 'input-correct' : ''}`}
                                         placeholder="Enter your answer"
                                         disabled={answerStatus === 'correct'}
                                     />

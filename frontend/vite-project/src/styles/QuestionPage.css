@@ -158,3 +158,15 @@ button:active {
     color: red;
     font-weight: bold;
 }
+
+.answer-input.input-correct {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+.status-correct {
+    color: #28a745;
+}
+.status-incorrect {
+    color: #dc3545;
+}
