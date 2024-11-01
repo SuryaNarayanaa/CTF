@@ -7,7 +7,7 @@ import QuestionPage from './pages/QuestionPage';
 import './index.css';
 
 const teamName = localStorage.getItem('teamName') || null;
-const store = ["23n237", "23n256", "21z202", "22n248", "22n266"];
+const store = ["23n237", "23n256", "21z202", "22n228", "22n266"];
 
 const App = () => {
   const isTeamInStore = store.includes(teamName);
