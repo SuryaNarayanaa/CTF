@@ -22,7 +22,11 @@ export default defineConfig({
       '/Admin/participants':{
         target: 'http://localhost:3000', // Make sure this matches your backend server
         changeOrigin: true,
-      }
+      },
+      '/ctf': {
+        target: 'http://localhost:3000', 
+        changeOrigin: true,
+      },
     },
   },
 })

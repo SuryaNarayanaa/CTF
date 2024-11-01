@@ -87,3 +87,74 @@
     box-sizing: border-box;      /* Ensures padding/border don’t affect width */
     background-color: #ffffff;   /* Optional: add background for contrast */
 }
+
+/* Category and Question Buttons */
+.category-button, .question-button {
+    background-color: white;
+    color: black;
+    border: 1px solid lightgray;
+    padding: 8px 16px;
+    margin: 4px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.category-button:hover, .question-button:hover {
+    background-color: #f0f0f0;
+}
+
+.category-button:active, .question-button:active {
+    box-shadow: 0 0 10px 2px green;
+    background-color: #e0e0e0;
+}
+
+/* Question Details Section */
+.question-detail {
+    font-family: 'Arial', sans-serif;
+    color: black;
+    margin-top: 10px;
+}
+
+/* Answer Input Box */
+.answer-input {
+    margin-top: 10px;
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #cccccc;
+    background-color: #f9f9f9; /* Light pastel background */
+    color: black;
+}
+
+.answer-input.correct {
+    background-color: #e0ffe0; /* Soft light green when correct */
+}
+
+/* Submit Button */
+button {
+    background-color: #d9eaff; /* Light blue color for button */
+    color: rgb(103, 97, 97);
+    border: 1px solid #a1c1e0;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c8dfff; /* Slightly darker blue on hover */
+}
+
+button:active {
+    box-shadow: 0 0 10px 2px green; /* Green glow effect on click */
+}
+
+/* Status Messages */
+.status-correct {
+    color: green;
+    font-weight: bold;
+}
+
+.status-incorrect {
+    color: red;
+    font-weight: bold;
+}
