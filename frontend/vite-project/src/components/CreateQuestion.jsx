@@ -4,6 +4,7 @@ import { Shield, AlertTriangle } from 'lucide-react';
 
 const CreateQuestion = () => {
   const [formData, setFormData] = useState({
+    category: '', // add category field
     title: '',
     description: '',
     points: '',
@@ -21,10 +22,10 @@ const CreateQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/Admin/questions', formData);
+      const response = await axios.post('/Admin/questions', formData); // Ensure endpoint matches
       if (response.status === 201) {
         alert("Question created successfully!");
-        setFormData({ title: '', description: '', points: '', answer: '', links: [''] });
+        setFormData({ category: '', title: '', description: '', points: '', answer: '', links: [''] });
       }
     } catch (error) {
       console.error("Error creating question:", error);
@@ -43,6 +44,25 @@ const CreateQuestion = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
+
+          {/* Category Field */}
+          <div className="group">
+            <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
+              Category
+            </label>
+            <input
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-100 border border-green-500/30 rounded-md text-gray-800 
+                       focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500
+                       placeholder-gray-500 transition-all font-['Press_Start_2P']"
+              placeholder="Enter question category"
+            />
+          </div>
+
+          {/* Other Fields */}
           <div className="group">
             <label className="block text-green-500 text-sm font-medium mb-2 font-['Press_Start_2P']">
               Title
