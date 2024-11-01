@@ -44,6 +44,13 @@
     color: #000000; /* Highlight on hover */
     background-color: #afec33;
 }
+/* Other styles remain the same */
+
+.mode.inactive-hover:hover {
+    color: #000000; /* Red color for inactive mode on hover */
+    background-color: #FF0000; /* Optional: keep it transparent or adjust as needed */
+}
+
 
 .speed {
     font-size: 12px;

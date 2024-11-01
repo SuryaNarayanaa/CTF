@@ -18,13 +18,13 @@ const Header = () => {
           <Home />
         </button>
         <h3><b>{teamName}</b></h3>
-        <h5>'s space</h5>
+        <h5 className='space'>'s space</h5>
       </div>    
 
       <div className="header-center">
         <div className="title-container">
           <img src="/TIMER.gif" alt="left logo" className="flag-icon"  style={{ width: '60px', height: '50px' }} />
-          <h1 className="title font-['Press_Start_2P']">HiddenX!</h1>
+          <h1 className="title font-[''Press_Start_2P'']">HiddenX!</h1>
           <img src="/TIMER.gif" alt="right logo" className="flag-icon"  style={{ width: '60px', height: '50px' }} />
         </div>
       </div>

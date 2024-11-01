@@ -14,7 +14,7 @@ const MouseTracker = () => {
                 Math.pow(e.clientY - mousePosition.y, 2)
             );
             setSpeed((Math.round(distance * 10) / 1000).toFixed(2));
-            setMousePosition({ x: e.clientX/10, y: e.clientY/10 });
+            setMousePosition({ x: e.clientX / 10, y: e.clientY / 10 });
         };
 
         const updateTime = () => setTime(new Date());
@@ -35,7 +35,10 @@ const MouseTracker = () => {
             <div className="display">
                 <span className="display-text">
                     {mousePosition.x.toFixed(1)}
-                    <span className="mode" onClick={toggleMode}>
+                    <span
+                        className={`mode ${mode === 'INACTIVE' ? 'inactive-hover' : ''}`}
+                        onClick={toggleMode}
+                    >
                         {mode}
                     </span>
                 </span>

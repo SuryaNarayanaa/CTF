@@ -12,6 +12,8 @@
   display: flex;
   align-items: center;
 }
+.space {
+  font-family: 'Digital', monospace; /* Ensures the retro feel */  font-size: normal;}
 
 .header-left {
   flex: 1;
