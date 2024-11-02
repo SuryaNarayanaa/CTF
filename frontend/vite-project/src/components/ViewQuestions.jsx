@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Question from './popup';
-import { Database, Trash2, Edit2, AlertCircle } from 'lucide-react';
+import { Database, Trash2, AlertCircle } from 'lucide-react';
 
 const ViewQuestions = () => {
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -14,7 +15,9 @@ const ViewQuestions = () => {
         const response = await axios.get('/Admin/questions');
         setQuestions(response.data);
       } catch (error) {
-        console.error("Error fetching questions:", error);
+        setError("Error fetching questions");
+      } finally {
+        setLoading(false);
       }
     };
     fetchQuestions();
@@ -33,7 +36,7 @@ const ViewQuestions = () => {
       setQuestions(questions.filter((q) => q._id !== selectedQuestion._id));
       setSelectedQuestion(null);
       setShowDetails(false);
-      
+
       // Toast notification instead of alert
       const notification = document.createElement('div');
       notification.className = 'fixed bottom-4 right-4 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg';
@@ -44,6 +47,24 @@ const ViewQuestions = () => {
       console.error("Error deleting question:", error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12 text-gray-500">
+        <div className="loader"></div>
+        <p className="ml-2">Loading questions...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center py-12 text-red-500">
+        <AlertCircle className="w-12 h-12 mb-4" />
+        <p className="text-lg font-medium">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
