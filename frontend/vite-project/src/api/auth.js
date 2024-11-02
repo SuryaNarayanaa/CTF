@@ -17,13 +17,20 @@ export const login = async (credentials) => {
       password: credentials.password,
     });
 
-    localStorage.setItem('token', response.data.token);
+    // Store token, user role, and user ID in localStorage
+    localStorage.setItem('token', response.data.token); // Assuming the token is returned in the response
+    localStorage.setItem('userRole', response.data.user.role); // Store role
+    localStorage.setItem('userId', response.data.user._id);    // Store user ID if needed
+    localStorage.setItem('username', response.data.user.username); // Store username
+
     return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
     throw error;
   }
 };
+
+
 
 
 export const signup = async (userData) => {
