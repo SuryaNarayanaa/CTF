@@ -10,23 +10,18 @@ const app = express();
 
 // Connect to the database
 connectDB();
+
+// CORS configuration
 const corsOptions = {
-  origin: ['https://hidden-x.vercel.app', 'http://localhost:5173'], // Allow these origins to access the resource
+  origin: ['https://hidden-x.vercel.app', 'http://localhost:5173'], // Allowed origins
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
-  credentials: true // Allow cookies and credentials
+  credentials: true // Allow credentials (cookies, etc.)
 };
 
-// Use CORS middleware
+// Use CORS middleware with options
 app.use(cors(corsOptions));
 
-app.options('*', cors(corsOptions)); // Enable preflight across-the-board
-
-
-
 // Middleware setup
-app.use(cors({
-// Allow only your frontend domain
-}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
