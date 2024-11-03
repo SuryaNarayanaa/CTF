@@ -13,10 +13,11 @@ connectDB();
 
 // CORS configuration
 const corsOptions = {
-  origin: ['https://hidden-x.vercel.app', 'http://localhost:5173'], // Allowed origins
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
-  credentials: true // Allow credentials (cookies, etc.)
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true
 };
+
 
 // Use CORS middleware with options
 app.use(cors(corsOptions));
