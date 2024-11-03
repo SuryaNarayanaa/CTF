@@ -11,16 +11,14 @@ const app = express();
 // Connect to the database
 connectDB();
 
-// CORS configuration
 const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true
+  origin: ['https://hidden-x.vercel.app', 'http://localhost:5173'], // Exact frontend URLs
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
+  credentials: true // Allow cookies and credentials
 };
 
-
-// Use CORS middleware with options
 app.use(cors(corsOptions));
+
 
 // Middleware setup
 app.use(express.json());
