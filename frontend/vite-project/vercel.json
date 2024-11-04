@@ -5,6 +5,10 @@
       "destination": "https://hidden-x-backend.onrender.com/Admin/:path*"
     },
     {
+      "source": "/ctf/submit",
+      "destination": "https://hidden-x-backend.onrender.com/ctf/submit"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
