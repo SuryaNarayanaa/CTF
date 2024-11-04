@@ -1,6 +1,12 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/" }
-    ]
-  }
-  
+  "rewrites": [
+    {
+      "source": "/Admin/:path*",
+      "destination": "https://hidden-x-backend.onrender.com/Admin/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
