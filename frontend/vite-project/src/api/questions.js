@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/admin/questions`
+  baseURL: `${import.meta.env.VITE_API_URL}/Admin/questions`
 });
 
 export const getAllQuestions = async () => {
@@ -44,7 +44,7 @@ export const updateQuestion = async (questionData) => {
 
 export const getQuestionsByCategory = async () => {
 try{
-  const resposne  = await api.get('/questionsByCategory');
+  const response  = await api.get('/questionsByCategory');
   return response.data;
 }
 catch(error){
