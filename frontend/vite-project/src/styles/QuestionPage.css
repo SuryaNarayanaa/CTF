@@ -1,172 +1,233 @@
-/* src/styles/questionPage.css */
+/* Styles for the Question Page */
 .question-page {
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack children vertically */
-    height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-/* Top space to occupy 26vh */
 .top-space {
-    height: 26vh; /* 26% of viewport height */
-    width: 100vw; /* Full viewport width */
-    border: 1.3px dashed black; /* dashed dashed black border for all div elements */
+  height: 26vh;
+  width: 100vw;
+  border: 1.3px dashed black;
 }
 
-.top-space img {
-    width: 50%;         /* Scale down the image to 50% of its original size */
-    max-width: 200px;   /* Optional: set a max width for better control */
-    height: auto;       /* Maintain the aspect ratio */
-}
-
-
-/* Main content container to align left, center, right */
 .main-content {
-    border: 1px dashed black; /* dashed dashed black border for all div elements */
-    display: flex; /* Use flexbox for horizontal layout */
-    flex: 1; /* Allow this section to grow */
+  border: 1px dashed black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+    -ms-flex: 1;
+      flex: 1;
 }
 
-/* Left space for the scoreboard image */
 .left-space {
-    border: 1.2px  dashed black;
-     /* dashed dashed black border for all div elements */
-    width: 200px; /* Fixed width for the left space */
-    margin-top: 0; /* No margin on top */
+  border: 1.2px dashed black;
+  width: 200px;
+  margin-top: 0;
 }
 
-/* Right space for additional content or margin */
-.right-space {
-    border: 1.3px dashed black; /* dashed dashed black border for all div elements */
-    width: 200px; /* Adjust width as needed */
-}
-
-/* question table space */
 .question-table {
-    flex-grow: 1; /* Allow the question table to take the remaining space */
-    margin: 0px; /* Margin on left and right for spacing */
+  -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+      flex-grow: 1;
+  margin: 0;
 }
+
+.right-space {
+  border: 1.3px dashed black;
+  width: 200px;
+}
+
 .question-tabs {
-    display: flex;               /* Use flexbox for layout */
-    flex-direction: row;         /* Stack children horizontally */
-    width: 100%;
-    height: 100%;                /* Full height of the parent container */
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
 .tab-1 {
-    color: green;
-    width: 25%;                  /* Width for the left section */
-    margin-top: 0;
-    margin-left: 0;
-    border: 1px dashed black;    /* dashed dashed black border */
-    display: flex;               /* Enables flex properties */
-    flex-direction: column;      /* Stacks elements vertically */
-    box-sizing: border-box;      /* Ensures padding/border don’t affect width */
-    background-color: #ffffff;   /* Optional: add background for contrast */
+  display: grid;
+  height: 100vh;
+  grid-template-rows: repeat(6, auto); 
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #ffffff;
+}
+/* Style each button within tab-1 */
+
+.tab-1 .category-button {
+  width: 100%;
+  background-color: white;
+  color: black;
+  border: none;
+  border-bottom: 2px solid black;
+  padding: 15px 10px;
+  margin: 0;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.2em;
+  text-align: center;
+  border-radius: 0;
+}
+
+.tab-1 .category-button:hover {
+  background-color:#afec33;
+}
+
+.tab-1 .category-button:active {
+  background-color:#afec33;
+}
+
+/* Scrollbar styles for tab-1 */
+.tab-1 {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: repeat(6, auto);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #ffffff;
+    /* Ensure padding for scrollbar */
+    padding-right: 4px;
+}
+
+/* Webkit scrollbar styling */
+.tab-1::-webkit-scrollbar {
+    width: 8px;
+    background-color: #f5f5f5;
+}
+
+.tab-1::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+}
+
+.tab-1::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #f5f5f5;
+    transition: background-color 0.2s ease;
+}
+
+.tab-1::-webkit-scrollbar-thumb:hover {
+    background-color: #666;
+}
+
+/* Firefox scrollbar styling */
+.tab-1 {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f5f5f5;
+}
+.tab-2 {
+  width: 30%;  
+  background-color: white;
+}
+.question-button {
+  width: 100% ;
+  margin: 0;
+  background-color: #f0f0f0;
+  border: 1px solid black;
+  border-radius: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+.tab-3 {
+  width: 40%;
+  padding: 20px;
+  background-color: white;
+}
+
+.tab-1 {
+  width: 30%;
+  border:1px dashed black
 }
 
 .tab-2 {
-    color: green;
-    width: 33.33%;               /* Width for the center section */
-    margin-top: 0;
-    margin-left: 0;
-    border: 1px dashed black;    /* dashed dashed black border */
-    display: flex;               /* Enables flex properties */
-    flex-direction: column;      /* Stacks elements vertically */
-    box-sizing: border-box;      /* Ensures padding/border don’t affect width */
-    background-color: #ffffff;   /* Optional: add background for contrast */
+  width: 30%;
+  border: 1px dashed black;
 }
 
 .tab-3 {
-    color: green;
-    width: 41.33%;               /* Width for the right section */
-    margin-top: 0;
-    margin-left: 0;
-    border: 1px dashed black;    /* dashed dashed black border */
-    display: flex;               /* Enables flex properties */
-    flex-direction: column;      /* Stacks elements vertically */
-    box-sizing: border-box;      /* Ensures padding/border don’t affect width */
-    background-color: #ffffff;   /* Optional: add background for contrast */
+  width: 40%;
+  border: 1px dashed black;
 }
 
-/* Category and Question Buttons */
-.category-button, .question-button {
-    background-color: white;
-    color: black;
-    border: 1px solid lightgray;
-    padding: 8px 16px;
-    margin: 4px;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+
+
+.question-button:hover {
+  background-color:#afec33;
 }
 
-.category-button:hover, .question-button:hover {
-    background-color: #f0f0f0;
-}
 
-.category-button:active, .question-button:active {
-    box-shadow: 0 0 10px 2px green;
-    background-color: #e0e0e0;
-}
-
-/* Question Details Section */
 .question-detail {
-    font-family: 'Arial', sans-serif;
-    color: black;
-    margin-top: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 20px;
+  border: 2px solid black;
+  background-color: white;
 }
 
-/* Answer Input Box */
+.question-detail h3 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+
+.question-detail {
+  font-family: 'Arial', sans-serif;
+  color: black;
+  margin-top: 10px;
+}
+
+.links {
+  margin-top: 10px;
+}
+
 .answer-input {
-    margin-top: 10px;
-    padding: 8px;
-    width: 100%;
-    border: 1px solid #cccccc;
-    background-color: #f9f9f9; /* Light pastel background */
-    color: black;
-}
-
-.answer-input.correct {
-    background-color: #e0ffe0; /* Soft light green when correct */
-}
-
-/* Submit Button */
-button {
-    background-color: #d9eaff; /* Light blue color for button */
-    color: rgb(103, 97, 97);
-    border: 1px solid #a1c1e0;
-    padding: 8px 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #c8dfff; /* Slightly darker blue on hover */
-}
-
-button:active {
-    box-shadow: 0 0 10px 2px green; /* Green glow effect on click */
-}
-
-/* Status Messages */
-.status-correct {
-    color: green;
-    font-weight: bold;
-}
-
-.status-incorrect {
-    color: red;
-    font-weight: bold;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid black;
+  margin: 15px 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1em;
 }
 
 .answer-input.input-correct {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
 }
-.status-correct {
-    color: #28a745;
+
+
+button.submit-button {
+  width: 100%;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-top: 15px;
 }
+button:hover {
+   background-color:#afec33;
+}
+
+
+
+.status-correct,
 .status-incorrect {
-    color: #dc3545;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1em;
+  margin-top: 15px;
 }
+

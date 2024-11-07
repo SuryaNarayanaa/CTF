@@ -1,11 +1,12 @@
+// QuestionPage.js
 import React, { useState, useEffect } from 'react';
-import Question from '../components/Question';
 import '../styles/QuestionPage.css';
 import Header from '../components/Header';
 import ScoreboardBanner from '../components/ScoreboardBanner';
 import ChallengesBanner from '../components/ChallengesBanner';
 
 const teamName = localStorage.getItem('teamName') || 'Team Name';
+
 const QuestionPage = () => {
     const [categories, setCategories] = useState([]);
     const [questions, setQuestions] = useState([]);
@@ -23,12 +24,11 @@ const QuestionPage = () => {
     }, []);
 
     useEffect(() => {
-        // If a question is selected, load its answer status from localStorage
         if (selectedQuestion) {
             const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
             if (savedStatus[selectedQuestion._id] === true) {
                 setAnswerStatus('correct');
-                setUserAnswer(''); // Clear the input if already answered correctly
+                setUserAnswer('');
             }
         }
     }, [selectedQuestion]);
@@ -64,7 +64,6 @@ const QuestionPage = () => {
             .then((data) => {
                 if (data.isCorrect) {
                     setAnswerStatus('correct');
-                    // Store the correct answer status in localStorage
                     const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
                     savedStatus[selectedQuestion._id] = true;
                     localStorage.setItem('answeredQuestions', JSON.stringify(savedStatus));
@@ -88,24 +87,28 @@ const QuestionPage = () => {
 
                 <div className="question-table">
                     <div className="question-tabs">
-                        <div className="tab-1">
-                            <h2>Categories</h2>
+                        <div className="tab-1">                            
                             {categories.map((category, index) => (
-                                <button 
-                                    key={index} 
+                                <button
+                                    key={index}
                                     onClick={() => handleCategoryClick(category)}
                                     className="category-button"
                                 >
                                     {category}
                                 </button>
                             ))}
+                            <button class="category-button">sfdghnvmadsfzgxhc</button>
+                            <button class="category-button">sgrdhfgdh</button>
+                            
+
+
                         </div>
 
                         <div className="tab-2">
-                            <h2>Questions</h2>
+                            
                             {questions.map((question, index) => (
-                                <button 
-                                    key={index} 
+                                <button
+                                    key={index}
                                     onClick={() => handleQuestionClick(question)}
                                     className="question-button"
                                 >
@@ -122,7 +125,7 @@ const QuestionPage = () => {
                                         <h3>{selectedQuestion.title}</h3>
                                         <p>{selectedQuestion.description}</p>
                                         {selectedQuestion.links && (
-                                            <div>
+                                            <div className="links">
                                                 <strong>Links:</strong>
                                                 <ul>
                                                     {selectedQuestion.links.map((link, index) => (
@@ -140,7 +143,7 @@ const QuestionPage = () => {
                                         placeholder="Enter your answer"
                                         disabled={answerStatus === 'correct'}
                                     />
-                                    <button onClick={handleAnswerSubmit} disabled={answerStatus === 'correct'}>
+                                    <button onClick={handleAnswerSubmit} className="submit-button" disabled={answerStatus === 'correct'}>
                                         Submit
                                     </button>
                                     {answerStatus === 'correct' && <p className="status-correct">Correct!</p>}
