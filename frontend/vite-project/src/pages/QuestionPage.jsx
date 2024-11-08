@@ -118,41 +118,46 @@ const QuestionPage = () => {
                         </div>
 
                         <div className="tab-3">
-                            <h2>Question Details</h2>
-                            {selectedQuestion ? (
-                                <>
-                                    <div className="question-detail">
-                                        <h3>{selectedQuestion.title}</h3>
-                                        <p>{selectedQuestion.description}</p>
-                                        {selectedQuestion.links && (
-                                            <div className="links">
-                                                <strong>Links:</strong>
-                                                <ul>
-                                                    {selectedQuestion.links.map((link, index) => (
-                                                        <li key={index}><a href={link}>{link}</a></li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <input
-                                        type="text"
-                                        value={userAnswer}
-                                        onChange={(e) => setUserAnswer(e.target.value)}
-                                        className={`answer-input ${answerStatus === 'correct' ? 'input-correct' : ''}`}
-                                        placeholder="Enter your answer"
-                                        disabled={answerStatus === 'correct'}
-                                    />
-                                    <button onClick={handleAnswerSubmit} className="submit-button" disabled={answerStatus === 'correct'}>
-                                        Submit
-                                    </button>
-                                    {answerStatus === 'correct' && <p className="status-correct">Correct!</p>}
-                                    {answerStatus === 'incorrect' && <p className="status-incorrect">Try Again.</p>}
-                                </>
-                            ) : (
-                                <p>Select a question to see details</p>
-                            )}
-                        </div>
+ 
+  {selectedQuestion ? (
+    <>
+      <div className="question-detail">
+        <h3>{selectedQuestion.title}</h3>
+        <p>{selectedQuestion.description}</p>
+        {selectedQuestion.links && (
+          <div className="links">
+            <strong>Links:</strong>
+            <ul>
+              {selectedQuestion.links.map((link, index) => (
+                <li key={index}><a href={link}>{link}</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <input
+        type="text"
+        value={userAnswer}
+        onChange={(e) => setUserAnswer(e.target.value)}
+        className={`answer-input ${answerStatus === 'correct' ? 'input-correct' : ''}`}
+        placeholder="Enter your answer"
+        disabled={answerStatus === 'correct'}
+      />
+      <button
+        onClick={handleAnswerSubmit}
+        className="submit-button"
+        disabled={answerStatus === 'correct'}
+      >
+        Submit
+      </button>
+      {answerStatus === 'correct' && <p className="status-correct">Correct!</p>}
+      {answerStatus === 'incorrect' && <p className="status-incorrect">Try Again.</p>}
+    </>
+  ) : (
+    <p>Select a question to see details</p>
+  )}
+</div>
+
                     </div>
                 </div>
 
