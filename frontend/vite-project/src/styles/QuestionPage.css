@@ -122,19 +122,17 @@
   background-color: white;
 }
 .question-button {
-  width: 100% ;
-  margin: 0;
-  background-color: #f0f0f0;
-  border: 1px solid black;
-  border-radius: 0;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.1em;
-  font-weight: bold;
+  width: 100%;
+  background-color: white;
   color: black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
+  border: none;
+  border-bottom: 2px solid black;
+  padding: 15px 10px;
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2em;
+  text-align: center;
+  border-radius: 0;
 }
 .tab-3 {
   width: 40%;
@@ -152,59 +150,10 @@
   border: 1px dashed black;
 }
 
-.tab-3 {
-  width: 40%;
-  border: 1px dashed black;
-}
-
-
 
 .question-button:hover {
   background-color:#afec33;
 }
-
-
-.question-detail {
-  font-family: 'Courier New', Courier, monospace;
-  padding: 20px;
-  border: 2px solid black;
-  background-color: white;
-}
-
-.question-detail h3 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  text-align: center;
-  font-weight: bold;
-}
-
-
-
-.question-detail {
-  font-family: 'Arial', sans-serif;
-  color: black;
-  margin-top: 10px;
-}
-
-.links {
-  margin-top: 10px;
-}
-
-.answer-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid black;
-  margin: 15px 0;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.1em;
-}
-
-.answer-input.input-correct {
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-  color: #155724;
-}
-
 
 button.submit-button {
   width: 100%;
@@ -221,13 +170,100 @@ button:hover {
    background-color:#afec33;
 }
 
+/* Updated Styles for tab-3 with Background and Minimalist Retro Theme */
+.tab-3 {
+  width: 40%;
+  padding: 20px;
+  background-image: url('/image.png'); /* Use the grid image */
+  background-size: cover;
+  background-position: center;
+  color: black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace; /* Monospace font for everything */
+}
 
+.question-detail h3 {
+  font-size: 2.2em; /* Large, prominent title */
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 5px;
+  text-align: center; /* Center-align for prominence */
+}
 
-.status-correct,
-.status-incorrect {
+.question-points {
+  font-size: 1em;
+  color: #555; /* Subtle color for points */
   text-align: center;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
+.question-detail p {
+  font-size: 1em;
+  color: #222;
+  text-align: center; /* Center-align text for retro look */
   margin-top: 15px;
 }
+
+.links a {
+  color: #0056b3; /* Retro-styled link color */
+  text-decoration: underline;
+}
+
+.links a:hover {
+  color: #333; /* Slightly darker on hover */
+}
+
+.answer-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent input background */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin-top: 15px;
+}
+
+.answer-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.9); /* Slight change on focus */
+}
+
+.submit-button {
+  padding: 8px 15px;
+  font-size: 1em;
+  font-family: inherit;
+  color: #000;
+  background-color: #e0e0e0;
+  border: 1px solid #999;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #d0d0d0; /* Subtle hover effect */
+}
+
+.status-correct {
+  color: green;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 10px;
+}
+
+.status-incorrect {
+  color: red;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 10px;
+}
+
+
+
 
