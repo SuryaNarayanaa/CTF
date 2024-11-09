@@ -51,16 +51,27 @@ const QuestionPage = () => {
     };
 
     const handleAnswerSubmit = () => {
+        console.log("Submitting answer with data:", {
+            teamName,
+            title: selectedQuestion?.title,
+            answer: userAnswer,
+        });
+        
         fetch('/ctf/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 teamName: teamName,
-                title: selectedQuestion.title,
+                title: selectedQuestion?.title,
                 answer: userAnswer,
             }),
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return res.json();
+            })
             .then((data) => {
                 if (data.isCorrect) {
                     setAnswerStatus('correct');
@@ -73,6 +84,7 @@ const QuestionPage = () => {
             })
             .catch((error) => console.error('Error submitting answer:', error));
     };
+    
 
     return (
         <div className="question-page">
@@ -97,15 +109,11 @@ const QuestionPage = () => {
                                     {category}
                                 </button>
                             ))}
-                            <button class="category-button">sfdghnvmadsfzgxhc</button>
-                            <button class="category-button">sgrdhfgdh</button>
-                            
-
-
+                            <button className="category-button">sfdghnvmadsfzgxhc</button>
+                            <button className="category-button">sgrdhfgdh</button>
                         </div>
 
                         <div className="tab-2">
-                            
                             {questions.map((question, index) => (
                                 <button
                                     key={index}
@@ -113,53 +121,50 @@ const QuestionPage = () => {
                                     className="question-button"
                                 >
                                     {question.title}
-                                    {question.points && <span className="points ">[{question.points} points]</span>}
-
+                                    {question.points && <span className="points">[{question.points} points]</span>}
                                 </button>
                             ))}
                         </div>
 
                         <div className="tab-3">
- 
-  {selectedQuestion ? (
-    <>
-      <div className="question-detail">
-        <h3>{selectedQuestion.title}</h3>
-        <p>{selectedQuestion.description}</p>
-        {selectedQuestion.links && (
-          <div className="links">
-            <strong>Links:</strong>
-            <ul>
-              {selectedQuestion.links.map((link, index) => (
-                <li key={index}><a href={link}>{link}</a></li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-      <input
-        type="text"
-        value={userAnswer}
-        onChange={(e) => setUserAnswer(e.target.value)}
-        className={`answer-input ${answerStatus === 'correct' ? 'input-correct' : ''}`}
-        placeholder="Enter your answer"
-        disabled={answerStatus === 'correct'}
-      />
-      <button
-        onClick={handleAnswerSubmit}
-        className="submit-button"
-        disabled={answerStatus === 'correct'}
-      >
-        Submit
-      </button>
-      {answerStatus === 'correct' && <p className="status-correct">Correct!</p>}
-      {answerStatus === 'incorrect' && <p className="status-incorrect">Try Again.</p>}
-    </>
-  ) : (
-    <p>Select a question to see details</p>
-  )}
-</div>
-
+                            {selectedQuestion ? (
+                                <>
+                                    <div className="question-detail">
+                                        <h3>{selectedQuestion.title}</h3>
+                                        <p>{selectedQuestion.description}</p>
+                                        {selectedQuestion.links && (
+                                            <div className="links">
+                                                <strong>Links:</strong>
+                                                <ul>
+                                                    {selectedQuestion.links.map((link, index) => (
+                                                        <li key={index}><a href={link}>{link}</a></li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={userAnswer}
+                                        onChange={(e) => setUserAnswer(e.target.value)}
+                                        className={`answer-input ${answerStatus === 'correct' ? 'input-correct' : ''}`}
+                                        placeholder="Enter your answer"
+                                        disabled={answerStatus === 'correct'}
+                                    />
+                                    <button
+                                        onClick={handleAnswerSubmit}
+                                        className="submit-button"
+                                        disabled={answerStatus === 'correct'}
+                                    >
+                                        Submit
+                                    </button>
+                                    {answerStatus === 'correct' && <p className="status-correct">Correct!</p>}
+                                    {answerStatus === 'incorrect' && <p className="status-incorrect">Try Again.</p>}
+                                </>
+                            ) : (
+                                <p>Select a question to see details</p>
+                            )}
+                        </div>
                     </div>
                 </div>
 
