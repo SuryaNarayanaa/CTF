@@ -131,9 +131,11 @@
   margin: 0;
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.2em;
-  text-align: center;
+  text-align: center; /* Align items to the left */
   border-radius: 0;
 }
+
+
 .tab-3 {
   width: 40%;
   padding: 20px;
