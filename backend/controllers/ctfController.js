@@ -11,19 +11,29 @@ const ctfController = {
 
 
     submitAnswer: async (req, res) => {
-        const teamName = req.body.teamName;
-        const questionTitle  =  req.body.title;
-        const submittedAnswer = req.body.answer || "";
-
-        const submission  = await CtfService.submitAnswer(teamName, questionTitle, submittedAnswer);
-        if(!submission)
-        {
-            res.status(400).send("Invalid team or question");
-            return;
+        console.log("Request body:", req.body);  // Log the request body
+        const { teamName, title, answer } = req.body;
+    
+        if (!teamName || !title || !answer) {
+            return res.status(400).json({ error: "teamName, title, and answer are required" });
         }
-        res.send(submission);
+    
+        try {
+            const submission = await CtfService.submitAnswer(teamName, title, answer);
+            
+            if (!submission) {
+                return res.status(400).json({ error: "Invalid team or question" });
+            }
+            
+            res.json(submission);
+        } catch (error) {
+            console.error("Error processing answer submission:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
     },
-
+    
+    
+    
 
 
     getCurrentScore: async (req, res) => {
