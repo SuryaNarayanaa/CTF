@@ -113,6 +113,8 @@ const QuestionPage = () => {
                                     className="question-button"
                                 >
                                     {question.title}
+                                    {question.points && <span className="points ">[{question.points} points]</span>}
+
                                 </button>
                             ))}
                         </div>
