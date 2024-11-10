@@ -25,18 +25,15 @@ const QuestionPage = () => {
     const loadInitialData = async () => {
         try {
             setIsLoading(true);
-            // Fetch categories first
             const categoriesResponse = await axios.get(`${VITE_API_URL}/Admin/questions/questionsByCategory`);
             const fetchedCategories = Object.keys(categoriesResponse.data);
             setCategories(fetchedCategories);
              
-            // Fetch all teams and filter out the current team
             const teamsData = await fetchTeams();
             console.log('Fetched teams:', teamsData);
             const otherTeams = teamsData.filter(team => team.name !== currentTeamName);
             console.log('Other teams:', otherTeams);
 
-            // Map each category to a random team's fun fact
             const funThings = {};
             const usedTeams = new Set();
 
@@ -46,10 +43,10 @@ const QuestionPage = () => {
                     const randomIndex = Math.floor(Math.random() * availableTeams.length);
                     const randomTeam = availableTeams[randomIndex];
                     funThings[category] = {
-                        funThing: randomTeam.funFact,  // Changed from funThing to funFact
-                        teamName: randomTeam.name      // Changed from teamName to name
+                        funThing: randomTeam.funFact,
+                        teamName: randomTeam.name
                     };
-                    usedTeams.add(randomTeam.name);    // Changed from teamName to name
+                    usedTeams.add(randomTeam.name);
                 }
             });
 
@@ -64,8 +61,6 @@ const QuestionPage = () => {
 
     useEffect(() => {
         loadInitialData();
-        
-        // Load previously unlocked categories from localStorage
         const savedUnlocked = localStorage.getItem('unlockedCategories');
         if (savedUnlocked) {
             setIsCategoryUnlocked(JSON.parse(savedUnlocked));
@@ -176,12 +171,11 @@ const QuestionPage = () => {
                                 </button>
                             ))}
                         </div>
-    
-                        <div className="tab-2">
-                            {isLoading ? (
-                                <div className="loading">Loading...</div>
-                            ) : selectedCategory && !isCategoryUnlocked[selectedCategory] ? (
+
+                        {selectedCategory && !isCategoryUnlocked[selectedCategory] ? (
+                            <div className="category-overlay">
                                 <div className="fun-thing-verification">
+                                    <div className="lock-icon">🔒</div>
                                     <h3>Category Locked</h3>
                                     <p>To unlock this category, guess which team provided this fun fact:</p>
                                     <p className="fun-thing">"{categoryFunThings[selectedCategory]?.funThing || ''}"</p>
@@ -203,80 +197,101 @@ const QuestionPage = () => {
                                         <p className="debug-info">Debug - Team name: {categoryFunThings[selectedCategory]?.teamName}</p>
                                     )}
                                 </div>
-                            ) : (
-                                <div className="questions-list">
-                                    {questions.map((question) => {
-                                        const isAnswered = JSON.parse(
-                                            localStorage.getItem('answeredQuestions') || '{}'
-                                        )[question._id];
-                                        return (
-                                            <button
-                                                key={question._id}
-                                                onClick={() => handleQuestionClick(question)}
-                                                className={`question-button ${isAnswered ? 'answered' : ''} 
-                                                    ${selectedQuestion?._id === question._id ? 'selected' : ''}`}
-                                            >
-                                                {question.title}
-                                                {question.points && (
-                                                    <span className="points">[{question.points} points]</span>
-                                                )}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
+                            </div>
+                        ) : null}
+    
+                        <div className="tab-2">
+                            <div className="questions-list">
+                                {questions.map((question) => {
+                                    const isAnswered = JSON.parse(
+                                        localStorage.getItem('answeredQuestions') || '{}'
+                                    )[question._id];
+                                    return (
+                                        <button
+                                            key={question._id}
+                                            onClick={() => handleQuestionClick(question)}
+                                            className={`question-button ${isAnswered ? 'answered' : ''} 
+                                                ${selectedQuestion?._id === question._id ? 'selected' : ''}`}
+                                        >
+                                            {question.title}
+                                            {question.points && (
+                                                <span className="points">[{question.points} points]</span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
     
-                        <div className="tab-3">
-                            {selectedQuestion ? (
-                                <div className="question-detail">
-                                    <h3>{selectedQuestion.title}</h3>
-                                    <p>{selectedQuestion.description}</p>
-                                    {selectedQuestion.links && (
-                                        <div className="links">
-                                            <strong>Links:</strong>
-                                            <ul>
-                                                {selectedQuestion.links.map((link, index) => (
-                                                    <li key={index}>
-                                                        <a 
-                                                            href={link} 
-                                                            target="_blank" 
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            {link}
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                    <div className="answer-section">
-                                        <input
-                                            type="text"
-                                            value={userAnswer}
-                                            onChange={(e) => setUserAnswer(e.target.value)}
-                                            className={`answer-input ${answerStatus}`}
-                                            placeholder="Enter your answer"
-                                            disabled={answerStatus === 'correct'}
-                                        />
-                                        <button
-                                            onClick={handleAnswerSubmit}
-                                            className="submit-button"
-                                            disabled={answerStatus === 'correct'}
-                                        >
-                                            Submit
-                                        </button>
-                                        {answerStatus === 'correct' && (
-                                            <p className="status-correct">Correct! Well done!</p>
-                                        )}
-                                        {answerStatus === 'incorrect' && (
-                                            <p className="status-incorrect">Incorrect. Try again!</p>
-                                        )}
-                                        {answerStatus === 'error' && (
-                                            <p className="status-error">Error submitting answer. Please try again.</p>
-                                        )}
-                                    </div>
-                                </div>
+
+<div className="tab-3">
+    {selectedQuestion ? (
+        <div className="question-detail">
+            <div className="question-header">
+                <span className="points">
+                    {selectedQuestion.points && `[${selectedQuestion.points} points]`}
+                </span>
+                <h3>{selectedQuestion.title}</h3>
+            </div>
+            <div className="question-content">
+                <p>{selectedQuestion.description}</p>
+                {selectedQuestion.links && (
+                    <div className="links">
+                        <strong>Links:</strong>
+                        <ul>
+                            {selectedQuestion.links.map((link, index) => (
+                                <li key={index}>
+                                    <a href={link} target="_blank" rel="noopener noreferrer">
+                                        {link}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
+            <div className="answer-section">
+                {/* Check if question is already answered */}
+                {JSON.parse(localStorage.getItem('answeredQuestions') || '{}')[selectedQuestion._id] ? (
+                    <div className="solved-state">
+                        <input
+                            type="text"
+                            value={userAnswer}
+                            className="answer-input solved"
+                            disabled
+                            placeholder="Question solved!"
+                        />
+                        
+                        <button className="submit-button" disabled>
+                            Submitted
+                        </button>
+                    </div>
+                ) : (
+                    <>
+                        <input
+                            type="text"
+                            value={userAnswer}
+                            onChange={(e) => setUserAnswer(e.target.value)}
+                            className={`answer-input ${answerStatus}`}
+                            placeholder="Enter your answer"
+                        />
+                        <button
+                            onClick={handleAnswerSubmit}
+                            className="submit-button"
+                        >
+                            Submit
+                        </button>
+                    </>
+                )}
+                {answerStatus === 'correct' && (
+                    <p className="status-correct">Correct! Well done!</p>
+                )}
+                {answerStatus === 'incorrect' && (
+                    <p className="status-incorrect">Incorrect. Try again!</p>
+                )}
+            </div>
+        </div>
+    
                             ) : (
                                 <p className="select-prompt">Select a question to see details</p>
                             )}
@@ -291,4 +306,5 @@ const QuestionPage = () => {
         </div>
     );
 }
+
 export default QuestionPage;

@@ -172,143 +172,275 @@ button:hover {
    background-color:#afec33;
 }
 
-/* Updated Styles for tab-3 with Background and Minimalist Retro Theme */
+/* Updated Tab-3 and Answer Section Styles */
 .tab-3 {
   width: 40%;
   padding: 20px;
-  background-image: url('/image.png'); /* Use the grid image */
+  background-image: url('/image.png');
   background-size: cover;
   background-position: center;
-  color: black;
-  border-radius: 10px;
+  border: 1px dashed black;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.question-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.question-header h3 {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #000;
+  margin: 0;
+  order: 2;
+}
+
+.question-header .points {
+  font-size: 1.2em;
+  color: #000;
+  font-weight: bold;
+  order: 1;
+}
+
+.question-content {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Courier New', Courier, monospace; /* Monospace font for everything */
-}
-
-.question-detail h3 {
-  font-size: 2.2em; /* Large, prominent title */
-  font-weight: bold;
-  color: #000;
-  margin-bottom: 5px;
-  text-align: center; /* Center-align for prominence */
-}
-
-.question-points {
-  font-size: 1em;
-  color: #555; /* Subtle color for points */
   text-align: center;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
-.question-detail p {
-  font-size: 1em;
-  color: #222;
-  text-align: center; /* Center-align text for retro look */
-  margin-top: 15px;
-}
-
-.links a {
-  color: #0056b3; /* Retro-styled link color */
-  text-decoration: underline;
-}
-
-.links a:hover {
-  color: #333; /* Slightly darker on hover */
+.answer-section {
+  margin-top: auto;
+  width: 100%;
+  position: relative;
 }
 
 .answer-input {
   width: 100%;
-  padding: 8px;
-  font-size: 1em;
-  font-family: inherit;
+  padding: 12px;
+  font-size: 1.1em;
+  font-family: 'Courier New', Courier, monospace;
   color: #333;
-  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent input background */
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  margin-top: 15px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
 }
 
 .answer-input:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.9); /* Slight change on focus */
+  border-color: #afec33;
+}
+
+/* Solved state styling */
+.solved-state {
+  position: relative;
+  width: 100%;
+}
+
+.answer-input.solved {
+  background-color: rgba(175, 236, 51, 0.3);
+  border-color: #4CAF50;
+  color: #333;
+  cursor: not-allowed;
+}
+
+.solved-text {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-120%);
+  color: #4CAF50;
+  font-weight: bold;
+  font-size: 1.2em;
+  pointer-events: none;
 }
 
 .submit-button {
-  padding: 8px 15px;
-  font-size: 1em;
-  font-family: inherit;
-  color: #000;
-  background-color: #e0e0e0;
-  border: 1px solid #999;
-  border-radius: 3px;
+  width: 100%;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2em;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  margin-top: 10px;
 }
 
-.submit-button:hover {
-  background-color: #d0d0d0; /* Subtle hover effect */
+.submit-button:hover:not(:disabled) {
+  background-color: #afec33;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  border-color: #999999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.status-correct,
+.status-incorrect {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 .status-correct {
-  color: green;
-  font-weight: bold;
-  font-size: 1.1em;
-  margin-top: 10px;
+  color: #4CAF50;
 }
 
 .status-incorrect {
-  color: red;
-  font-weight: bold;
-  font-size: 1.1em;
-  margin-top: 10px;
+  color: #f44336;
 }
+
+/* Links section */
+.links {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.links a {
+  color: #0056b3;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.links a:hover {
+  color: #003d82;
+}
+
+.select-prompt {
+  text-align: center;
+  font-size: 1.2em;
+  color: #666;
+  margin-top: 20px;
+}
+/* Updated question-tabs structure */
+.question-tabs {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/* Category overlay styles */
+.category-overlay {
+  position: absolute;
+  left: 30%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glass morphism effect for fun thing verification */
 .fun-thing-verification {
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 4px;
-  margin: 10px 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.17);
+  width: 80%;
+  max-width: 500px;
+  color: black;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.fun-thing-verification .lock-icon {
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+.fun-thing-verification h3 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  font-family: 'Press Start 2P', cursive;
+  color: black;
 }
 
 .fun-thing-verification p {
-  margin-bottom: 10px;
-  font-size: 16px;
+  margin: 15px 0;
+  font-size: 1.1em;
+  line-height: 1.4;
+  color: black;
+}
+
+.fun-thing-verification .fun-thing {
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .fun-thing-verification input {
   width: 100%;
-  padding: 8px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 15px 0;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  font-size: 1em;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
 }
 
-.fun-thing-verification input.error {
-  border-color: #ff0000;
+.fun-thing-verification input:focus {
+  border-color: #afec33;
+  outline: none;
+  background: rgba(255, 255, 255, 0.95);
 }
 
-.fun-thing-verification .error-message {
-  color: #ff0000;
-  font-size: 14px;
-  margin: 5px 0;
-}
-
-.fun-thing-verification button {
+.fun-thing-verification .submit-button {
   width: 100%;
-  padding: 8px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2em;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
+  transition: all 0.3s ease;
 }
 
-.fun-thing-verification button:hover {
-  background-color: #45a049;
+.fun-thing-verification .submit-button:hover {
+  background-color: #afec33;
 }
-
 
 
