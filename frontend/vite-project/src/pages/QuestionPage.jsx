@@ -1,9 +1,12 @@
-// QuestionPage.js
 import React, { useState, useEffect } from 'react';
 import '../styles/QuestionPage.css';
 import Header from '../components/Header';
 import ScoreboardBanner from '../components/ScoreboardBanner';
 import ChallengesBanner from '../components/ChallengesBanner';
+import axios from 'axios';
+
+// Set the base URL from the .env file
+const API_URL = import.meta.env.VITE_API_URL;
 
 const teamName = localStorage.getItem('teamName') || 'Team Name';
 
@@ -15,10 +18,10 @@ const QuestionPage = () => {
     const [answerStatus, setAnswerStatus] = useState('');
 
     useEffect(() => {
-        fetch('/Admin/questions/questionsByCategory')
-            .then((res) => res.json())
-            .then((data) => {
-                setCategories(Object.keys(data));
+        // Fetch categories using axios
+        axios.get(`${API_URL}/Admin/questions/questionsByCategory`)
+            .then((res) => {
+                setCategories(Object.keys(res.data));
             })
             .catch((error) => console.error('Error fetching categories:', error));
     }, []);
@@ -34,10 +37,10 @@ const QuestionPage = () => {
     }, [selectedQuestion]);
 
     const handleCategoryClick = (category) => {
-        fetch(`/Admin/questions/questionsByCategory?category=${category}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setQuestions(data[category].questions);
+        // Fetch questions by category using axios
+        axios.get(`${API_URL}/Admin/questions/questionsByCategory?category=${category}`)
+            .then((res) => {
+                setQuestions(res.data[category].questions);
                 setSelectedQuestion(null);
                 setAnswerStatus('');
             })
@@ -56,24 +59,14 @@ const QuestionPage = () => {
             title: selectedQuestion?.title,
             answer: userAnswer,
         });
-        
-        fetch('/ctf/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                teamName: teamName,
-                title: selectedQuestion?.title,
-                answer: userAnswer,
-            }),
+
+        axios.post(`${API_URL}/ctf/submit`, {
+            teamName: teamName,
+            title: selectedQuestion?.title,
+            answer: userAnswer,
         })
             .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
-            .then((data) => {
-                if (data.isCorrect) {
+                if (res.data.isCorrect) {
                     setAnswerStatus('correct');
                     const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
                     savedStatus[selectedQuestion._id] = true;
@@ -84,7 +77,6 @@ const QuestionPage = () => {
             })
             .catch((error) => console.error('Error submitting answer:', error));
     };
-    
 
     return (
         <div className="question-page">
@@ -100,6 +92,7 @@ const QuestionPage = () => {
                 <div className="question-table">
                     <div className="question-tabs">
                         <div className="tab-1">                            
+
                             {categories.map((category, index) => (
                                 <button
                                     key={index}
