@@ -16,7 +16,10 @@ const teamService = {
     findTeamByName :async (name) => 
         {
             return await Team.findOne({name});
-        }
+        },
+    getAllTeams: async () => { 
+        return await Team.find();
+    }
 };
 
 module.exports = teamService;
