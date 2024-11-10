@@ -20,6 +20,10 @@ const teamSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    funFact: {
+        type: String,
+        trim: true
     }
 });
 

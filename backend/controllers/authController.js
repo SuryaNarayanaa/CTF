@@ -78,7 +78,27 @@ const authController = {
                 console.error('Error during logout:', err); // Log the error for debugging
                 res.status(500).json({ error: 'Internal Server Error' });
               }
+            },
+            funthing: async (req, res) => {
+              try {
+                if (!req.session) {
+                  return res.status(400).json({ error: 'No active session' });
+                }
+                const fun = req.body.fun;
+                const teamname = req.body.team;
+                const team = await userService.findTeamByName(teamname);
+                if (!team) {
+                  return res.status(404).json({ error: 'Team not found' });
+                }
+                team.funThing = fun;
+                await userService.updateTeam(team);
+                res.status(200).json({ message: 'Fun thing updated', team });
+              } catch (err) {
+                console.error('Error during funthing update:', err); // Log the error for debugging
+                res.status(500).json({ error: 'Internal Server Error' });
+              }
             }
+
           };
 
 module.exports = authController;
