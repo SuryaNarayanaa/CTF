@@ -36,6 +36,55 @@ const AuthModal = ({ isOpen, onClose, children, title }) => {
     </div>
   );
 };
+const FunPromptModal = ({ isOpen, onClose, onSubmit }) => {
+  const [funThing, setFunThing] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async () => {
+    const teamName = localStorage.getItem('teamName'); // Retrieve the team name
+
+    try {
+      const response = await axios.post('/auth/fun', { fun: funThing, team: teamName });
+      if (response.status === 200) {
+        onSubmit(funThing); // Pass funThing to parent function if needed
+        onClose();
+      }
+    } catch (err) {
+      console.error('Error submitting fun thing:', err);
+      setError('Could not save your fun thing. Please try again.');
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white p-8 rounded-none border-2 border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-96 relative">
+        <button 
+          onClick={onClose}
+          className="absolute right-4 top-4 text-white hover:text-white-700"
+        >
+          <X size={20} />
+        </button>
+        <h2 className="text-xl mb-6 font-['Press_Start_2P'] text-center text-black">Share a Fun Thing about you !!</h2>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        <Input
+          type="text"
+          placeholder="Share something fun!"
+          value={funThing}
+          onChange={(e) => setFunThing(e.target.value)}
+          className="border-2 border-black focus:ring-2 focus:ring-green-400 font-['Press_Start_2P'] text-xs w-full"
+        />
+        <button
+          onClick={handleSubmit}
+          className="w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-6 py-2 bg-white border-2 border-black text-black mt-4 rounded-none font-['Press_Start_2P'] text-sm transform hover:-translate-y-1 transition duration-200 hover:bg-green-400/10"
+        >
+          Capture
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const LoginForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -129,6 +178,7 @@ const RegisterForm = ({ onClose }) => {
   });
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isFunPromptOpen, setIsFunPromptOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -154,28 +204,29 @@ const RegisterForm = ({ onClose }) => {
         password: formData.password,
         role: formData.role
       };
-      console.log('Sending signup data:', signupData); // Log the data being sent
+      console.log('Sending signup data:', signupData);
       await signup(signupData);
 
-      // Extract team name from email
       const teamName = formData.email.split('@')[0];
       const teamData = {
         name: teamName,
         leader: formData.username
       };
-      console.log('Creating team with data:', teamData); // Log the team data being sent
+      console.log('Creating team with data:', teamData);
       await createTeam(teamData);
-      localStorage.setItem('teamName', teamName); // Store teamName in localStorage
+      localStorage.setItem('teamName', teamName);
 
       setShowSuccess(true);
-      setTimeout(() => {
-        onClose();
-        navigate('/'); // Navigate to home
-      }, 1500);
+      setIsFunPromptOpen(true); // Open the fun prompt modal
     } catch (err) {
-      console.error('Registration error:', err); // Log the error for debugging
+      console.error('Registration error:', err);
       setError('Registration failed! Try again.');
     }
+  };
+
+  const handleFunSubmit = () => {
+    setIsFunPromptOpen(false);
+    navigate('/');
   };
 
   return (
@@ -246,6 +297,13 @@ const RegisterForm = ({ onClose }) => {
           Register
         </button>
       </form>
+
+      {/* Fun Prompt Modal */}
+      <FunPromptModal
+        isOpen={isFunPromptOpen}
+        onClose={() => setIsFunPromptOpen(false)}
+        onSubmit={handleFunSubmit}
+      />
     </>
   );
 };
