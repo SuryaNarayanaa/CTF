@@ -24,7 +24,7 @@ const HomePage = () => {
     try {
       await logout();
       setIsLoggedIn(false);
-      localStorage.removeItem('teamName'); // Remove teamName from localStorage on logout
+      localStorage.clear(); // Remove teamName from localStorage on logout
     } catch (error) {
       console.error('Logout failed:', error);
     }
