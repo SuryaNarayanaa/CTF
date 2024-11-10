@@ -40,6 +40,14 @@ const teamController = {
             })
             .catch((err) => {
                 res.status(500).send(err.message);})
+    },
+    getallTeams: async (req, res) => {
+        try {
+            const teams = await teamService.getAllTeams();
+            res.status(200).send(teams);
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     }
 };
 
