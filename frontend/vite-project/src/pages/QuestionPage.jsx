@@ -101,11 +101,14 @@ const QuestionPage = () => {
         if (teamNameInput.toLowerCase() === correctTeamName?.toLowerCase()) {
             const newUnlockedState = { 
                 ...isCategoryUnlocked, 
-                [selectedCategory]: true 
+
+                [selectedCategory]: true
+
             };
             setIsCategoryUnlocked(newUnlockedState);
             localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
             setInputError('');
+            
 
             try {
                 const response = await axios.get(
