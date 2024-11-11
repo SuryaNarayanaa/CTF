@@ -49,21 +49,21 @@ const teamController = {
             res.status(500).send(err.message);
         }
     },
-    updateUnlocked : async (req, res) => {
-        const {teamName} = req.body;
-        if (!teamName ) {
-            return res.status(400).send(" teamName required");
-        }
-        try {
-            const team = await userService.findTeamByName(teamName);
-            if (!team) {
-                return res.status(404).send("Team not found");
+
+
+
+    update:async(req,res)=>{
+        try{
+            const {teamname,flag}=req.body;
+            const team=teamService.findTeamByName(teamname);
+            if(flag==1){
+                team.unlocked+=1;
+            }else{
+                team.unlocked=0;
             }
-            team.unlocked += 1;
-            await team.save();
-            res.status(200).send(team);
-        } catch (err) {
-            res.status(500).send(err.message);
+        }catch(err){
+            res.status(500).send(err.messages);
+        }
 
     }
 }
