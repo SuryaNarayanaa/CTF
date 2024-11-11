@@ -90,33 +90,26 @@ const QuestionPage = () => {
 
     const handleTeamNameSubmit = async () => {
         if (!selectedCategory) return;
-
+    
         const correctTeamName = categoryFunThings[selectedCategory]?.teamName;
         
         if (teamNameInput.toLowerCase() === correctTeamName?.toLowerCase()) {
             const newUnlockedState = { 
-                ...isCategoryUnlocked, 
-
+                ...isCategoryUnlocked,
                 [selectedCategory]: true
-
             };
             setIsCategoryUnlocked(newUnlockedState);
             localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
             setInputError('');
-
+    
             try {
-                const response = await axios.post(`${VITE_API_URL}/team/update`, {
+                // Update team status
+                await axios.post(`${VITE_API_URL}/team/update`, {
                     teamname: currentTeamName,
-                    flag:true
+                    flag: true
                 });
-            } catch (error) {
-                console.error('Error updating ', error);
-            }
-
-
-            });
-            
-            try {
+    
+                // Fetch questions for the newly unlocked category
                 const response = await axios.get(
                     `${VITE_API_URL}/Admin/questions/questionsByCategory?category=${selectedCategory}`
                 );
@@ -124,7 +117,7 @@ const QuestionPage = () => {
                     setQuestions(response.data[selectedCategory].questions);
                 }
             } catch (error) {
-                console.error('Error fetching questions:', error);
+                console.error('Error updating or fetching questions:', error);
             }
         } else {
             setInputError('Incorrect team name. Please try again.');
