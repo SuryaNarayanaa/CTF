@@ -48,7 +48,25 @@ const teamController = {
         } catch (err) {
             res.status(500).send(err.message);
         }
+    },
+    updateUnlocked : async (req, res) => {
+        const {teamName} = req.body;
+        if (!teamName ) {
+            return res.status(400).send(" teamName required");
+        }
+        try {
+            const team = await userService.findTeamByName(teamName);
+            if (!team) {
+                return res.status(404).send("Team not found");
+            }
+            team.unlocked += 1;
+            await team.save();
+            res.status(200).send(team);
+        } catch (err) {
+            res.status(500).send(err.message);
+
     }
+}
 };
 
 module.exports = teamController;
