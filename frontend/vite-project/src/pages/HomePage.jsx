@@ -24,7 +24,10 @@ const HomePage = () => {
     try {
       await logout();
       setIsLoggedIn(false);
-      localStorage.removeItem('teamName'); // Remove teamName from localStorage on logout
+      const answeredQuestions = localStorage.getItem('answeredQuestions'); // Save the data
+      localStorage.clear(); // Clear everything
+      if (answeredQuestions) localStorage.setItem('answeredQuestions', answeredQuestions); // Restore the saved data
+
     } catch (error) {
       console.error('Logout failed:', error);
     }
