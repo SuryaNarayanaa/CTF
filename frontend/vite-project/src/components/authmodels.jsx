@@ -60,12 +60,9 @@ const FunPromptModal = ({ isOpen, onClose, onSubmit }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white p-8 rounded-none border-2 border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-96 relative">
-        <button 
-          onClick={onClose}
-          className="absolute right-4 top-4 text-white hover:text-white-700"
-        >
-          <X size={20} />
-        </button>
+        
+          
+       
         <h2 className="text-xl mb-6 font-['Press_Start_2P'] text-center text-black">Share a Fun Thing about you !!</h2>
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         <Input
