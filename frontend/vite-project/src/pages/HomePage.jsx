@@ -24,10 +24,15 @@ const HomePage = () => {
     try {
       await logout();
       setIsLoggedIn(false);
-      const answeredQuestions = localStorage.getItem('answeredQuestions'); // Save the data
-      localStorage.clear(); // Clear everything
-      if (answeredQuestions) localStorage.setItem('answeredQuestions', answeredQuestions); // Restore the saved data
-
+      localStorage.clear();
+      try {
+        const response = await axios.post(`${VITE_API_URL}/team/update`, {
+            teamname: currentTeamName,
+            flag:false
+        });
+    } catch (error) {
+        console.error('Error updating ', error);
+    }
     } catch (error) {
       console.error('Logout failed:', error);
     }

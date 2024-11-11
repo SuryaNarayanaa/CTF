@@ -1,5 +1,6 @@
 const Team = require("../models/Team")
-const User = require("../models/User")
+const User = require("../models/User");
+const { findTeamById } = require("./userService");
 const teamService = {
     createTeam: async (teamData) => {
         const newTeam = new Team(teamData);
@@ -12,7 +13,9 @@ const teamService = {
         return await team.save();
     },
 
-
+    findTeamById:async(id)=>{
+        return await Team.findOne({id});
+    },
     findTeamByName :async (name) => 
         {
             return await Team.findOne({name});
