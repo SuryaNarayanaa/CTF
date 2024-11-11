@@ -48,6 +48,19 @@ const teamController = {
         } catch (err) {
             res.status(500).send(err.message);
         }
+    },
+    update:async(req,res)=>{
+        try{
+            const {teamname,flag}=req.body;
+            const team=teamService.findTeamByName(teamname);
+            if(flag==1){
+                team.unlocked+=1;
+            }else{
+                team.unlocked=0;
+            }
+        }catch(err){
+            res.status(500).send(err.messages);
+        }
     }
 };
 

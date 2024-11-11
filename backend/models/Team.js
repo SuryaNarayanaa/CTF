@@ -24,6 +24,10 @@ const teamSchema = new Schema({
     funFact: {
         type: String,
         trim: true
+    },
+    unlocked:{
+        type:Number,
+        default:0
     }
 });
 

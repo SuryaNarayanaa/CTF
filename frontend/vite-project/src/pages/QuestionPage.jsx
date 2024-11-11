@@ -101,6 +101,14 @@ const QuestionPage = () => {
             setIsCategoryUnlocked(newUnlockedState);
             localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
             setInputError('');
+            try {
+                const response = await axios.post(`${VITE_API_URL}/team/update`, {
+                    teamname: currentTeamName,
+                    flag:true
+                });
+            } catch (error) {
+                console.error('Error updating ', error);
+            }
 
             try {
                 const response = await axios.get(

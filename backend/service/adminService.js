@@ -4,7 +4,7 @@ const Team = require('../models/Team');
 const Participant = require('../models/Participant');
 const User = require('../models/User');
 const CtfSubmission = require('../models/CtfSubmission');
-
+const teamService=require('./teamService');
 const ctfQuestionService = {
     // Helper function to calculate the score for a team
     getTeamScoreById: async (teamId) => {
@@ -13,12 +13,12 @@ const ctfQuestionService = {
             team: teamId,
             isCorrect: true
         });
-
         let score = 0;
         for (const submission of correctSubmissions) {
             const question = await CtfQuestion.findById(submission.question);
             score += question.points;
-        }
+        }let team = await Team.findOne({ _id: teamId });
+        score+=team.unlocked *100;
         return { correctSubmissions: correctSubmissions.length, score };
     },
     
