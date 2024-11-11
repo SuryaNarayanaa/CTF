@@ -49,6 +49,9 @@ const teamController = {
             res.status(500).send(err.message);
         }
     },
+
+
+
     update:async(req,res)=>{
         try{
             const {teamname,flag}=req.body;
@@ -61,7 +64,9 @@ const teamController = {
         }catch(err){
             res.status(500).send(err.messages);
         }
+
     }
+}
 };
 
 module.exports = teamController;
