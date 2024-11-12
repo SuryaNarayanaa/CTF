@@ -69,9 +69,13 @@ const CtfService =
     getQuestionById: async (questionId) => 
     {
         return await CtfQuestion.findById(questionId);
-    }
+    },
 
-
+    getSubid:async (teamId,questionID ) => 
+        {
+            return await CtfSubmission.findOne({team:teamId,question:questionID});
+        }
+    
 
 
 }

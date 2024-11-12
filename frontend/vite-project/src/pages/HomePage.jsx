@@ -22,17 +22,9 @@ const HomePage = () => {
 
   const handleLogout = async () => {
     try {
+    localStorage.clear();
       await logout();
       setIsLoggedIn(false);
-      localStorage.clear();
-      try {
-        const response = await axios.post(`${VITE_API_URL}/team/update`, {
-            teamname: currentTeamName,
-            flag:false
-        });
-    } catch (error) {
-        console.error('Error updating ', error);
-    }
     } catch (error) {
       console.error('Logout failed:', error);
     }

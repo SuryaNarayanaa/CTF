@@ -25,9 +25,9 @@ const teamSchema = new Schema({
         type: String,
         trim: true
     },
-    unlocked:{
-        type:Number,
-        default:0
+    unlocked: {
+        type: [String],
+        default: []
     }
 });
 

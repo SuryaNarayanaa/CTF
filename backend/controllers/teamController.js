@@ -1,5 +1,6 @@
 const teamService = require("../service/teamService");
 const userService = require("../service/userService");
+const Team= require("../models/Team")
 const teamController = {
     createTeam: async (req, res) => {
         const { name, leader } = req.body;
@@ -49,17 +50,21 @@ const teamController = {
             res.status(500).send(err.message);
         }
     },
-    update:async(req,res)=>{
-        try{
-            const {teamname,flag}=req.body;
-            const team=teamService.findTeamByName(teamname);
-            if(flag==1){
-                team.unlocked+=1;
-            }else{
-                team.unlocked=0;
+    update: async (req, res) => {
+        try {
+            const { name, category } = req.body;
+            
+            const team = await Team.findOne({ name });
+            if (!team) {
+                return res.status(404).json({ message: "Team not found" });
             }
-        }catch(err){
-            res.status(500).send(err.messages);
+                if (!team.unlocked.includes(category)) {
+                    team.unlocked.push(category);
+                }
+            await team.save();
+            res.status(200).json({ message: "Updated successfully", unlocked: team.unlocked });
+        } catch (err) {
+            res.status(500).send(err.message);
         }
     }
 };

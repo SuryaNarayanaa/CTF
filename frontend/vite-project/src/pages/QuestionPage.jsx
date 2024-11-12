@@ -59,6 +59,7 @@ const QuestionPage = () => {
         }
     };
 
+
     useEffect(() => {
         loadInitialData();
         const savedUnlocked = localStorage.getItem('unlockedCategories');
@@ -103,8 +104,8 @@ const QuestionPage = () => {
             setInputError('');
             try {
                 const response = await axios.post(`${VITE_API_URL}/team/update`, {
-                    teamname: currentTeamName,
-                    flag:true
+                    name: currentTeamName,
+                    category:selectedCategory
                 });
             } catch (error) {
                 console.error('Error updating ', error);
@@ -143,9 +144,6 @@ const QuestionPage = () => {
 
             if (response.data.isCorrect) {
                 setAnswerStatus('correct');
-                const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
-                savedStatus[selectedQuestion._id] = true;
-                localStorage.setItem('answeredQuestions', JSON.stringify(savedStatus));
             } else {
                 setAnswerStatus('incorrect');
             }
@@ -154,6 +152,18 @@ const QuestionPage = () => {
             setAnswerStatus('error');
         }
     };
+
+    const handleIsCorrect=async(questionid)=>{
+        const response = await axios.post(`${VITE_API_URL}/ctf/correct`, {
+            teamName:currentTeamName,
+            questionId:questionid
+        });
+        if (response.data.correct) {
+            setAnswerStatus('correct');
+        } else {
+            setAnswerStatus('incorrect');
+        }
+    }
 
     return (
         <div className="question-page">
@@ -211,9 +221,7 @@ const QuestionPage = () => {
                         <div className="tab-2">
                             <div className="questions-list">
                                 {questions.map((question) => {
-                                    const isAnswered = JSON.parse(
-                                        localStorage.getItem('answeredQuestions') || '{}'
-                                    )[question._id];
+                                    const isAnswered = handleIsCorrect(question._id);
                                     return (
                                         <button
                                             key={question._id}
@@ -260,7 +268,7 @@ const QuestionPage = () => {
             </div>
             <div className="answer-section">
                 {/* Check if question is already answered */}
-                {JSON.parse(localStorage.getItem('answeredQuestions') || '{}')[selectedQuestion._id] ? (
+                {answerStatus === 'correct'  ? (
                     <div className="solved-state">
                         <input
                             type="text"

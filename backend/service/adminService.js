@@ -18,7 +18,7 @@ const ctfQuestionService = {
             const question = await CtfQuestion.findById(submission.question);
             score += question.points;
         }let team = await Team.findOne({ _id: teamId });
-        score+=team.unlocked *100;
+        score += team ? team.unlocked.length * 100 : 0;
         return { correctSubmissions: correctSubmissions.length, score };
     },
     
