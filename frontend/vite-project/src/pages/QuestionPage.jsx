@@ -250,39 +250,46 @@ const QuestionPage = () => {
                 <h3>{selectedQuestion.title}</h3>
             </div>
             <div className="question-content">
-                <p>{selectedQuestion.description}</p>
-                {selectedQuestion.links && (
-                    <div className="links">
-                        <strong>Links:</strong>
-                        <ul>
-                            {selectedQuestion.links.map((link, index) => (
-                                <li key={index}>
-                                    <a href={link} target="_blank" rel="noopener noreferrer">
-                                        {link}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-            </div>
-            <div className="answer-section">
-                {/* Check if question is already answered */}
-                {answerStatus === 'correct'  ? (
-                    <div className="solved-state">
-                        <input
-                            type="text"
-                            value={userAnswer}
-                            className="answer-input solved"
-                            disabled
-                            placeholder="Question solved!"
-                        />
-                        
-                        <button className="submit-button" disabled>
-                            Submitted
-                        </button>
-                    </div>
-                ) : (
+    <p>{selectedQuestion.description}</p>
+    <div className="links">
+        <strong>Links:</strong>
+        {selectedQuestion.links && selectedQuestion.links.length > 0 ? (
+            <ul>
+                {selectedQuestion.links.map((link, index) => (
+                    <li key={index}>
+                        <a href={link} target="_blank" rel="noopener noreferrer">
+                            {link}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        ) : (
+            <span> - </span>
+        )}
+    </div>
+</div>
+<div className="answer-section">
+    {answerStatus === 'correct' ? (
+        <div className="solved-state">
+            <input
+                type="text"
+                value={userAnswer}
+                className="answer-input solved"
+                disabled
+                placeholder="Question solved!"
+            />
+          
+            <button className="submit-button" disabled>
+                Submitted
+            </button>
+            <img 
+                src="/FLAG_LOGO.gif" 
+                alt="Correct Answer"
+                className="status-image"
+                style={{ width: '80px', height: '70px' }}
+            />
+        </div>
+    ) : (
                     <>
                         <input
                             type="text"
@@ -300,14 +307,13 @@ const QuestionPage = () => {
                     </>
                 )}
                 {answerStatus === 'correct' && (
-                    <p className="status-correct">Correct! Well done!</p>
+                    <p className="status-correct">Correct! Well done!</p>                    
                 )}
                 {answerStatus === 'incorrect' && (
-                    <p className="status-incorrect">Incorrect. Try again!</p>
+                    <p className="status-incorrect ">Try Your Best!</p>                    
                 )}
             </div>
-        </div>
-    
+        </div>  
                             ) : (
                                 <p className="select-prompt">Select a question to see details</p>
                             )}
