@@ -28,6 +28,14 @@ const teamSchema = new Schema({
     unlocked: {
         type: [String],
         default: []
+    },
+    score:{
+        type:Number,
+        default:0
+    },
+    flag:{
+        type:Number,
+        default:0
     }
 });
 
