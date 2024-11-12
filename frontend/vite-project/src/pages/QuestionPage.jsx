@@ -30,9 +30,9 @@ const QuestionPage = () => {
             setCategories(fetchedCategories);
              
             const teamsData = await fetchTeams();
-            console.log('Fetched teams:', teamsData);
+            
             const otherTeams = teamsData.filter(team => team.name !== currentTeamName);
-            console.log('Other teams:', otherTeams);
+            
 
             const funThings = {};
             const usedTeams = new Set();
@@ -50,7 +50,7 @@ const QuestionPage = () => {
                 }
             });
 
-            console.log('Final fun things mapping:', funThings);
+            
             setCategoryFunThings(funThings);
             setIsLoading(false);
         } catch (error) {
