@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const ctfQuestionSchema = new Schema({
     category :
     {type : String,
-        required : true,
+    required : true,
     },
     title: {
         type: String,

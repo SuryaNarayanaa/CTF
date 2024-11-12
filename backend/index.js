@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const morgan = require('morgan')
 const connectDB = require('./config/db');
 require('dotenv').config();
 
@@ -35,12 +36,17 @@ app.use(session({
   cookie: { secure: false } // Set to true if using HTTPS
 }));
 
+app.use(morgan('dev'));
+
+
+
 // Routes
 const homeRoutes = require('./routers/homeRoutes');
 const authRoutes = require('./routers/authRoutes');
 const adminRoutes = require('./routers/adminRoutes');
 const ctfRoutes = require('./routers/ctfRoutes');
 const teamRoutes = require('./routers/teamRoutes');
+
 
 app.use('/auth', authRoutes);
 app.use('/Admin', adminRoutes);

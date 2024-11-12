@@ -59,6 +59,7 @@ const QuestionPage = () => {
         }
     };
 
+
     useEffect(() => {
         loadInitialData();
         const savedUnlocked = localStorage.getItem('unlockedCategories');
@@ -90,26 +91,27 @@ const QuestionPage = () => {
 
     const handleTeamNameSubmit = async () => {
         if (!selectedCategory) return;
-    
+
         const correctTeamName = categoryFunThings[selectedCategory]?.teamName;
         
         if (teamNameInput.toLowerCase() === correctTeamName?.toLowerCase()) {
             const newUnlockedState = { 
-                ...isCategoryUnlocked,
-                [selectedCategory]: true
+                ...isCategoryUnlocked, 
+                [selectedCategory]: true 
             };
             setIsCategoryUnlocked(newUnlockedState);
             localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
             setInputError('');
-    
             try {
-                // Update team status
-                await axios.post(`${VITE_API_URL}/team/update`, {
-                    teamname: currentTeamName,
-                    flag: true
+                const response = await axios.post(`${VITE_API_URL}/team/update`, {
+                    name: currentTeamName,
+                    category:selectedCategory
                 });
-    
-                // Fetch questions for the newly unlocked category
+            } catch (error) {
+                console.error('Error updating ', error);
+            }
+
+            try {
                 const response = await axios.get(
                     `${VITE_API_URL}/Admin/questions/questionsByCategory?category=${selectedCategory}`
                 );
@@ -117,7 +119,7 @@ const QuestionPage = () => {
                     setQuestions(response.data[selectedCategory].questions);
                 }
             } catch (error) {
-                console.error('Error updating or fetching questions:', error);
+                console.error('Error fetching questions:', error);
             }
         } else {
             setInputError('Incorrect team name. Please try again.');
@@ -142,9 +144,6 @@ const QuestionPage = () => {
 
             if (response.data.isCorrect) {
                 setAnswerStatus('correct');
-                const savedStatus = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
-                savedStatus[selectedQuestion._id] = true;
-                localStorage.setItem('answeredQuestions', JSON.stringify(savedStatus));
             } else {
                 setAnswerStatus('incorrect');
             }
@@ -153,6 +152,18 @@ const QuestionPage = () => {
             setAnswerStatus('error');
         }
     };
+
+    const handleIsCorrect=async(questionid)=>{
+        const response = await axios.post(`${VITE_API_URL}/ctf/correct`, {
+            teamName:currentTeamName,
+            questionId:questionid
+        });
+        if (response.data.correct) {
+            setAnswerStatus('correct');
+        } else {
+            setAnswerStatus('incorrect');
+        }
+    }
 
     return (
         <div className="question-page">
@@ -210,9 +221,7 @@ const QuestionPage = () => {
                         <div className="tab-2">
                             <div className="questions-list">
                                 {questions.map((question) => {
-                                    const isAnswered = JSON.parse(
-                                        localStorage.getItem('answeredQuestions') || '{}'
-                                    )[question._id];
+                                    const isAnswered = handleIsCorrect(question._id);
                                     return (
                                         <button
                                             key={question._id}
@@ -259,7 +268,7 @@ const QuestionPage = () => {
             </div>
             <div className="answer-section">
                 {/* Check if question is already answered */}
-                {JSON.parse(localStorage.getItem('answeredQuestions') || '{}')[selectedQuestion._id] ? (
+                {answerStatus === 'correct'  ? (
                     <div className="solved-state">
                         <input
                             type="text"

@@ -1,5 +1,7 @@
+const CtfSubmission = require('../models/CtfSubmission');
 const CtfService  = require('../service/ctfService');
-
+const { ObjectId } = require('mongoose').Types;
+const teamService =  require('../service/teamService')
 const ctfController = {
 
 
@@ -65,8 +67,22 @@ const ctfController = {
         }
 
         res.send(question);
+    },
+
+    correct:async(req,res)=>{
+        const {questionId,teamName}=req.body;
+        const team = await teamService.findTeamByName(teamName);
+        const submission = await CtfSubmission.find({
+            question: questionId
+        }).populate('team');
+        
+        const matchingSubmission = submission.find(sub => sub.team?.name == teamName);
+        if(!matchingSubmission) res.json({ correct: false });
+        else if (matchingSubmission) {
+            res.json({ correct: matchingSubmission.isCorrect });
+        }
+        
     }
-    
 };
 
 module.exports = ctfController;
