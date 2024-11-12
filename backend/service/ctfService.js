@@ -14,37 +14,41 @@ const CtfService =
     },
 
 
-    submitAnswer : async (teamName, questionTitle, submittedAnswer) =>
-    {
+    submitAnswer: async (teamName, questionTitle, submittedAnswer) => {
         const question = await getQuestionByName(questionTitle);
         const team = await findTeamByName(teamName);
-        if (!question) {
-            return null;
-        }
+    
+        if (!question || !team) return null;
+    
         const isCorrect = submittedAnswer === question.answer;
-
-        if(!team || !question)
-        {
-            return null;
-        }
-
-        let submission = await CtfSubmission.findOne({team: team._id, question: question._id});
-        if(!submission)
-        {
-            submission = new CtfSubmission({team: team._id, question: question._id,answer : submittedAnswer,isCorrect  : isCorrect});
+    
+        let submission = await CtfSubmission.findOne({ team: team._id, question: question._id });
+        if (!submission) {
+            // New submission
+            submission = new CtfSubmission({
+                team: team._id,
+                question: question._id,
+                answer: submittedAnswer,
+                isCorrect: isCorrect
+            });
             await submission.save();
-
-        }
-        else
-        {
+        } else {
+            // Update existing submission
             submission.answer = submittedAnswer;
             submission.isCorrect = isCorrect;
             await submission.save();
         }
-
+    
+        // Update team score immediately if answer is correct
+        if (isCorrect) {
+            team.score += question.points;
+            team.flag+=1;
+            await team.save();
+        }
+    
         return submission;
-
-    }, 
+    },
+     
 
 
 

@@ -50,7 +50,7 @@ const teamController = {
             res.status(500).send(err.message);
         }
     },
-update: async (req, res) => {
+    update: async (req, res) => {
         try {
             const { name, category } = req.body;
             
@@ -58,15 +58,20 @@ update: async (req, res) => {
             if (!team) {
                 return res.status(404).json({ message: "Team not found" });
             }
-                if (!team.unlocked.includes(category)) {
-                    team.unlocked.push(category);
-                }
-            await team.save();
+    
+            // Check if the category is already unlocked
+            if (!team.unlocked.includes(category)) {
+                team.unlocked.push(category);
+                team.score += 100; // Add 100 points for unlocking a new category
+                await team.save();
+            }
+    
             res.status(200).json({ message: "Updated successfully", unlocked: team.unlocked });
         } catch (err) {
             res.status(500).send(err.message);
         }
     }
+    
 }
 
 
