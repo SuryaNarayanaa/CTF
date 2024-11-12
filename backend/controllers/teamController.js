@@ -50,7 +50,7 @@ const teamController = {
             res.status(500).send(err.message);
         }
     },
-    update: async (req, res) => {
+update: async (req, res) => {
         try {
             const { name, category } = req.body;
             
@@ -67,6 +67,7 @@ const teamController = {
             res.status(500).send(err.message);
         }
     }
-};
+}
+
 
 module.exports = teamController;

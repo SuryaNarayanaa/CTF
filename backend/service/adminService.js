@@ -4,10 +4,11 @@ const Team = require('../models/Team');
 const Participant = require('../models/Participant');
 const User = require('../models/User');
 const CtfSubmission = require('../models/CtfSubmission');
-const teamService=require('./teamService');
+
+
 const ctfQuestionService = {
     // Helper function to calculate the score for a team
-    getTeamScoreById: async (teamId) => {
+     getTeamScoreById: async (teamId) => {
         // Count only the correct submissions associated with the team
         const correctSubmissions = await CtfSubmission.find({
             team: teamId,
