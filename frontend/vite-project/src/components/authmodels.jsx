@@ -201,7 +201,7 @@ const RegisterForm = ({ onClose }) => {
         password: formData.password,
         role: formData.role
       };
-      console.log('Sending signup data:', signupData);
+      
       await signup(signupData);
 
       const teamName = formData.email.split('@')[0];
@@ -209,7 +209,7 @@ const RegisterForm = ({ onClose }) => {
         name: teamName,
         leader: formData.username
       };
-      console.log('Creating team with data:', teamData);
+      
       await createTeam(teamData);
       localStorage.setItem('teamName', teamName);
 
