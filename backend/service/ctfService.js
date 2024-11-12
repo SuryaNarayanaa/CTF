@@ -24,27 +24,31 @@ const CtfService =
     
         let submission = await CtfSubmission.findOne({ team: team._id, question: question._id });
         if (!submission) {
-            // New submission
             submission = new CtfSubmission({
                 team: team._id,
                 question: question._id,
                 answer: submittedAnswer,
                 isCorrect: isCorrect
             });
+            if (isCorrect) {
+                team.score += question.points;
+                team.flag+=1;
+                await team.save();
+            }
             await submission.save();
         } else {
             // Update existing submission
+            if (submission.isCorrect!=isCorrect){
+                team.score += question.points;
+                team.flag+=1;
+                await team.save();
+            }
             submission.answer = submittedAnswer;
             submission.isCorrect = isCorrect;
             await submission.save();
         }
     
         // Update team score immediately if answer is correct
-        if (isCorrect) {
-            team.score += question.points;
-            team.flag+=1;
-            await team.save();
-        }
     
         return submission;
     },
