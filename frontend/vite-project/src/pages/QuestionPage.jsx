@@ -318,7 +318,7 @@ const QuestionPage = () => {
                 src="/FLAG_LOGO.gif" 
                 alt="Correct Answer"
                 className="status-image"
-                style={{ width: '80px', height: '70px' }}
+                style={{ width: '80px', height: '70px',alignItems:'center',justifyContent:'center' }}
             />
         </div>
     ) : (

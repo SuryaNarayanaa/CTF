@@ -22,9 +22,10 @@ const HomePage = () => {
 
   const handleLogout = async () => {
     try {
-    localStorage.clear();
       await logout();
+      localStorage.clear();
       setIsLoggedIn(false);
+      navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
     }
