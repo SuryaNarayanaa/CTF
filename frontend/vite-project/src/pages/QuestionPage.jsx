@@ -18,9 +18,24 @@ const QuestionPage = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [isCategoryUnlocked, setIsCategoryUnlocked] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [answeredQuestions, setAnsweredQuestions] = useState({});
+    const [categoryLoading, setCategoryLoading] = useState(false);
 
     const currentTeamName = localStorage.getItem('teamName') || 'Team Name';
     const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+    const checkQuestionStatus = async (questionId) => {
+        try {
+            const response = await axios.post(`${VITE_API_URL}/ctf/correct`, {
+                teamName: currentTeamName,
+                questionId: questionId
+            });
+            return response.data.correct;
+        } catch (error) {
+            console.error('Error checking question status:', error);
+            return false;
+        }
+    };
 
     const loadInitialData = async () => {
         try {
@@ -30,10 +45,8 @@ const QuestionPage = () => {
             setCategories(fetchedCategories);
              
             const teamsData = await fetchTeams();
-            
             const otherTeams = teamsData.filter(team => team.name !== currentTeamName);
             
-
             const funThings = {};
             const usedTeams = new Set();
 
@@ -49,16 +62,14 @@ const QuestionPage = () => {
                     usedTeams.add(randomTeam.name);
                 }
             });
-
             
             setCategoryFunThings(funThings);
-            setIsLoading(false);
         } catch (error) {
             console.error('Error loading initial data:', error);
+        } finally {
             setIsLoading(false);
         }
     };
-
 
     useEffect(() => {
         loadInitialData();
@@ -69,23 +80,45 @@ const QuestionPage = () => {
     }, [currentTeamName]);
 
     const handleCategoryClick = async (category) => {
-        setSelectedCategory(category);
-        setTeamNameInput('');
-        setInputError('');
-        setQuestions([]);
-        setSelectedQuestion(null);
+        try {
+            setCategoryLoading(true);
+            setSelectedCategory(category);
+            setTeamNameInput('');
+            setInputError('');
+            setQuestions([]);
+            setSelectedQuestion(null);
 
-        if (isCategoryUnlocked[category]) {
-            try {
+            if (isCategoryUnlocked[category]) {
                 const response = await axios.get(
                     `${VITE_API_URL}/Admin/questions/questionsByCategory?category=${category}`
                 );
+                
                 if (response.data[category] && response.data[category].questions) {
-                    setQuestions(response.data[category].questions);
+                    const fetchedQuestions = response.data[category].questions;
+                    setQuestions(fetchedQuestions);
+
+                    try {
+                        const statusChecks = await Promise.all(
+                            fetchedQuestions.map(async (question) => {
+                                const isAnswered = await checkQuestionStatus(question._id);
+                                return [question._id, isAnswered];
+                            })
+                        );
+
+                        const newAnsweredQuestions = Object.fromEntries(statusChecks);
+                        setAnsweredQuestions(prev => ({
+                            ...prev,
+                            ...newAnsweredQuestions
+                        }));
+                    } catch (error) {
+                        console.error('Error checking question statuses:', error);
+                    }
                 }
-            } catch (error) {
-                console.error('Error fetching questions:', error);
             }
+        } catch (error) {
+            console.error('Error handling category click:', error);
+        } finally {
+            setCategoryLoading(false);
         }
     };
 
@@ -95,41 +128,46 @@ const QuestionPage = () => {
         const correctTeamName = categoryFunThings[selectedCategory]?.teamName;
         
         if (teamNameInput.toLowerCase() === correctTeamName?.toLowerCase()) {
-            const newUnlockedState = { 
-                ...isCategoryUnlocked, 
-                [selectedCategory]: true 
-            };
-            setIsCategoryUnlocked(newUnlockedState);
-            localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
-            setInputError('');
             try {
-                const response = await axios.post(`${VITE_API_URL}/team/update`, {
-                    name: currentTeamName,
-                    category:selectedCategory
-                });
-            } catch (error) {
-                console.error('Error updating ', error);
-            }
+                const newUnlockedState = { 
+                    ...isCategoryUnlocked, 
+                    [selectedCategory]: true 
+                };
+                setIsCategoryUnlocked(newUnlockedState);
+                localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
+                setInputError('');
 
-            try {
-                const response = await axios.get(
-                    `${VITE_API_URL}/Admin/questions/questionsByCategory?category=${selectedCategory}`
-                );
-                if (response.data[selectedCategory] && response.data[selectedCategory].questions) {
-                    setQuestions(response.data[selectedCategory].questions);
-                }
+                await axios.post(`${VITE_API_URL}/team/update`, {
+                    name: currentTeamName,
+                    category: selectedCategory
+                });
+
+                // Fetch questions after unlocking
+                await handleCategoryClick(selectedCategory);
             } catch (error) {
-                console.error('Error fetching questions:', error);
+                console.error('Error unlocking category:', error);
+                setInputError('An error occurred while unlocking the category.');
             }
         } else {
             setInputError('Incorrect team name. Please try again.');
         }
     };
 
-    const handleQuestionClick = (question) => {
+    const handleQuestionClick = async (question) => {
         setSelectedQuestion(question);
         setUserAnswer('');
         setAnswerStatus('');
+        
+        try {
+            const isAnswered = await checkQuestionStatus(question._id);
+            setAnswerStatus(isAnswered ? 'correct' : '');
+            setAnsweredQuestions(prev => ({
+                ...prev,
+                [question._id]: isAnswered
+            }));
+        } catch (error) {
+            console.error('Error checking question status:', error);
+        }
     };
 
     const handleAnswerSubmit = async () => {
@@ -142,10 +180,14 @@ const QuestionPage = () => {
                 answer: userAnswer,
             });
 
-            if (response.data.isCorrect) {
-                setAnswerStatus('correct');
-            } else {
-                setAnswerStatus('incorrect');
+            const isCorrect = response.data.isCorrect;
+            setAnswerStatus(isCorrect ? 'correct' : 'incorrect');
+            
+            if (isCorrect) {
+                setAnsweredQuestions(prev => ({
+                    ...prev,
+                    [selectedQuestion._id]: true
+                }));
             }
         } catch (error) {
             console.error('Error submitting answer:', error);
@@ -153,16 +195,8 @@ const QuestionPage = () => {
         }
     };
 
-    const handleIsCorrect=async(questionid)=>{
-        const response = await axios.post(`${VITE_API_URL}/ctf/correct`, {
-            teamName:currentTeamName,
-            questionId:questionid
-        });
-        if (response.data.correct) {
-            setAnswerStatus('correct');
-        } else {
-            setAnswerStatus('incorrect');
-        }
+    if (isLoading) {
+        return <div className="loading">Loading...</div>;
     }
 
     return (
@@ -219,24 +253,22 @@ const QuestionPage = () => {
                         ) : null}
     
                         <div className="tab-2">
-                            <div className="questions-list">
-                                {questions.map((question) => {
-                                    const isAnswered = handleIsCorrect(question._id);
-                                    return (
-                                        <button
-                                            key={question._id}
-                                            onClick={() => handleQuestionClick(question)}
-                                            className={`question-button ${isAnswered ? 'answered' : ''} 
-                                                ${selectedQuestion?._id === question._id ? 'selected' : ''}`}
-                                        >
-                                            {question.title}
-                                            {question.points && (
-                                                <span className="points">[{question.points} points]</span>
-                                            )}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                        <div className="questions-list">
+                {questions.map((question) => (
+                    <button
+                        key={question._id}
+                        onClick={() => handleQuestionClick(question)}
+                        className={`question-button 
+                            ${answeredQuestions[question._id] ? 'answered' : ''} 
+                            ${selectedQuestion?._id === question._id ? 'selected' : ''}`}
+                    >
+                        {question.title}
+                        {question.points && (
+                            <span className="points">[{question.points} points]</span>
+                        )}
+                    </button>
+                ))}
+            </div>
                         </div>
     
 
@@ -286,7 +318,7 @@ const QuestionPage = () => {
                 src="/FLAG_LOGO.gif" 
                 alt="Correct Answer"
                 className="status-image"
-                style={{ width: '80px', height: '70px' }}
+                style={{ width: '80px', height: '70px',alignItems:'center',justifyContent:'center' }}
             />
         </div>
     ) : (
