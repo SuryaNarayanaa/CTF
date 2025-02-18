@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const ctfQuestionSchema = new Schema({
-    category :
-    {type : String,
-    required : true,
+const ctfQuestionSchema = new mongoose.Schema({
+    category:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Category'
     },
     title: {
         type: String,
-        required: true
+        required: [true,"Title is required"],
+        trim:true,
     },
     description: {
         type: String,
@@ -26,12 +26,8 @@ const ctfQuestionSchema = new Schema({
         type: String,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+},{timestamps:true});
 
-const CtfQuestion = mongoose.model('CtfQuestion', ctfQuestionSchema);
+const CtfQuestion = mongoose.model('Question', ctfQuestionSchema);
 
 module.exports = CtfQuestion;

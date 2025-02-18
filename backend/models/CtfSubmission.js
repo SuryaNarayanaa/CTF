@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ctfSubmissionSchema = new Schema({
-    team: {
+    team_id: {
         type: Schema.Types.ObjectId,
         ref: 'Team',
         required: true
     },
     question: {
         type: Schema.Types.ObjectId,
-        ref: 'CtfQuestion',
+        ref: 'Question',
         required: true
     },
     answer: {
@@ -26,4 +26,4 @@ const ctfSubmissionSchema = new Schema({
     }
 });
 
-module.exports = mongoose.models.CtfSubmission || mongoose.model('CtfSubmission', ctfSubmissionSchema);
+module.exports = mongoose.models.CtfSubmission || mongoose.model('Submission', ctfSubmissionSchema);

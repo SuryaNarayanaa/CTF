@@ -1,34 +1,15 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const teamSchema = new Schema({
-    name: {
+const teamSchema = new mongoose.Schema({
+    team_name: {
         type: String,
-        required: true,
-        unique: true,
-        trim: true
+        required: [true,"team name is required"],
+        trim: true,
     },
-    leaderId: {
+    team_members: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
-    },
-    members: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    funFact: {
-        type: String,
-        trim: true
-    },
-    unlocked: {
-        type: [String],
-        default: []
-    },
     score:{
         type:Number,
         default:0
@@ -36,8 +17,12 @@ const teamSchema = new Schema({
     flag:{
         type:Number,
         default:0
-    }
-});
+    },
+    submissions:[{
+        type:Schema.Types.ObjectId,
+        ref:'Submission'
+    }]
+},{timestamps:true});
 
 const Team = mongoose.model('Team', teamSchema);
 
