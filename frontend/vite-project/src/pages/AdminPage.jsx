@@ -6,7 +6,7 @@ import { Database, Eye } from 'lucide-react';
 
 const AdminPage = () => {
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-y-auto">
+    <div className="flex flex-col h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-y-auto w-screen">
       {/* Enhanced Cyberpunk Header */}
       <header className="bg-black/40 border-b border-emerald-500/30 px-4 py-6 md:px-6 md:py-8 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">

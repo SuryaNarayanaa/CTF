@@ -235,7 +235,7 @@ const QuestionPage = () => {
                                         type="text"
                                         value={teamNameInput}
                                         onChange={(e) => setTeamNameInput(e.target.value)}
-                                        placeholder="Guess who"
+                                        placeholder="Enter team name"
                                         className={inputError ? 'error' : ''}
                                     />
                                     {inputError && <p className="error-message">{inputError}</p>}
