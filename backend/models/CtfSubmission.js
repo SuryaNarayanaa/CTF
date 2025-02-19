@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ctfSubmissionSchema = new Schema({
-    team_id: {
+    user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Team',
+        ref: 'User',
         required: true
     },
     question: {

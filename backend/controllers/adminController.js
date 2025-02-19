@@ -4,7 +4,6 @@ const ApiError = require('../utils/ApiError')
 const Question = require('../models/CtfQuestion')
 const Category = require('../models/category')
 const User = require('../models/User')
-const Team = require('../models/Team')
 
 
 const getQuestions = asyncHandler(async(req,res)=>{
@@ -44,14 +43,6 @@ const fetchQuestionsByCategory = asyncHandler(async(req,res)=>{
     
 })
 
-const fetchTeams  = asyncHandler(async(req,res)=>{
-    const teams = await Team.find().populate("team_members")
-    res.status(200).json(new ApiResponse(200,teams,"Teams returned"))
-})
-
-const getParticipantsByTeam = asyncHandler(async(req,res)=>{
-    const users = await User.find()
-})
 
 const getUserById = asyncHandler(async(req,res)=>{
     const {id:UserID} = req.params;
@@ -59,13 +50,10 @@ const getUserById = asyncHandler(async(req,res)=>{
     res.status(200).json(new ApiResponse(200,user,"user found"))
 })
 
-const getLeaderboard = asyncHandler(async(req,res)=>{
-    
-})
 
 const getDashboard = asyncHandler(async(req,res)=>{
     
 })
 
 
-module.exports = {getQuestions,createQuestion,updateQuestion,deleteQuestion,getDashboard,fetchTeams,getUserById}
+module.exports = {getQuestions,createQuestion,updateQuestion,deleteQuestion,getDashboard,getUserById}

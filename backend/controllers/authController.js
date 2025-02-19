@@ -25,7 +25,9 @@ const login = asyncHandler(async(req, res) => {
         username: user.username,
         role: user.role
     }
-    res.status(200).json(new ApiResponse(200, "Login successful", req.session.user))
+
+    console.log(req.session)
+    res.status(200).json(new ApiResponse(200, "Login successful", user))
 })
 
 const logout = asyncHandler(async(req, res) => {
@@ -37,39 +39,6 @@ const logout = asyncHandler(async(req, res) => {
     })
 })
 
-const getTeam = asyncHandler(async(req, res) => {
-    if (!req.session.user) {
-        throw new ApiError(401, "Unauthorized")
-    }
-    const team = await Team.findOne({ team_members: req.session.user.id })
-        .populate('team_members')
-        .populate('submissions')
-    if (!team) {
-        throw new ApiError(404, "Team not found")
-    }
-    res.status(200).json(new ApiResponse(200, "Team fetched successfully", team))
-})
 
-const adminLogin = asyncHandler(async(req, res) => {  
-    const { email, password } = req.body
-    const user = await User.findOne({ email }).select('+password')
-    if (!user) {
-        throw new ApiError(404, "User not found")
-    }
-    const isMatch = await user.comparePassword(password)
-    if (!isMatch) {
-        throw new ApiError(401, "Invalid credentials")
-    }
-    if (user.role !== 'admin') {
-        throw new ApiError(403, "Unauthorized")
-    }
-    req.session.user = {
-        id: user._id,
-        email: user.email,
-        username: user.username,
-        role: user.role
-    }
-    res.status(200).json(new ApiResponse(200, "Login successful", req.session.user))
-})
 
-module.exports = {signup,login,logout,getTeam,adminLogin}
+module.exports = {signup,login,logout}

@@ -10,8 +10,11 @@ const withValidationResult = (validationValue) =>{
         (req,res,next)=>{
             const errors = validationResult(req)
             if(!errors.isEmpty()){
-                const errorMessages = errors.array().map(err=>err.msg)
-                throw new ApiError(err.statusCode||401,errorMessages[0]);
+                const errorMessages = errors.array().map((error)=>{
+                    if(error instanceof ApiError) return error.message
+                    return error.msg
+                })
+                throw new ApiError(401,errorMessages[0]);
             }
             next()
         }
@@ -20,7 +23,11 @@ const withValidationResult = (validationValue) =>{
 
 
 const validateSignUp = withValidationResult([
-    body('username').notEmpty().withMessage("username is required"),
+    body('team_name').notEmpty().withMessage("username is required").
+    custom(async(value)=>{
+        const user = await User.findOne({team_name:value})
+        if(user)  throw new ApiError(401,"Team_name already exists") 
+    }),
     body('email').notEmpty().withMessage('email is required').
     isEmail().withMessage("Provide a valid email").
     custom(async(email)=>{
