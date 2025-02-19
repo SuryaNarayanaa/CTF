@@ -5,7 +5,7 @@ const ApiResponse = require('../utils/ApiResponse')
 
 const signup = asyncHandler(async(req,res)=>{
     const user = await User.create(req.body)
-    res.status(201).json(new ApiResponse(201,"User created",user))
+    res.status(201).json(new ApiResponse(201,user,"User created"))
 })
 
 

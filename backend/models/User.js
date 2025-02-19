@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
-    username: {
+    team_name: {
         type: String,
         required: [true,"username is required"],
         unique: true,
@@ -20,6 +20,22 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true,"password is required"],
         select:false
+    },
+    score:{
+        type:Number,
+        default:0
+    },
+    flag:{
+        type:Number,
+        default:0
+    },
+    submissions:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Submission'
+    }],
+    loggedCount:{
+        type:Number,
+        default:0,
     },
     role: {
         type: String,
@@ -48,7 +64,7 @@ UserSchema.methods.comparePassword = async function(candiatePassword){
 }
 
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
 
