@@ -12,13 +12,13 @@ const ctfSubmissionSchema = new Schema({
         ref: 'Question',
         required: true
     },
-    answer: {
-        type: String,
-        required: true
-    },
     isCorrect: {
         type: Boolean,
         default: false
+    },
+    wrong:{
+        type:Number,
+        default:0
     },
     submittedAt: {
         type: Date,
