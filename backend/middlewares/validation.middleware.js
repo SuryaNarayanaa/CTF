@@ -26,8 +26,9 @@ const validateSignUp = withValidationResult([
     body('team_name').notEmpty().withMessage("username is required").
     custom(async(value)=>{
         const user = await User.findOne({team_name:value})
-        if(user)  throw new ApiError(401,"Team_name already exists") 
-    }),
+        if(user)  throw new ApiError(401,"Team_name already exists");
+        if(!user.loggedCount == 0) throw new ApiError(401,"team_member has already logged in.")
+    }).isLength({min:3}).withMessage("team_name should be three characeters long"),
     body('email').notEmpty().withMessage('email is required').
     isEmail().withMessage("Provide a valid email").
     custom(async(email)=>{
@@ -49,7 +50,7 @@ const validateLogin = withValidationResult([
 
 
 const validateCreateQuestion = withValidationResult([
-
+    body('category').notEmpty().withMessage('category_name is required')
 ])
 
 
