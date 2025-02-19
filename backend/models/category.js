@@ -6,10 +6,6 @@ const CategorySchema = new mongoose.Schema({
         required:[true,"category name is required"],
         unique:true
     },
-    description : {
-        type:String,
-        required:[true,"description is required"]
-    },
     flag:{
         type:Number,
         default:0
