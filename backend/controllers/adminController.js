@@ -7,7 +7,13 @@ const User = require('../models/User')
 
 
 const getQuestions = asyncHandler(async(req,res)=>{
-    const questions = await Question.find();
+    const {category_name} = req.query;
+    queryObject = {}
+    if(category_name){
+        const category = await Category.findOne({category_name});
+        queryObject.category = category._id;
+    }
+    const questions = await Question.find(queryObject);
     res.status(200).json(new ApiResponse(200,questions,"Questions Fetched"))
 })
 
@@ -39,15 +45,17 @@ const deleteQuestion = asyncHandler(async(req,res)=>{
     res.status(200).json(new ApiResponse(200,deletedQuestion,"Question Deleted"))
 })
 
-const fetchQuestionsByCategory = asyncHandler(async(req,res)=>{
-    
-})
 
 
 const getUserById = asyncHandler(async(req,res)=>{
     const {id:UserID} = req.params;
     const user = await User.findById(UserID);
-    res.status(200).json(new ApiResponse(200,user,"user found"))
+    res.status(200).json(new ApiResponse(200,user,"User found"))
+})
+
+const getUsers = asyncHandler(async(req,res)=>{
+    const users = await User.find();
+    res.status(200).json(new ApiResponse(200,users,"Users returned successfully"))
 })
 
 
@@ -56,4 +64,4 @@ const getDashboard = asyncHandler(async(req,res)=>{
 })
 
 
-module.exports = {getQuestions,createQuestion,updateQuestion,deleteQuestion,getDashboard,getUserById}
+module.exports = {getQuestions,createQuestion,updateQuestion,deleteQuestion,getDashboard,getUserById,getUsers}

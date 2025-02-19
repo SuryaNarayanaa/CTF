@@ -25,17 +25,20 @@ const login = asyncHandler(async(req, res) => {
         username: user.username,
         role: user.role
     }
-
-    console.log(req.session)
-    res.status(200).json(new ApiResponse(200, "Login successful", user))
+    user.loggedCount = 1;
+    await user.save();
+    res.status(200).json(new ApiResponse(200, user,"User logged in"))
 })
 
 const logout = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.session.user.id);
+    user.loggedCount = 0;
+    await user.save();
     req.session.destroy(err => {
         if (err) {
             throw new ApiError(500, "Error logging out")
         }
-        res.status(200).json(new ApiResponse(200, "Logged out successfully"))
+        res.status(200).json(new ApiResponse(200,null,"Logged out successfully"))
     })
 })
 

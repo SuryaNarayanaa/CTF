@@ -29,10 +29,6 @@ const UserSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
-    submissions:[{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Submission'
-    }],
     loggedCount:{
         type:Number,
         default:0,
