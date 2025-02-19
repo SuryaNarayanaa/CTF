@@ -8,8 +8,8 @@ router.put('/questions', adminController.updateQuestion);
 router.delete('/questions/:id', adminController.deleteQuestion);
 router.get('/questions/questionsByCategory', adminController.fetchQuestionsByCategory);
 
-router.get('/participants', adminController.getParticipants);
-router.get('/participants/:id', adminController.getParticipantById);
+router.get('/user', adminController.getParticipants);
+router.get('/user/:id', adminController.getUserById);
 
 router.get('/leaderboard', adminController.getLeaderboard);
 router.get('/dashboard', adminController.getDashboard);

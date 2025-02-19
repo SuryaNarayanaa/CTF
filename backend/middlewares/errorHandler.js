@@ -6,7 +6,7 @@ const errorHandler = (err,req,res,next) =>{
     if(!(err instanceof ApiError)){
         const statusCode = error.statusCode || error instanceof mongoose.Error ? 400 : 500
         const message =  error.message ||  "Something went Wrong"
-        const error = new ApiError(statusCode,message)
+        error = new ApiError(statusCode,message)
         console.log(error)
     }
     const response = {...error}

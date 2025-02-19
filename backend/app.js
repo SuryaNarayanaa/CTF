@@ -6,7 +6,7 @@ const morgan = require('morgan')
 const MongoDbStore = require('connect-mongodb-session')(session)
 require('dotenv').config()
 /** Routes imports */
-
+const authRouter = require('./routers/authRoutes.js')
 
 const errorHandler = require('./middlewares/errorHandler')
 
@@ -47,6 +47,9 @@ app.use(morgan('dev'))
 app.use('/api/v1/health-check',(req,res)=>{
     res.send("This is a health-check route")
 })
+
+app.use('/api/v1/auth',authRouter)
+
 
 
 

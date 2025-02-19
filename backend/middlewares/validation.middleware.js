@@ -1,6 +1,8 @@
-const {validationResult, body} = require('express-validator')
+const {validationResult, body,param} = require('express-validator')
 const ApiError = require('../utils/ApiError')
 const User = require('../models/User')
+const Question = require('../models/CtfQuestion.js')
+const mongoose = require('mongoose')
 
 const withValidationResult = (validationValue) =>{
     return [
@@ -38,4 +40,29 @@ const validateLogin = withValidationResult([
     isLength({min:5}).withMessage("paasword must be atleast 5 characters long")
 ])
 
-module.exports = {validateSignUp,validateLogin}
+
+const validateCreateQuestion = withValidationResult([
+
+])
+
+
+const validateQuestionId = withValidationResult([
+    param('id').custom(async(value)=>{
+        const isValid = mongoose.Types.ObjectId.isValid(value);
+        if(!isValid) throw new ApiError(401,"Invalid id param")
+        const question = await Question.findById(value)
+        if(!question) throw new ApiError(401,`Question with ${value} doesn't exist`)
+    })
+])
+
+const validateUserID = withValidationResult([
+    param('id').custom(async(value)=>{
+        const isValid = mongoose.Types.ObjectId.isValid(value);
+        if(!isValid) throw new ApiError(401,"Invalid id param")
+        const user = await User.findById(value);
+        if(!user) throw new ApiError(401,`User with ${value} doesn't exist`)
+    })
+])
+
+
+module.exports = {validateSignUp,validateLogin,validateCreateQuestion,validateQuestionId,validateUserID}
