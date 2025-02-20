@@ -1,6 +1,5 @@
 const asyncHandler = require('../utils/asyncHandler')
 const ApiResponse = require('../utils/ApiResponse')
-const ApiError = require('../utils/ApiError')
 const Question = require('../models/CtfQuestion')
 const Category = require('../models/category')
 const User = require('../models/User')

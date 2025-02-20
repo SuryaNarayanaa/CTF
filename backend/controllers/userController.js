@@ -21,11 +21,6 @@ const submitAnswer = asyncHandler(async (req, res) => {
     const { question_id, answer } = req.body;
     const { id: user_id } = req.session.user;
 
-    const question = await CtfQuestion.findById(question_id);
-    if (!question) {
-        throw new ApiError(404, 'Question not found');
-    }
-
     let submission = await CtfSubmission.findOne({ user_id, question: question_id });
     const isCorrect = question.correctAnswer === answer; // Assuming correctAnswer field exists
 

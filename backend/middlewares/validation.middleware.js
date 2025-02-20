@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError')
 const User = require('../models/User')
 const Question = require('../models/CtfQuestion.js')
 const mongoose = require('mongoose')
+const asynchandler = require('../utils/asyncHandler.js')
 
 const withValidationResult = (validationValue) =>{
     return [
@@ -72,5 +73,20 @@ const validateUserID = withValidationResult([
     })
 ])
 
+const validateSubmitAnswer = withValidationResult([
+    body('question_id').notEmpty().withMessage("question_id should not be empty").
+    custom(async(value)=>{
+        const question = await Question.findById(question_id);
+        if (!question) {
+            throw new ApiError(404, 'Question not found');
+        } 
+    }),
+    body('answer').notEmpty().withMessage("answer field should not be empty")
+])
 
-module.exports = {validateSignUp,validateLogin,validateCreateQuestion,validateQuestionId,validateUserID}
+
+
+
+
+
+module.exports = {validateSignUp,validateLogin,validateCreateQuestion,validateQuestionId,validateUserID,validateSubmitAnswer}
