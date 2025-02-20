@@ -76,7 +76,7 @@ const validateUserID = withValidationResult([
 const validateSubmitAnswer = withValidationResult([
     body('question_id').notEmpty().withMessage("question_id should not be empty").
     custom(async(value)=>{
-        const question = await Question.findById(question_id);
+        const question = await Question.findById(value);
         if (!question) {
             throw new ApiError(404, 'Question not found');
         } 
