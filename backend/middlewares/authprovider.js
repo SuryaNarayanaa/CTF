@@ -1,6 +1,6 @@
 const ApiError = require("../utils/ApiError");
 
-const autheicateUser = (req, res, next) => {
+const authenticateUser = (req, res, next) => {
     if (req.session && req.session.user) {
       next();
     } else {
@@ -17,5 +17,5 @@ const authorizeRoles = (req,res,next) =>{
 }
 
   
-module.exports = {autheicateUser,authorizeRoles};
+module.exports = {authenticateUser,authorizeRoles};
   

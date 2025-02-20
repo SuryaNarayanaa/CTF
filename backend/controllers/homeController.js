@@ -9,8 +9,7 @@ const ApiResponse = require('../utils/ApiResponse');
 const getLeaderboard = asyncHandler(async (req, res) => {
     // Retrieve top 10 entries (highest scores first)
     // zRange with REV: true and WITHSCORES: true returns an array in the form [member1, score1, member2, score2, ...]
-    const leaderboardEntries = await redisClient.zRange('leaderboard', 0, 9, { REV: true, WITHSCORES: true });
-    const leaderboard = [];
+    const leaderboardEntries = await redisClient.zRange('leaderboard', 0, -1, { REV: true, WITHSCORES: true });    const leaderboard = [];
     // Process the flat array into objects with rank, userId, and score
     for (let i = 0; i < leaderboardEntries.length; i += 2) {
         leaderboard.push({
