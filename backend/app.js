@@ -10,7 +10,7 @@ const authRouter = require('./routers/authRoutes.js')
 const adminRouter = require('./routers/adminRoutes.js')
 const homeRouter = require('./routers/homeRoutes.js')
 const userRouter = require('./routers/userRoutes.js')
-const {autheicateUser,authorizeRoles} = require('./middlewares/authprovider.js')
+const {authenticateUser,authorizeRoles} = require('./middlewares/authprovider.js')
 
 const errorHandler = require('./middlewares/errorHandler')
 
@@ -53,11 +53,10 @@ app.use('/api/health-check',(req,res)=>{
 })
 
 app.use('/api/auth',authRouter)
-app.use('/api/admin',autheicateUser,authorizeRoles,adminRouter)
-app.use('/api/home',autheicateUser,homeRouter)
-app.use('/api/user',autheicateUser,userRouter)
+app.use('/api/admin',authenticateUser,authorizeRoles,adminRouter)
+app.use('/api/home',authenticateUser,homeRouter)
+app.use('/api/user',authenticateUser,userRouter)
 
-app.use('/api/v1/auth',authRouter)
 
 
 

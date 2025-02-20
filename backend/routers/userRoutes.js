@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/ctfController'); 
+const userController = require('../controllers/userController.js'); 
 const {validateSubmitAnswer} = require('../middlewares/validation.middleware.js')
 
 router.get('/categories', userController.getCategories);

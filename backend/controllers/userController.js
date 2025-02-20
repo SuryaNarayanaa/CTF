@@ -5,12 +5,7 @@ const ApiError = require('../utils/ApiError');
 const CtfSubmission = require('../models/CtfSubmission');
 const ApiResponse = require('../utils/ApiResponse');
 const User = require("../models/User");
-
-// Initialize Redis client
-const redis = require('redis');
-const redisClient = redis.createClient();
-redisClient.on('error', (err) => console.error('Redis Client Error', err));
-redisClient.connect().catch(console.error);
+const { updateLeaderboard, getRankForUser } = require('../utils/leaderboardStore');
 
 const getCategories = asyncHandler(async (req, res) => {
     const categories = await Category.find();
@@ -21,6 +16,13 @@ const submitAnswer = asyncHandler(async (req, res) => {
     const { question_id, answer } = req.body;
     const { id: user_id } = req.session.user;
 
+    // Retrieve the question details
+    const question = await CtfQuestion.findById(question_id);
+    if (!question) {
+        throw new ApiError(404, 'Question not found');
+    }
+
+    // Check if the submission already exists
     let submission = await CtfSubmission.findOne({ user_id, question: question_id });
     const isCorrect = question.correctAnswer === answer; // Assuming correctAnswer field exists
 
@@ -42,19 +44,14 @@ const submitAnswer = asyncHandler(async (req, res) => {
     if (isCorrect) {
         const user = await User.findById(user_id);
         if (user) {
+            // Update user's score and flag
             user.score += question.score - submission.wrong * 10;
             user.flag += 1;
             await user.save();
 
-            // Update user's score in Redis sorted set
-            // Redis sorted set key 'leaderboard' where value is user_id and score is user.score
-            await redisClient.zAdd('leaderboard', [{ score: user.score, value: user_id.toString() }]);
-
-            // Retrieve the updated rank (highest scores have rank 0 in Redis so add 1 for a friendly ranking)
-            const rank = await redisClient.zRevRank('leaderboard', user_id.toString());
-            const score = await redisClient.zScore('leaderboard', user_id.toString());
-            const message = JSON.stringify({ userId: user_id, rank: rank !== null ? rank + 1 : 0, score });
-            await redisClient.publish('rank_updates', message);
+            // Update the shared leaderboard (in-memory sorted array)
+            updateLeaderboard(user_id.toString(), user.score);
+            // Optionally, broadcast the updated leaderboard via WebSocket here.
         }
     }
 
@@ -74,13 +71,13 @@ const getQuestionbyCategory = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, questions, "Questions fetched"));
 });
 
+// Returns the user's current rank and score
 const getRank = asyncHandler(async (req, res) => {
     const { id: user_id } = req.session.user;
-    const rank = await redisClient.zRevRank('leaderboard', user_id.toString());
-    const score = await redisClient.zScore('leaderboard', user_id.toString());
-    res.status(200).json(
-        new ApiResponse(200, { rank: rank !== null ? rank + 1 : 0, score }, "User rank and score fetched")
-    );
+    const user = await User.findById(user_id);
+    const score = user ? user.score : 0;
+    const rank = getRankForUser(user_id.toString());
+    res.status(200).json(new ApiResponse(200, { rank, score }, "User rank and score fetched"));
 });
 
 module.exports = { getCategories, submitAnswer, getCurrentScore, getQuestionbyCategory, getRank };
