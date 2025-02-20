@@ -1,6 +1,6 @@
 const asyncHandler = require('../utils/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
-const { getLeaderboard } = require('../utils/leaderboardStore.js');
+const { getLeaderboard } = require('../utils/leaderboardstore.js');
 
 
 const getLeaderboardEndpoint = asyncHandler(async (req, res) => {

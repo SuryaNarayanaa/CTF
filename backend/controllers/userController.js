@@ -5,7 +5,7 @@ const ApiError = require('../utils/ApiError');
 const CtfSubmission = require('../models/CtfSubmission');
 const ApiResponse = require('../utils/ApiResponse');
 const User = require("../models/User");
-const { updateLeaderboard, getRankForUser } = require('../utils/leaderboardStore');
+const { updateLeaderboard, getRankForUser } = require('../utils/leaderboardstore');
 
 const getCategories = asyncHandler(async (req, res) => {
     const categories = await Category.find();
@@ -17,7 +17,6 @@ const submitAnswer = asyncHandler(async (req, res) => {
     const { id: user_id } = req.session.user;
 
     // Retrieve the question details
-    const question = await CtfQuestion.findById(question_id);
     if (!question) {
         throw new ApiError(404, 'Question not found');
     }
