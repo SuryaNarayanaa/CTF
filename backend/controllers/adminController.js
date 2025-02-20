@@ -59,9 +59,6 @@ const getUsers = asyncHandler(async(req,res)=>{
 })
 
 
-const getDashboard = asyncHandler(async(req,res)=>{
-    
-})
 
 
-module.exports = {getQuestions,createQuestion,updateQuestion,deleteQuestion,getDashboard,getUserById,getUsers}
+module.exports = {getQuestions,createQuestion,updateQuestion,deleteQuestion,getUserById,getUsers}
