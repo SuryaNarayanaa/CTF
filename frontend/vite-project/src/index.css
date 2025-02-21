@@ -82,4 +82,53 @@ body {
 }
 
 
+@keyframes text-glitch {
+  0% { 
+    content: "${Math.random().toString(36).substring(2, 8)}";
+    clip-path: inset(0 100% 0 0);
+  }
+  20% {
+    content: "${Math.random().toString(36).substring(2, 8)}";
+    clip-path: inset(0 60% 0 0);
+  }
+  40% {
+    content: "${Math.random().toString(36).substring(2, 8)}";
+    clip-path: inset(0 30% 0 0);
+  }
+  60% {
+    content: "${Math.random().toString(36).substring(2, 8)}";
+    clip-path: inset(0 10% 0 0);
+  }
+  80% {
+    content: "${Math.random().toString(36).substring(2, 8)}";
+    clip-path: inset(0 2% 0 0);
+  }
+  100% {
+    content: "";
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.glitch-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.glitch-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  animation: text-glitch 0.8s steps(4) forwards;
+  font-family: 'Press Start 2P';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
 

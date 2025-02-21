@@ -18,7 +18,7 @@ const getQuestions = asyncHandler(async(req,res)=>{
 
 const createQuestion = asyncHandler(async(req,res)=>{
     const {category} = req.body
-    let newCategory = await Category.find({category_name:category})
+    let newCategory = await Category.findOne({category_name:category})
     if(!newCategory) newCategory = await Category.create({category_name:category})
     
     const question = await Question.create({...req.body,category:newCategory._id})
@@ -27,7 +27,7 @@ const createQuestion = asyncHandler(async(req,res)=>{
 
 const updateQuestion = asyncHandler(async(req,res)=>{
     const {category} = req.body;
-    let newCategory = await Category.find({category_name:category})
+    let newCategory = await Category.findOne({category_name:category})
     if(!newCategory) newCategory = await Category.create({category_name:category})
     
     const question = await Question.findByIdAndUpdate(id,{

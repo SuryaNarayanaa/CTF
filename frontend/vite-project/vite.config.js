@@ -11,25 +11,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/Admin': {
-        target: 'http://localhost:3000', 
+      '/api': {
+        target: 'http://localhost:3000/api',
         changeOrigin: true,
-      },
-      '/Admin/questions': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/Admin/participants':{
-        target: 'http://localhost:3000', // Make sure this matches your backend server
-        changeOrigin: true,
-      },
-      '/ctf/submit': {
-        target: 'http://localhost:3000', 
-        changeOrigin: true,
-      },
-      '/Admin/questions/questionsByCategory': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

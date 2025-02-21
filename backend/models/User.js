@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true,"password is required"],
-        select:false
     },
     score:{
         type:Number,
@@ -47,15 +46,17 @@ UserSchema.pre('save',async function(next){
     this.password = await bcryptjs.hash(this.password,salt)
 })
 
-UserSchema.methods.toJSON  = function() {
-    var object = this.toObject();
-    delete object.password;
-    return object;
-}
+
 
 UserSchema.methods.comparePassword = async function(candiatePassword){
     const isCorrect = await bcryptjs.compare(candiatePassword,this.password);
     return isCorrect;
+}
+
+UserSchema.methods.toJSON  = function() {
+    var object = this.toObject();
+    delete object.password;
+    return object;
 }
 
 

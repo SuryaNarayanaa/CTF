@@ -5,7 +5,7 @@ const ApiResponse = require('../utils/ApiResponse')
 
 const signup = asyncHandler(async(req,res)=>{
     const user = await User.create(req.body)
-    res.status(201).json(new ApiResponse(201,user,"User created"))
+    res.status(201).json(new ApiResponse(201,user,"Registration successful"))
 })
 
 
@@ -17,13 +17,13 @@ const login = asyncHandler(async(req, res) => {
     }
     const isMatch = await user.comparePassword(password)
     if (!isMatch) {
-        throw new ApiError(401, "Invalid credentials")
+        throw new ApiError(404, "Invalid credentials")
     }
+    if(user.loggedCount > 0) throw new ApiError(401,"team_member is already logged in")
     req.session.user = {
         id: user._id,
         email: user.email,
         username: user.username,
-        role: user.role
     }
     user.loggedCount = 1;
     await user.save();
@@ -42,6 +42,13 @@ const logout = asyncHandler(async(req, res) => {
     })
 })
 
+const sessionUser = asyncHandler(async(req,res)=>{
+    if(req.session.user){
+        res.send(200).json(new ApiResponse(200,req.session,"Session initialized"))
+    }
+    else
+        throw new ApiError(403,"Session uninitized")
+})  
 
 
-module.exports = {signup,login,logout}
+module.exports = {signup,login,logout,sessionUser}

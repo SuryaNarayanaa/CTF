@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Set the base URL for all axios requests
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/auth`,
+  baseURL: `/api`,
 });
 
 
@@ -12,18 +12,13 @@ const api = axios.create({
 // Function to log in a user
 export const login = async (credentials) => { 
   try {
-    const response = await api.post('/login', {
+    const {data:{data,success,message}} = await api.post('/auth/login', {
       email: credentials.email,
       password: credentials.password,
     });
-
-    // Store token, user role, and user ID in localStorage
-    localStorage.setItem('token', response.data.token); // Assuming the token is returned in the response
-    localStorage.setItem('userRole', response.data.user.role); // Store role
-    localStorage.setItem('userId', response.data.user._id);    // Store user ID if needed
-    localStorage.setItem('username', response.data.user.username); // Store username
-
-    return response.data;
+    console.log(data);
+    if(!success) throw new Error(message);
+    return data;
   } catch (error) {
     console.error('Error logging in:', error);
     throw error;
@@ -35,7 +30,8 @@ export const login = async (credentials) => {
 
 export const signup = async (userData) => {
   try {
-    const { data } = await api.post('/signup', userData);
+    const { data:{data,message,success} } = await fetch('/api/auth/login')
+    if(!success) throw new Error(message);
     return data;
   } catch (error) {
     console.error('Error signing up:', error);
@@ -46,14 +42,10 @@ export const signup = async (userData) => {
 // Function to log out a user
 export const logout = async () => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('No token found');
-
-    await api.post('/logout', {}, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    localStorage.removeItem('token');
-    return true;
+    const response = await fetch('/api/auth/logout')
+    const {data,message,success} = await response.json()
+    if(!success) throw new Error(message);
+    return data;
   } catch (error) {
     console.error('Error logging out:', error);
     throw error;

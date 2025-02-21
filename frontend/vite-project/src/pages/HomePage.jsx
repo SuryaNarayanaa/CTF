@@ -1,38 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { BackgroundBeams } from '../components/ui/background-beams';
+import {redirect} from 'react-router-dom'
 import { Boxes } from '../components/ui/background-boxes';
-import './HomePage.css';
+import '../styles/HomePage.css';
 import GifElement from '../components/Gifelement';
 import { logout } from '../api/auth';
 import { AuthModal, LoginForm, RegisterForm } from '../components/authmodels';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+
+
 
 const HomePage = () => {
+  console.log("Rendering HomePage")
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const location = useLocation();
-  const teamName = location.state?.teamName || localStorage.getItem('teamName') || ''; // Get teamName from state or localStorage
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
+  const data = useQuery({
+    queryKey:["user"],
+    queryFn:async()=>{
+      const response = await fetch("/api/user/getCurrentUser",{ credentials: 'include'})
+      const {data,success,message} =  await response.json()
+      if(!success) {
+          redirect('/')
+      }
+      setIsLoggedIn(true)
+      return data;
+    }
+  })
+
 
   const handleLogout = async () => {
     try {
       await logout();
-      localStorage.clear();
       setIsLoggedIn(false);
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
     }
-  };
-
-  const handleNavigate = (path) => {
-    navigate(path, { state: { teamName } });
   };
 
   return (
@@ -77,12 +83,12 @@ const HomePage = () => {
                 Log Out
               </button>
               <button 
-                onClick={() => handleNavigate('/leaderboard')}
+                onClick={() => navigate('/leaderboard')}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 → Leaderboard
               </button>
               <button 
-                onClick={() => handleNavigate('/challenges')}
+                onClick={() => navigate('/challenges')}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 → Challenges
               </button>

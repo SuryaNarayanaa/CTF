@@ -12,10 +12,11 @@ const withValidationResult = (validationValue) =>{
             const errors = validationResult(req)
             if(!errors.isEmpty()){
                 const errorMessages = errors.array().map((error)=>{
-                    if(error instanceof ApiError) return error.message
+                    if(error instanceof ApiError) {return error.message}
+                    error.statusCode = 400;
                     return error.msg
                 })
-                throw new ApiError(401,errorMessages[0]);
+                throw new ApiError(errorMessages[0].statusCode || 401,errorMessages[0]);
             }
             next()
         }
@@ -24,11 +25,10 @@ const withValidationResult = (validationValue) =>{
 
 
 const validateSignUp = withValidationResult([
-    body('team_name').notEmpty().withMessage("username is required").
+    body('team_name').notEmpty().withMessage("team_name is required").
     custom(async(value)=>{
         const user = await User.findOne({team_name:value})
-        if(user)  throw new ApiError(401,"Team_name already exists");
-        if(!user.loggedCount == 0) throw new ApiError(401,"team_member has already logged in.")
+        if(user)  throw new ApiError(409,"Team_name already exists");
     }).isLength({min:3}).withMessage("team_name should be three characeters long"),
     body('email').notEmpty().withMessage('email is required').
     isEmail().withMessage("Provide a valid email").
@@ -39,7 +39,10 @@ const validateSignUp = withValidationResult([
         }
     }),
     body('password').notEmpty().withMessage("password is required").
-    isLength({min:5}).withMessage("paasword must be atleast 5 characters long")
+    isLength({min:5}).withMessage("paasword must be atleast 5 characters long"),
+    body('role').custom(async(value)=>{
+        if(value == 'admin') throw new ApiError(401,"You don't have access for admin-login")
+    })
 ])
 
 const validateLogin = withValidationResult([

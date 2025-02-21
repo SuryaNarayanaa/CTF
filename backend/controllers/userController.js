@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError');
 const CtfSubmission = require('../models/CtfSubmission');
 const ApiResponse = require('../utils/ApiResponse');
 const User = require("../models/User");
+const Question = require('../models/CtfQuestion.js')
 const { updateLeaderboard, getRankForUser } = require('../utils/leaderboardstore');
 
 const getCategories = asyncHandler(async (req, res) => {
@@ -15,7 +16,7 @@ const getCategories = asyncHandler(async (req, res) => {
 const submitAnswer = asyncHandler(async (req, res) => {
     const { question_id, answer } = req.body;
     const { id: user_id } = req.session.user;
-
+    const question =  await Question.findbyId(question_id)
     // Retrieve the question details
     if (!question) {
         throw new ApiError(404, 'Question not found');
@@ -64,8 +65,7 @@ const getCurrentScore = asyncHandler(async (req, res) => {
 });
 
 const getQuestionbyCategory = asyncHandler(async (req, res) => {
-    const { category } = req.body;
-    const { _id: category_id } = await Category.findOne({ category_name: category });
+    const { id:category_id } = req.params;
     const questions = await CtfQuestion.find({ category: category_id });
     res.status(200).json(new ApiResponse(200, questions, "Questions fetched"));
 });
@@ -79,4 +79,10 @@ const getRank = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, { rank, score }, "User rank and score fetched"));
 });
 
-module.exports = { getCategories, submitAnswer, getCurrentScore, getQuestionbyCategory, getRank };
+
+const getCurrentUser = asyncHandler(async(req,res)=>{
+    const user = await User.findOneById(req.session.user.id);
+    res.status(200).json(new ApiResponse(200,user,"User returned sucessfully"));
+})
+
+module.exports = { getCategories, submitAnswer, getCurrentScore, getQuestionbyCategory, getRank,getCurrentUser };
