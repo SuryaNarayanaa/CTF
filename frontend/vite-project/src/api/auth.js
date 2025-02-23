@@ -42,7 +42,7 @@ export const signup = async (userData) => {
 // Function to log out a user
 export const logout = async () => {
   try {
-    const response = await fetch('/api/auth/logout',{
+    const response = await fetch('/back/auth/logout',{
       method:'POST',
       credentials:'include'
     });

@@ -3,8 +3,7 @@ import '../styles/QuestionPage.css';
 import Header from '../components/Header';
 import ScoreboardBanner from '../components/ScoreboardBanner';
 import ChallengesBanner from '../components/ChallengesBanner';
-import axios from 'axios';
-import { fetchTeams } from '../api/teams';
+
 
 const QuestionPage = () => {
     const [categories, setCategories] = useState([]);
@@ -12,58 +11,35 @@ const QuestionPage = () => {
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [userAnswer, setUserAnswer] = useState('');
     const [answerStatus, setAnswerStatus] = useState('');
-    const [categoryFunThings, setCategoryFunThings] = useState({});
-    const [teamNameInput, setTeamNameInput] = useState('');
-    const [inputError, setInputError] = useState('');
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [isCategoryUnlocked, setIsCategoryUnlocked] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [answeredQuestions, setAnsweredQuestions] = useState({});
-    const [categoryLoading, setCategoryLoading] = useState(false);
+    const [categoryLoading,setCategoryLoading] = useState(false);
 
-    const currentTeamName = localStorage.getItem('teamName') || 'Team Name';
-    const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-    const checkQuestionStatus = async (questionId) => {
-        try {
-            const response = await axios.post(`${VITE_API_URL}/ctf/correct`, {
-                teamName: currentTeamName,
-                questionId: questionId
-            });
-            return response.data.correct;
-        } catch (error) {
-            console.error('Error checking question status:', error);
-            return false;
-        }
-    };
 
     const loadInitialData = async () => {
         try {
             setIsLoading(true);
-            const categoriesResponse = await axios.get(`${VITE_API_URL}/Admin/questions/questionsByCategory`);
-            const fetchedCategories = Object.keys(categoriesResponse.data);
-            setCategories(fetchedCategories);
-             
-            const teamsData = await fetchTeams();
-            const otherTeams = teamsData.filter(team => team.name !== currentTeamName);
-            
-            const funThings = {};
-            const usedTeams = new Set();
-
-            fetchedCategories.forEach(category => {
-                const availableTeams = otherTeams.filter(team => !usedTeams.has(team.name));
-                if (availableTeams.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * availableTeams.length);
-                    const randomTeam = availableTeams[randomIndex];
-                    funThings[category] = {
-                        funThing: randomTeam.funFact,
-                        teamName: randomTeam.name
-                    };
-                    usedTeams.add(randomTeam.name);
-                }
+            const response = await fetch('/back/user/categories', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
             });
-            
-            setCategoryFunThings(funThings);
+            const result = await response.json();
+            if (result.success) {
+                const cats = result.data.categories
+        ? (Array.isArray(result.data.categories)
+            ? result.data.categories
+            : Object.values(result.data.categories))
+        : [];
+            setCategories(cats);
+                setAnsweredQuestions(result.data.solved||{});
+            } else {
+                console.error('Error loading initial data:', result.message);
+            }
         } catch (error) {
             console.error('Error loading initial data:', error);
         } finally {
@@ -73,47 +49,28 @@ const QuestionPage = () => {
 
     useEffect(() => {
         loadInitialData();
-        const savedUnlocked = localStorage.getItem('unlockedCategories');
-        if (savedUnlocked) {
-            setIsCategoryUnlocked(JSON.parse(savedUnlocked));
-        }
-    }, [currentTeamName]);
+    }, []);
 
     const handleCategoryClick = async (category) => {
+        console.log(categories);
         try {
             setCategoryLoading(true);
             setSelectedCategory(category);
-            setTeamNameInput('');
-            setInputError('');
             setQuestions([]);
             setSelectedQuestion(null);
 
-            if (isCategoryUnlocked[category]) {
-                const response = await axios.get(
-                    `${VITE_API_URL}/Admin/questions/questionsByCategory?category=${category}`
-                );
-                
-                if (response.data[category] && response.data[category].questions) {
-                    const fetchedQuestions = response.data[category].questions;
-                    setQuestions(fetchedQuestions);
-
-                    try {
-                        const statusChecks = await Promise.all(
-                            fetchedQuestions.map(async (question) => {
-                                const isAnswered = await checkQuestionStatus(question._id);
-                                return [question._id, isAnswered];
-                            })
-                        );
-
-                        const newAnsweredQuestions = Object.fromEntries(statusChecks);
-                        setAnsweredQuestions(prev => ({
-                            ...prev,
-                            ...newAnsweredQuestions
-                        }));
-                    } catch (error) {
-                        console.error('Error checking question statuses:', error);
-                    }
-                }
+            const response = await fetch(`/back/user/category-question/${category._id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+            const result = await response.json();
+            if (result.success) {
+                setQuestions(result.data);
+            } else {
+                console.error('Error fetching questions:', result.message);
             }
         } catch (error) {
             console.error('Error handling category click:', error);
@@ -122,72 +79,38 @@ const QuestionPage = () => {
         }
     };
 
-    const handleTeamNameSubmit = async () => {
-        if (!selectedCategory) return;
 
-        const correctTeamName = categoryFunThings[selectedCategory]?.teamName;
-        
-        if (teamNameInput.toLowerCase() === correctTeamName?.toLowerCase()) {
-            try {
-                const newUnlockedState = { 
-                    ...isCategoryUnlocked, 
-                    [selectedCategory]: true 
-                };
-                setIsCategoryUnlocked(newUnlockedState);
-                localStorage.setItem('unlockedCategories', JSON.stringify(newUnlockedState));
-                setInputError('');
-
-                await axios.post(`${VITE_API_URL}/team/update`, {
-                    name: currentTeamName,
-                    category: selectedCategory
-                });
-
-                // Fetch questions after unlocking
-                await handleCategoryClick(selectedCategory);
-            } catch (error) {
-                console.error('Error unlocking category:', error);
-                setInputError('An error occurred while unlocking the category.');
-            }
-        } else {
-            setInputError('Incorrect team name. Please try again.');
-        }
-    };
-
-    const handleQuestionClick = async (question) => {
+    const handleQuestionClick = (question) => {
         setSelectedQuestion(question);
         setUserAnswer('');
-        setAnswerStatus('');
-        
-        try {
-            const isAnswered = await checkQuestionStatus(question._id);
-            setAnswerStatus(isAnswered ? 'correct' : '');
-            setAnsweredQuestions(prev => ({
-                ...prev,
-                [question._id]: isAnswered
-            }));
-        } catch (error) {
-            console.error('Error checking question status:', error);
-        }
+        setAnswerStatus(answeredQuestions.hasOwnProperty(question._id) ? 'correct' : '');
     };
 
     const handleAnswerSubmit = async () => {
         if (!selectedQuestion) return;
 
         try {
-            const response = await axios.post(`${VITE_API_URL}/ctf/submit`, {
-                teamName: currentTeamName,
-                title: selectedQuestion.title,
-                answer: userAnswer,
+            const response = await fetch('/back/user/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    question_id: selectedQuestion._id,
+                    answer: userAnswer
+                })
             });
-
-            const isCorrect = response.data.isCorrect;
-            setAnswerStatus(isCorrect ? 'correct' : 'incorrect');
-            
-            if (isCorrect) {
+            const result = await response.json();
+            console.log(result.data)
+            if (result.data.isCorrect===true) {
+                setAnswerStatus('correct');
                 setAnsweredQuestions(prev => ({
                     ...prev,
                     [selectedQuestion._id]: true
                 }));
+            } else {
+                setAnswerStatus('incorrect');
             }
         } catch (error) {
             console.error('Error submitting answer:', error);
@@ -213,48 +136,22 @@ const QuestionPage = () => {
                 <div className="question-table">
                     <div className="question-tabs">
                         <div className="tab-1">
-                            {categories.map((category) => (
+                            {(categories|| []).map((category) => (
+                                
                                 <button
-                                    key={category}
+                                    key={category._id}
                                     onClick={() => handleCategoryClick(category)}
-                                    className={`category-button ${selectedCategory === category ? 'active' : ''}`}
+                                    className={`category-button ${selectedCategory && selectedCategory._id === category._id? 'active' : ''}`}
                                 >
-                                    {category}
+                                    {category.category_name}
                                 </button>
                             ))}
                         </div>
-
-                        {selectedCategory && !isCategoryUnlocked[selectedCategory] ? (
-                            <div className="category-overlay">
-                                <div className="fun-thing-verification">
-                                    <div className="lock-icon">🔒</div>
-                                    <h3>Category Locked</h3>
-                                    <p>To unlock this category, guess which team provided this fun fact:</p>
-                                    <p className="fun-thing">"{categoryFunThings[selectedCategory]?.funThing || ''}"</p>
-                                    <input
-                                        type="text"
-                                        value={teamNameInput}
-                                        onChange={(e) => setTeamNameInput(e.target.value)}
-                                        placeholder="Enter team name"
-                                        className={inputError ? 'error' : ''}
-                                    />
-                                    {inputError && <p className="error-message">{inputError}</p>}
-                                    <button 
-                                        onClick={handleTeamNameSubmit}
-                                        className="submit-button"
-                                    >
-                                        Submit
-                                    </button>
-                                    {process.env.NODE_ENV === 'development' && (
-                                        <p className="debug-info">Debug - Team name: {categoryFunThings[selectedCategory]?.teamName}</p>
-                                    )}
-                                </div>
-                            </div>
-                        ) : null}
+       
     
                         <div className="tab-2">
                         <div className="questions-list">
-                {questions.map((question) => (
+                {(questions|| []).map((question) => (
                     <button
                         key={question._id}
                         onClick={() => handleQuestionClick(question)}

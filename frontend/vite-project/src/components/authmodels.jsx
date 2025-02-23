@@ -48,7 +48,7 @@ const LoginForm = ({ onClose, onSuccess }) => {
 
   const {mutate:loginfn,isPending} = useMutation({
     mutationFn:async(formData) =>{
-        const  {data,success,message} = await postData('/api/auth/login',formData)
+        const  {data,success,message} = await postData('/back/auth/login',formData)
         if(!success) throw new Error(message)
         return data
     },
@@ -142,7 +142,7 @@ const RegisterForm = ({ onClose }) => {
 
   const {mutate:registerfn,isPending} = useMutation({
     mutationFn:async(formData) =>{
-      const  {data,success,message} = await postData('/api/auth/signup',formData)
+      const  {data,success,message} = await postData('/back/auth/signup',formData)
       if(!success) throw new Error(message)
       return data
     },

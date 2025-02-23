@@ -1,10 +1,9 @@
-import axios from 'axios';
 
 // Vite automatically loads env variables prefixed with VITE_
 
 export const getLeaderboard = async () => {
     try {
-        const response = await fetch('/api/home/leaderboard', {
+        const response = await fetch('/back/home/leaderboard', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

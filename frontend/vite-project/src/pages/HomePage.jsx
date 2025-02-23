@@ -21,7 +21,7 @@ const HomePage = () => {
   const { data, error } = useQuery({
     queryKey:["user"],
     queryFn: async () => {
-      const response = await fetch("/api/user/getCurrentUser", { 
+      const response = await fetch("/back/user/getCurrentUser", { 
         method: 'GET', 
         credentials: 'include'
       });

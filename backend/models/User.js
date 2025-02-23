@@ -36,6 +36,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
+    },
+    solved:{
+        type:JSON,
+        default:{}
     }
 },{timestamps:true,virtuals:true});
 

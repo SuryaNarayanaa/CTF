@@ -32,7 +32,7 @@ const ViewQuestions = () => {
     if (!selectedQuestion) return;
 
     try {
-      await fetch(`/api/Admin/questions/${selectedQuestion._id}`,{method:'DELETE'});
+      await fetch(`/back/Admin/questions/${selectedQuestion._id}`,{method:'DELETE'});
       setQuestions(questions.filter((q) => q._id !== selectedQuestion._id));
       setSelectedQuestion(null);
       setShowDetails(false);

@@ -5,6 +5,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const MongoDbStore = require('connect-mongodb-session')(session)
 require('dotenv').config()
+const { getLeaderboard } = require('./utils/leaderboardstore.js');
 /** Routes imports */
 const authRouter = require('./routers/authRoutes.js')
 const adminRouter = require('./routers/adminRoutes.js')
@@ -15,7 +16,7 @@ const {authenticateUser,authorizeRoles} = require('./middlewares/authprovider.js
 const errorHandler = require('./middlewares/errorHandler')
 
 const app = express()
-
+console.log(getLeaderboard());
 const corsOprtions = {
     origin: ['https://ctf.cseatheeye.com','https://hidden-x.onrender.com', 'https://hidden-x.vercel.app', 'http://localhost:5173'], // Exact frontend URLs
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods

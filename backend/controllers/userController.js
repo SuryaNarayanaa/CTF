@@ -10,13 +10,18 @@ const { updateLeaderboard, getRankForUser } = require('../utils/leaderboardstore
 
 const getCategories = asyncHandler(async (req, res) => {
     const categories = await Category.find();
-    res.status(200).json(new ApiResponse(200, categories, "Categories fetched"));
+    const { id: user_id } = req.session.user;
+    const user = await User.findById(user_id);
+    if (!user) {
+        throw new ApiError(404, 'User not found');
+    }
+    res.status(200).json(new ApiResponse(200, { categories:categories, solved:user.solved }, "Categories fetched"));
 });
 
 const submitAnswer = asyncHandler(async (req, res) => {
     const { question_id, answer } = req.body;
     const { id: user_id } = req.session.user;
-    const question =  await Question.findbyId(question_id)
+    const question =  await Question.findById(question_id)
     // Retrieve the question details
     if (!question) {
         throw new ApiError(404, 'Question not found');
@@ -24,7 +29,7 @@ const submitAnswer = asyncHandler(async (req, res) => {
 
     // Check if the submission already exists
     let submission = await CtfSubmission.findOne({ user_id, question: question_id });
-    const isCorrect = question.correctAnswer === answer; // Assuming correctAnswer field exists
+    const isCorrect = question.answer === answer; // Assuming correctAnswer field exists
 
     if (submission) {
         if (!isCorrect) {
@@ -45,15 +50,24 @@ const submitAnswer = asyncHandler(async (req, res) => {
         const user = await User.findById(user_id);
         if (user) {
             // Update user's score and flag
-            user.score += question.score - submission.wrong * 10;
+            user.score += question.points;
             user.flag += 1;
+            user.solved[question_id] = true;
             await user.save();
 
             // Update the shared leaderboard (in-memory sorted array)
             updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
             // Optionally, broadcast the updated leaderboard via WebSocket here.
         }
+    }else{
+        const user = await User.findById(user_id);
+        if (user) {
+            // Update user's score and flag
+            user.score -=10;
+            await user.save();
+            updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
     }
+}
 
     res.status(200).json(new ApiResponse(200, submission, "Answer submitted successfully"));
 });
