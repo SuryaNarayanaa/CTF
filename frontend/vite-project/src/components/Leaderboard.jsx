@@ -7,13 +7,15 @@ const Leaderboard = () => {
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const response = await getLeaderboard();
-            // Sort the leaderboard based on scores (flags captured)
-            const sortedLeaderboard = response.sort((a, b) => b.score - a.score);
-            setLeaderboard(sortedLeaderboard);
+            try{
+                const response = await getLeaderboard();
+            setLeaderboard(response);
+        }catch(error){
+            console.error('Error fetching leaderboard:', error);
         };
         fetchLeaderboard();
-    }, []);
+    };
+}, []);
 
     return (
         <div>
@@ -30,9 +32,9 @@ const Leaderboard = () => {
                     </thead>
                     <tbody>
                         {leaderboard.map((entry, index) => (
-                            <tr key={entry.team}>
+                            <tr key={entry.team_name}>
                                 <td className="retro-cell">{index + 1}</td>
-                                <td className="retro-cell">{entry.team}</td>
+                                <td className="retro-cell">{entry.team_name}</td>
                                 <td className="retro-cell">{entry.flags}</td>
                                 <td className="retro-cell">{entry.score}</td>
                             </tr>

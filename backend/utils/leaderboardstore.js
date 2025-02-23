@@ -6,7 +6,7 @@ const binarySearchInsertIndex = (arr, score) => {
     let low = 0, high = arr.length;
     while (low < high) {
         const mid = Math.floor((low + high) / 2);
-        if (arr[mid].score < score) {
+        if (arr[mid].score < score || (arr[mid].score === score && arr[mid].flag < flag)) {
             high = mid;
         } else {
             low = mid + 1;
@@ -16,12 +16,12 @@ const binarySearchInsertIndex = (arr, score) => {
 };
 
 // Update leaderboard for a given userId and score
-const updateLeaderboard = (userId, score) => {
+const updateLeaderboard = (userId, score, team_name, flag) => {
     // Remove previous record for this user if exists
     leaderboard = leaderboard.filter(entry => entry.userId !== userId);
     // Find the correct insertion index and insert
     const index = binarySearchInsertIndex(leaderboard, score);
-    leaderboard.splice(index, 0, { userId, score });
+    leaderboard.splice(index, 0, { userId, score, team_name, flag });
 
     // Rebuild the rank mapping for affected entries (or whole array)
     // For modest leaderboard sizes, re-calc every entry:
@@ -35,8 +35,9 @@ const updateLeaderboard = (userId, score) => {
 // Get the entire leaderboard with rank numbers (1-indexed)
 const getLeaderboard = () => {
     return leaderboard.map((entry, index) => ({
-        userId: entry.userId,
+        team_name: entry.team_name,
         score: entry.score,
+        flag: entry.flag,
         rank: index + 1
     }));
 };

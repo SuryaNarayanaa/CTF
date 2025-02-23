@@ -50,7 +50,7 @@ const submitAnswer = asyncHandler(async (req, res) => {
             await user.save();
 
             // Update the shared leaderboard (in-memory sorted array)
-            updateLeaderboard(user_id.toString(), user.score);
+            updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
             // Optionally, broadcast the updated leaderboard via WebSocket here.
         }
     }
