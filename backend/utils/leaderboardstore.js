@@ -28,6 +28,8 @@ const updateLeaderboard = (userId, score) => {
     leaderboard.forEach((entry, idx) => {
         rankMapping[entry.userId] = idx + 1;
     });
+
+    //emit an io event - 
 };
 
 // Get the entire leaderboard with rank numbers (1-indexed)

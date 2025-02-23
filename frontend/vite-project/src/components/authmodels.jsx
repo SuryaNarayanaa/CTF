@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { signup, login } from "@/api/auth";
-import { createTeam } from "@/api/createteam";
+import {postData} from '../utils/customFetch'
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import AnimatedButton from './ui/AnimatedButton'
 
 const SuccessMessage = ({ message }) => (
   <div className="fixed top-4 right-4 z-50 animate-fade-in">
@@ -36,61 +36,38 @@ const AuthModal = ({ isOpen, onClose, children, title }) => {
     </div>
   );
 };
-const FunPromptModal = ({ isOpen, onClose, onSubmit }) => {
-  const [funThing, setFunThing] = useState('');
-  const [error, setError] = useState('');
-
-  const handleSubmit = async () => {
-    const teamName = localStorage.getItem('teamName'); // Retrieve the team name
-
-    try {
-      const response = await axios.post('/auth/fun', { fun: funThing, team: teamName });
-      if (response.status === 200) {
-        onSubmit(funThing); // Pass funThing to parent function if needed
-        onClose();
-      }
-    } catch (err) {
-      console.error('Error submitting fun thing:', err);
-      setError('Could not save your fun thing. Please try again.');
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded-none border-2 border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-96 relative">
-        
-          
-       
-        <h2 className="text-xl mb-6 font-['Press_Start_2P'] text-center text-black">Share a Fun Thing about you !!</h2>
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-        <Input
-          type="text"
-          placeholder="Share something fun!"
-          value={funThing}
-          onChange={(e) => setFunThing(e.target.value)}
-          className="border-2 border-black focus:ring-2 focus:ring-green-400 font-['Press_Start_2P'] text-xs w-full"
-        />
-        <button
-          onClick={handleSubmit}
-          className="w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-6 py-2 bg-white border-2 border-black text-black mt-4 rounded-none font-['Press_Start_2P'] text-sm transform hover:-translate-y-1 transition duration-200 hover:bg-green-400/10"
-        >
-          Capture
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const LoginForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  const navigate = useNavigate()
+  const queryClient = useQueryClient();
+
+  const {mutate:loginfn,isPending} = useMutation({
+    mutationFn:async(formData) =>{
+        const  {data,success,message} = await postData('/api/auth/login',formData)
+        if(!success) throw new Error(message)
+        return data
+    },
+    onSuccess: () => {
+      setShowSuccess(true);
+      setFormData({email: '', password: ''});
+      queryClient.invalidateQueries(['user'])
+      setTimeout(onClose, 500);
+      navigate('/')
+    },
+    onError: (err) => {
+      console.error('Login failed:', err.message);
+      setError(err.message)
+    }
+  })
+
+
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -102,21 +79,7 @@ const LoginForm = ({ onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
-    try {
-      const response = await login(formData);
-      const { email } = response.user;
-      const teamName = email.split('@')[0]; // Extract team name from email
-      localStorage.setItem('teamName', teamName); // Store teamName in localStorage
-      setShowSuccess(true);
-      setTimeout(() => {
-        onSuccess();
-        onClose();
-        navigate('/'); // Navigate to home
-      }, 1500);
-    } catch (err) {
-      setError('Wrong email or password!');
-    }
+    loginfn(formData);
   };
 
   return (
@@ -156,9 +119,10 @@ const LoginForm = ({ onClose, onSuccess }) => {
         </div>
         <button
           type="submit"
+          disabled={isPending}
           className="w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-6 py-2 bg-white border-2 border-black text-black rounded-none font-['Press_Start_2P'] text-sm transform hover:-translate-y-1 transition duration-200 hover:bg-green-400/10"
         >
-          Login
+          {isPending ? 'Registering...' : 'Register'}
         </button>
       </form>
     </>
@@ -167,16 +131,37 @@ const LoginForm = ({ onClose, onSuccess }) => {
 
 const RegisterForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
-    username: '',
+    team_name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'user' // Default role
   });
+
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const {mutate:registerfn,isPending} = useMutation({
+    mutationFn:async(formData) =>{
+      const  {data,success,message} = await postData('/api/auth/signup',formData)
+      if(!success) throw new Error(message)
+      return data
+    },
+    onSuccess: () => {
+      setShowSuccess(true);
+      setFormData({ team_name: '', email: '', password: '', confirmPassword: '' });
+      queryClient.invalidateQueries(['user'])
+      setTimeout(onClose, 500);
+      navigate("/")
+    },
+    onError: (err) => {
+      console.error('Register failed:', err.message);
+      setError(err.message)
+    }
+  })
+
+
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
-  const [isFunPromptOpen, setIsFunPromptOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -194,36 +179,7 @@ const RegisterForm = ({ onClose }) => {
       return;
     }
 
-    try {
-      const signupData = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role
-      };
-      
-      await signup(signupData);
-
-      const teamName = formData.email.split('@')[0];
-      const teamData = {
-        name: teamName,
-        leader: formData.username
-      };
-      
-      await createTeam(teamData);
-      localStorage.setItem('teamName', teamName);
-
-      setShowSuccess(true);
-      setIsFunPromptOpen(true); // Open the fun prompt modal
-    } catch (err) {
-      console.error('Registration error:', err);
-      setError('Registration failed! Try again.');
-    }
-  };
-
-  const handleFunSubmit = () => {
-    setIsFunPromptOpen(false);
-    navigate('/');
+    registerfn(formData)
   };
 
   return (
@@ -236,13 +192,13 @@ const RegisterForm = ({ onClose }) => {
           <div className="bg-white border-2 border-black p-2 text-red-500 text-xs text-center font-['Press_Start_2P']">{error}</div>
         )}
         <div className="space-y-2">
-          <Label htmlFor="username" className="font-['Press_Start_2P'] text-xs">Username</Label>
+          <Label htmlFor="username" className="font-['Press_Start_2P'] text-xs">Team Name</Label>
           <Input
-            id="username"
+            id="team_name"
             type="text"
-            name="username"
-            placeholder="Enter your username"
-            value={formData.username}
+            name="team_name"
+            placeholder="Enter your team_name"
+            value={formData.team_name}
             onChange={handleChange}
             required
             className="border-2 border-black focus:ring-2 focus:ring-green-400 font-['Press_Start_2P'] text-xs"
@@ -289,18 +245,13 @@ const RegisterForm = ({ onClose }) => {
         </div>
         <button
           type="submit"
+          disabled={isPending}
           className="w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-6 py-2 bg-white border-2 border-black text-black rounded-none font-['Press_Start_2P'] text-sm transform hover:-translate-y-1 transition duration-200 hover:bg-green-400/10"
         >
-          Register
+          {isPending ? 'Registering...' : 'Register'}
         </button>
       </form>
 
-      {/* Fun Prompt Modal */}
-      <FunPromptModal
-        isOpen={isFunPromptOpen}
-        onClose={() => setIsFunPromptOpen(false)}
-        onSubmit={handleFunSubmit}
-      />
     </>
   );
 };
