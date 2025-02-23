@@ -5,25 +5,29 @@ const Category = require('../models/category')
 const User = require('../models/User')
 
 
-const getQuestions = asyncHandler(async(req,res)=>{
-    const {category_name} = req.query;
-    queryObject = {}
-    if(category_name){
-        const category = await Category.findOne({category_name});
-        queryObject.category = category._id;
-    }
-    const questions = await Question.find(queryObject);
-    res.status(200).json(new ApiResponse(200,questions,"Questions Fetched"))
+const getQuestions = asyncHandler(async (req, res) => {
+    const questions = await Question.find();
+    res.status(200).json(new ApiResponse(200, questions, "Questions Fetched"))
 })
 
-const createQuestion = asyncHandler(async(req,res)=>{
-    const {category} = req.body
-    let newCategory = await Category.findOne({category_name:category})
-    if(!newCategory) newCategory = await Category.create({category_name:category})
-    
-    const question = await Question.create({...req.body,category:newCategory._id})
-    res.status(201).json(new ApiResponse(201,question,"Question Created"))
-})
+const createQuestion = asyncHandler(async (req, res) => {
+  const { category, title } = req.body;
+  let newCategory = await Category.findOne({ category_name: category });
+  if (!newCategory) {
+    newCategory = await Category.create({ category_name: category });
+  }
+  
+  // Check if a question with the same title in the same category already exists
+  const existingQuestion = await Question.findOne({ title, category: newCategory._id });
+  if (existingQuestion) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "Question already exists in this category"));
+  }
+  
+  const question = await Question.create({ ...req.body, category: newCategory._id });
+  res.status(201).json(new ApiResponse(201, question, "Question Created"));
+});
 
 const updateQuestion = asyncHandler(async(req,res)=>{
     const {category} = req.body;

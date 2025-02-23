@@ -5,6 +5,12 @@ const ApiResponse = require('../utils/ApiResponse')
 
 const signup = asyncHandler(async(req,res)=>{
     const user = await User.create(req.body)
+    req.session.user = {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role 
+    }
     res.status(201).json(new ApiResponse(201,user,"Registration successful"))
 })
 
@@ -24,6 +30,7 @@ const login = asyncHandler(async(req, res) => {
         id: user._id,
         email: user.email,
         username: user.username,
+        role: user.role
     }
     user.loggedCount = 1;
     await user.save();
@@ -38,7 +45,7 @@ const logout = asyncHandler(async(req, res) => {
         if (err) {
             throw new ApiError(500, "Error logging out")
         }
-        res.status(200).json(new ApiResponse(200,null,"Logged out successfully"))
+        res.status(200).json(new ApiResponse(200,null,"Logged out successfully"));
     })
 })
 

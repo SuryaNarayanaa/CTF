@@ -14,6 +14,7 @@ const authorizeRoles = (req,res,next) =>{
         next()
     }else
         throw new ApiError(401,"User is not authorized")
+
 }
 
   

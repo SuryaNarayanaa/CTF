@@ -53,7 +53,7 @@ app.use('/api/health-check',(req,res)=>{
 })
 
 app.use('/api/auth',authRouter)
-app.use('/api/admin',authenticateUser,authorizeRoles,adminRouter)
+app.use('/api/Admin',authenticateUser,authorizeRoles,adminRouter)
 app.use('/api/home',authenticateUser,homeRouter)
 app.use('/api/user',authenticateUser,userRouter)
 

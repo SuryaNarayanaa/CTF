@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Database, Trash2, AlertCircle } from 'lucide-react';
 
 const ViewQuestions = () => {
@@ -12,8 +11,9 @@ const ViewQuestions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get('/Admin/questions');
-        setQuestions(response.data);
+        const response = await fetch('/api/Admin/questions',{method:'GET',credentials:'include'});
+        const json=await response.json();
+        setQuestions(json.data);
       } catch (error) {
         setError("Error fetching questions");
       } finally {
@@ -32,7 +32,7 @@ const ViewQuestions = () => {
     if (!selectedQuestion) return;
 
     try {
-      await axios.delete(`/Admin/questions/${selectedQuestion._id}`);
+      await fetch(`/api/Admin/questions/${selectedQuestion._id}`,{method:'DELETE'});
       setQuestions(questions.filter((q) => q._id !== selectedQuestion._id));
       setSelectedQuestion(null);
       setShowDetails(false);

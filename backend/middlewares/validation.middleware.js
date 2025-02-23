@@ -41,7 +41,7 @@ const validateSignUp = withValidationResult([
     body('password').notEmpty().withMessage("password is required").
     isLength({min:5}).withMessage("paasword must be atleast 5 characters long"),
     body('role').custom(async(value)=>{
-        if(value == 'admin') throw new ApiError(401,"You don't have access for admin-login")
+         if(value == 'admin') throw new ApiError(401,"You don't have access for admin-login")
     })
 ])
 

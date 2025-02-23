@@ -9,6 +9,7 @@ const ctfQuestionSchema = new mongoose.Schema({
         type: String,
         required: [true,"Title is required"],
         trim:true,
+        unique:true
     },
     description: {
         type: String,

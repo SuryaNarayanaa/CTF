@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Shield, AlertTriangle } from 'lucide-react';
 
 const CreateQuestion = () => {
@@ -22,10 +21,25 @@ const CreateQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/Admin/questions', formData);
-      if (response.status === 201) {
-        alert("Question created successfully!");
-        setFormData({ category: '', title: '', description: '', points: '', answer: '', links: [''] });
+      const response = await fetch('/api/Admin/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+        credentials: 'include'
+      });
+      const result = await response.json();
+      if (result.success) {
+        alert(result.message || "Question created successfully!");
+        setFormData({
+          category: '',
+          title: '',
+          description: '',
+          points: '',
+          answer: '',
+          links: ['']
+        });
+      } else {
+        alert("Failed to create question: " + result.message);
       }
     } catch (error) {
       console.error("Error creating question:", error);

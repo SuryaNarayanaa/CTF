@@ -6,27 +6,37 @@ import GifElement from '../components/Gifelement';
 import { logout } from '../api/auth';
 import { AuthModal, LoginForm, RegisterForm } from '../components/authmodels';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery,useQueryClient } from 'react-query';
 
 
 
 const HomePage = () => {
   console.log("Rendering HomePage")
+  const queryClient = useQueryClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const navigate = useNavigate();
 
-  const data = useQuery({
+  const { data, error } = useQuery({
     queryKey:["user"],
-    queryFn:async()=>{
-      const response = await fetch("/api/user/getCurrentUser",{ credentials: 'include'})
-      const {data,success,message} =  await response.json()
-      if(!success) {
-          redirect('/')
+    queryFn: async () => {
+      const response = await fetch("/api/user/getCurrentUser", { 
+        method: 'GET', 
+        credentials: 'include'
+      });
+      if (response.status !== 200) {
+        // return null or throw an error so that react-query can mark this as a failure
+        return null;
       }
-      setIsLoggedIn(true)
-      return data;
+      const { data, success } = await response.json();
+      return success ? data : null;
+    },
+    onSuccess: (data) => {
+      setIsLoggedIn(!!data);
+    },
+    onError: () => {
+      setIsLoggedIn(false);
     }
   })
 
@@ -35,6 +45,7 @@ const HomePage = () => {
     try {
       await logout();
       setIsLoggedIn(false);
+      queryClient.invalidateQueries(["user"]); // Invalidate user query so that it refetches
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);

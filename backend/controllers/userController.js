@@ -81,7 +81,7 @@ const getRank = asyncHandler(async (req, res) => {
 
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
-    const user = await User.findOneById(req.session.user.id);
+    const user = await User.findById(req.session.user.id);
     res.status(200).json(new ApiResponse(200,user,"User returned sucessfully"));
 })
 
