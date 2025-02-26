@@ -1,12 +1,11 @@
-let leaderboard = [];
-let rankMapping = {};
+const Leaderboard = require('../models/Leaderboard');
 
 // Binary search for insertion index in descending order
 const binarySearchInsertIndex = (arr, score, flag) => {
     let low = 0, high = arr.length;
     while (low < high) {
         const mid = Math.floor((low + high) / 2);
-        // Compare on score first then on flag
+        // If the entry at mid has lower score or same score but lower flag, search left.
         if (arr[mid].score < score || (arr[mid].score === score && arr[mid].flag < flag)) {
             high = mid;
         } else {
@@ -16,40 +15,54 @@ const binarySearchInsertIndex = (arr, score, flag) => {
     return low;
 };
 
-// Update leaderboard for a given userId, score, team_name, and flag
-const updateLeaderboard = (userId, score, team_name, flag) => {
-    console.log("updateLeaderboard",userId, score, team_name, flag);
-    // Remove previous record for this user if exists
-    leaderboard = leaderboard.filter(entry => entry.userId !== userId);
-    // Use the binary search with flag as parameter to find the correct insertion index
-    const index = binarySearchInsertIndex(leaderboard, score, flag);
-    leaderboard.splice(index, 0, { userId, score, team_name, flag });
-
-    // Rebuild the rank mapping for modest leaderboard sizes:
-    leaderboard.forEach((entry, idx) => {
-        rankMapping[entry.userId] = idx + 1;
-    });
-
-    // Optionally, emit an io event here.
-};
-
-// Get the entire leaderboard with rank numbers (1-indexed)
-const getLeaderboard = () => {
-    return leaderboard.map((entry, index) => ({
+// Update the single stored leaderboard document using binary search
+const updateLeaderboard = async (userId, score, team_name, flag) => {
+    console.log("updateLeaderboard", userId, score, team_name, flag);
+    // Fetch the single leaderboard document; create if it does not exist.
+    let boardDoc = await Leaderboard.findOne();
+    if (!boardDoc) {
+        boardDoc = new Leaderboard({ entries: [] });
+    }
+    const entries = boardDoc.entries;
+    
+    // Remove the existing record for this user, if any.
+    const existingIndex = entries.findIndex(entry => entry.userId.toString() === userId);
+    if (existingIndex !== -1) {
+        entries.splice(existingIndex, 1);
+    }
+    
+    // Use binary search to find the insert index and insert the new record.
+    const insertIndex = binarySearchInsertIndex(entries, score, flag);
+    entries.splice(insertIndex, 0, { userId, team_name, score, flag });
+    
+    // Save the document.
+    await boardDoc.save();
+    
+    // Optionally, you can log or return the updated leaderboard.
+    const rankedLeaderboard = entries.map((entry, idx) => ({
+        userId: entry.userId,
         team_name: entry.team_name,
         score: entry.score,
         flag: entry.flag,
-        rank: index + 1
+        rank: idx + 1
     }));
+    console.log("Updated Leaderboard:", rankedLeaderboard);
 };
 
-// Get individual user's rank (O(1) lookup)
-const getRankForUser = (userId) => {
-    return rankMapping[userId] || 0;
+// Return the sorted leaderboard array (with rank computed)
+const getLeaderboard = async () => {
+    const boardDoc = await Leaderboard.findOne();
+    if (!boardDoc) return [];
+    return boardDoc.entries.map((entry, idx) => ({
+        userId: entry.userId,
+        team_name: entry.team_name,
+        score: entry.score,
+        flag: entry.flag,
+        rank: idx + 1
+    }));
 };
 
 module.exports = {
     updateLeaderboard,
-    getLeaderboard,
-    getRankForUser
+    getLeaderboard
 };

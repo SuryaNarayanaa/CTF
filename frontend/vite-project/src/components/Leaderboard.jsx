@@ -6,11 +6,12 @@ const Leaderboard = () => {
     const [leaderboard, setLeaderboard] = useState([]);
 
     useEffect(() => {
+        // Initial fetch from the API
         const fetchLeaderboard = async () => {
             try {
                 const data = await getLeaderboard();
                 setLeaderboard(data);
-                console.log(data);
+                console.log("Initial leaderboard:", data);
             } catch (error) {
                 console.error('Error fetching leaderboard:', error);
             }
@@ -32,9 +33,9 @@ const Leaderboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {leaderboard.map((entry, index) => (
-                            <tr key={entry.team_name}>
-                                <td className="retro-cell">{index + 1}</td>
+                        {leaderboard.map((entry) => (
+                            <tr key={entry.userId}>
+                                <td className="retro-cell">{entry.rank}</td>
                                 <td className="retro-cell">{entry.team_name}</td>
                                 <td className="retro-cell">{entry.flag}</td>
                                 <td className="retro-cell">{entry.score}</td>

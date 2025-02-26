@@ -1,4 +1,3 @@
-
 // Vite automatically loads env variables prefixed with VITE_
 
 export const getLeaderboard = async () => {
@@ -12,7 +11,7 @@ export const getLeaderboard = async () => {
         });
         const result = await response.json();
         if (result.success) {
-            return result.data;  // Ensure this is an array or adjust accordingly
+            return result.data;
         } else {
             throw new Error(result.message);
         }
