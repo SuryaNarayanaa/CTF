@@ -10,7 +10,7 @@ const LeaderboardItemSchema = new mongoose.Schema({
 const LeaderboardSchema = new mongoose.Schema({
     entries: {
         type: [LeaderboardItemSchema],
-        default: []
+        default:[]
     }
 });
 

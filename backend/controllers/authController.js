@@ -25,22 +25,17 @@ const login = asyncHandler(async(req, res) => {
     if (!isMatch) {
         throw new ApiError(404, "Invalid credentials")
     }
-    if(user.loggedCount > 0) throw new ApiError(401,"team_member is already logged in")
     req.session.user = {
         id: user._id,
         email: user.email,
         username: user.username,
         role: user.role
     }
-    user.loggedCount = 1;
     await user.save();
     res.status(200).json(new ApiResponse(200, user,"User logged in"))
 })
 
 const logout = asyncHandler(async(req, res) => {
-    const user = await User.findById(req.session.user.id);
-    user.loggedCount = 0;
-    await user.save();
     req.session.destroy(err => {
         if (err) {
             throw new ApiError(500, "Error logging out")

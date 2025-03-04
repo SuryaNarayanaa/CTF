@@ -22,12 +22,11 @@ const submitAnswer = asyncHandler(async (req, res) => {
     const { question_id, answer } = req.body;
     const { id: user_id } = req.session.user;
     const question =  await Question.findById(question_id)
-    // Retrieve the question details
+
     if (!question) {
         throw new ApiError(404, 'Question not found');
     }
 
-    // Check if the submission already exists
     let submission = await CtfSubmission.findOne({ user_id, question: question_id });
     const isCorrect = question.answer === answer; // Assuming correctAnswer field exists
 
@@ -55,17 +54,14 @@ const submitAnswer = asyncHandler(async (req, res) => {
             user.solved[question_id] = true;
             await user.save();
 
-            // Update the shared leaderboard (in-memory sorted array)
-            updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
-            // Optionally, broadcast the updated leaderboard via WebSocket here.
+            await updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
         }
     }else{
         const user = await User.findById(user_id);
         if (user) {
-            // Update user's score and flag
-            user.score -=10;
+            user.score -= 10;
             await user.save();
-            updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
+            await updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
     }
 }
 

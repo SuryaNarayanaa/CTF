@@ -3,6 +3,8 @@ const session = require('express-session')
 const path = require('path')
 const cors = require('cors')
 const morgan = require('morgan')
+const http = require('http')
+const socket = require('socket.io')
 const MongoDbStore = require('connect-mongodb-session')(session)
 require('dotenv').config()
 const { getLeaderboard } = require('./utils/leaderboardstore.js');
@@ -16,7 +18,7 @@ const {authenticateUser,authorizeRoles} = require('./middlewares/authprovider.js
 const errorHandler = require('./middlewares/errorHandler')
 
 const app = express()
-const corsOprtions = {
+const corsOptions = {
     origin: ['https://ctf.cseatheeye.com','https://hidden-x.onrender.com', 'https://hidden-x.vercel.app', 'http://localhost:5173'], // Exact frontend URLs
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
     credentials: true // Allow cookies and credentials
@@ -38,7 +40,7 @@ const sessionOptions = {
 
 
 /**middlewares setup*/
-app.use(cors(corsOprtions))
+//app.use(cors(corsOprtions))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
@@ -61,5 +63,24 @@ app.use('/api/user',authenticateUser,userRouter)
 app.use(errorHandler)
 
 
-module.exports = {app}
+/**Socket setup */
+const server = http.createServer(app);
+const io = socket(server,{cors:corsOptions})
+
+io.on("connection", (socket) => {
+    console.log("New client connected:", socket.id);
+    
+    socket.on("disconnect", () => {
+      console.log("Client disconnected:", socket.id);
+    });
+});
+
+global.io = io;
+app.use((req, res, next) => {
+    req.io = global.io;
+    next();
+});
+
+
+module.exports = {app,server}
 
