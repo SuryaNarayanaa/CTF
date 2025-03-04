@@ -26,14 +26,14 @@ const HomePage = () => {
         credentials: 'include'
       });
       if (response.status !== 200) {
-        // return null or throw an error so that react-query can mark this as a failure
         return null;
       }
       const { data, success } = await response.json();
+      if(!success)
       return success ? data : null;
     },
     onSuccess: (data) => {
-      setIsLoggedIn(!!data);
+      setIsLoggedIn(true);
     },
     onError: () => {
       setIsLoggedIn(false);
@@ -54,6 +54,7 @@ const HomePage = () => {
 
   return (
     <>
+
       <div className="">
         <img 
           src="LOGO.gif"

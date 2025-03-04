@@ -16,7 +16,6 @@ const {authenticateUser,authorizeRoles} = require('./middlewares/authprovider.js
 const errorHandler = require('./middlewares/errorHandler')
 
 const app = express()
-console.log(getLeaderboard());
 const corsOprtions = {
     origin: ['https://ctf.cseatheeye.com','https://hidden-x.onrender.com', 'https://hidden-x.vercel.app', 'http://localhost:5173'], // Exact frontend URLs
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
@@ -57,9 +56,6 @@ app.use('/api/auth',authRouter)
 app.use('/api/Admin',authenticateUser,authorizeRoles,adminRouter)
 app.use('/api/home',authenticateUser,homeRouter)
 app.use('/api/user',authenticateUser,userRouter)
-
-
-
 
 
 app.use(errorHandler)
