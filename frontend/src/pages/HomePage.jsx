@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate,useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { Boxes } from '../components/ui/background-boxes';
 import '../styles/HomePage.css';
@@ -9,11 +9,11 @@ import { AuthModal } from '../components/auth/AuthModal';
 import { LoginForm } from '../components/auth/LoginForm.jsx';
 import { RegisterForm } from '../components/auth/RegisterForm.jsx';
 
-
-export const loader = (queryClient) => async() =>{
+export const loader = (queryClient) => async () => {
   return queryClient.fetchQuery("user", async () => {
-    const response = await fetch("/back/user/getCurrentUser", { 
-      method: "GET", 
+    console.log("Fetching user data in homeLoader");
+    const response = await fetch("/back/user/getCurrentUser", {
+      method: "GET",
       credentials: "include"
     });
     if (!response.ok) {
@@ -22,8 +22,7 @@ export const loader = (queryClient) => async() =>{
     const result = await response.json();
     return result.success ? result.data : null;
   });
-}
-
+};
 
 const HomePage = () => {
   console.log("Rendering HomePage");
@@ -34,21 +33,19 @@ const HomePage = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const navigate = useNavigate();
 
-
-
-  const { data, error,isLoading } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       try {
-        const response = await fetch("/back/user/getCurrentUser", { 
-          method: 'GET', 
+        const response = await fetch("/back/user/getCurrentUser", {
+          method: 'GET',
           credentials: 'include'
         });
-        
+
         if (!response.ok) {
           return null;
         }
-        
+
         const result = await response.json();
         console.log("User data received:", result);
         return result.success ? result.data : null;
@@ -69,7 +66,7 @@ const HomePage = () => {
     },
     retry: 1,
     refetchOnWindowFocus: false,
-    staleTime: 300000 // 5 minutes
+    staleTime: 300000
   });
 
   useEffect(() => {
@@ -92,55 +89,55 @@ const HomePage = () => {
     }
   };
 
-  if(isLoading) return <></>
+  if (isLoading) return <></>;
 
   return (
     <>
       <div className="">
-        <img 
+        <img
           src="LOGO.gif"
           alt="Flag Logo"
           className="absolute"
           style={{
-            top: '31%', 
+            top: '31%',
             left: '50%',
-            transform: 'translate(-50%, -35%)', 
-            height: '37%', 
-            width: 'auto', 
-            maxHeight: '100%', 
-            maxWidth: '100%', 
+            transform: 'translate(-50%, -35%)',
+            height: '37%',
+            width: 'auto',
+            maxHeight: '100%',
+            maxWidth: '100%',
           }}
         />
       </div>
-      
+
       <div className="flex items-center justify-center min-h-screen">
         <div className="absolute z-1/2">
           <Boxes />
         </div>
       </div>
-  
+
       <div className="absolute transform -translate-x-1/2 flex space-x-4 z-10"
         style={{
-          top: '58%', 
+          top: '58%',
           left: '50%',
-          transform: 'translate(-50%, -35%)', 
-          maxHeight: '100%', 
-          maxWidth: '100%', 
+          transform: 'translate(-50%, -35%)',
+          maxHeight: '100%',
+          maxWidth: '100%',
         }}>
         <div className="cta-buttons">
           {isLoggedIn ? (
             <>
-              <button 
+              <button
                 onClick={handleLogout}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Log Out
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/leaderboard')}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 → Leaderboard
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/challenges')}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 → Challenges
@@ -148,13 +145,19 @@ const HomePage = () => {
             </>
           ) : (
             <>
-              <button 
-                onClick={() => setShowLoginModal(true)}
+              <button
+                onClick={() => {
+                  console.log("Opening login modal");
+                  setShowLoginModal(true);
+                }}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Login
               </button>
-              <button 
-                onClick={() => setShowRegisterModal(true)}
+              <button
+                onClick={() => {
+                  console.log("Opening register modal");
+                  setShowRegisterModal(true);
+                }}
                 className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']">
                 Register
               </button>
@@ -163,38 +166,38 @@ const HomePage = () => {
         </div>
       </div>
 
-      <AuthModal 
-        isOpen={showLoginModal} 
+      <AuthModal
+        isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         title="Login"
       >
-        <LoginForm 
+        <LoginForm
           onClose={() => setShowLoginModal(false)}
         />
       </AuthModal>
 
-      <AuthModal 
-        isOpen={showRegisterModal} 
+      <AuthModal
+        isOpen={showRegisterModal}
         onClose={() => setShowRegisterModal(false)}
         title="Register"
       >
-        <RegisterForm 
+        <RegisterForm
           onClose={() => setShowRegisterModal(false)}
         />
       </AuthModal>
 
-      <GifElement 
-        position="top-right" 
-        path="GLITCH.gif" 
+      <GifElement
+        position="top-right"
+        path="GLITCH.gif"
       />
 
-      <GifElement 
-        position="top-left" 
-        path="GLITCH-2.gif" 
+      <GifElement
+        position="top-left"
+        path="GLITCH-2.gif"
       />
-      <GifElement 
-        position="bottom-right" 
-        path="GLITCH-3.gif" 
+      <GifElement
+        position="bottom-right"
+        path="GLITCH-3.gif"
       />
     </>
   );

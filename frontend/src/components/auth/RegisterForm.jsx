@@ -17,6 +17,9 @@ const RegisterForm = ({ onClose }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const {mutate: registerfn, isPending} = useMutation({
     mutationFn: async(formData) => {
       const {data, success, message} = await postData('/back/auth/signup', formData);
@@ -36,9 +39,7 @@ const RegisterForm = ({ onClose }) => {
     }
   });
 
-  const [error, setError] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false);
-
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -125,7 +126,6 @@ const RegisterForm = ({ onClose }) => {
           className="w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-6 py-2 bg-white border-2 border-black text-black rounded-none font-['Press_Start_2P'] text-sm transform hover:-translate-y-1 transition duration-200 hover:bg-green-400/10"
         >
           {isPending ? 'Registering...' : 'Register'}
-          {onClose()}
         </button>
       </form>
     </>

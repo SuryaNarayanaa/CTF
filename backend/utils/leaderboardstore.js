@@ -1,6 +1,6 @@
 const Leaderboard = require('../models/Leaderboard');
 
-// Binary search for insertion index in descending order
+
 const binarySearchInsertIndex = (arr, score, flag) => {
     let low = 0, high = arr.length;
     while (low < high) {
