@@ -16,12 +16,11 @@ const binarySearchInsertIndex = (arr, score, flag) => {
 
 const updateLeaderboard = async (userId, score, team_name, flag) => {
     console.log("updateLeaderboard", userId, score, team_name, flag);
-    let boardDoc = await Leaderboard.findOne({userId,team_name});
+    let boardDoc = await Leaderboard.findOne();
     if (!boardDoc) {
         boardDoc = new Leaderboard({ entries: [] });
     }
     const entries = boardDoc.entries;
-    
     const existingIndex = entries.findIndex(entry => entry.userId.toString() === userId);
     if (existingIndex !== -1) {
         entries.splice(existingIndex, 1);
@@ -32,8 +31,6 @@ const updateLeaderboard = async (userId, score, team_name, flag) => {
     
 
     await boardDoc.save();
-    
-
     const rankedLeaderboard = entries.map((entry, idx) => ({
         userId: entry.userId,
         team_name: entry.team_name,
