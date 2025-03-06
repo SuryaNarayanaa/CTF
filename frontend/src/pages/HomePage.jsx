@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLoaderData } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Boxes } from '../components/ui/background-boxes';
 import '../styles/HomePage.css';
 import GifElement from '../components/ui/GifElement';
@@ -9,19 +9,28 @@ import { AuthModal } from '../components/auth/AuthModal';
 import { LoginForm } from '../components/auth/LoginForm.jsx';
 import { RegisterForm } from '../components/auth/RegisterForm.jsx';
 
-export const loader = (queryClient) => async () => {
-  return queryClient.fetchQuery("user", async () => {
-    console.log("Fetching user data in homeLoader");
+const userQueryFn = async () => {
+  try {
     const response = await fetch("/back/user/getCurrentUser", {
-      method: "GET",
-      credentials: "include"
+      method: 'GET',
+      credentials: 'include'
     });
+
     if (!response.ok) {
       return null;
     }
+
     const result = await response.json();
+    console.log("User data received:", result);
     return result.success ? result.data : null;
-  });
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    return null;
+  }
+}
+
+export const loader = (queryClient) => async () => {
+  return queryClient.ensureQueryData({queryKey:["user"], queryFn:userQueryFn});
 };
 
 const HomePage = () => {
@@ -35,25 +44,7 @@ const HomePage = () => {
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["user"],
-    queryFn: async () => {
-      try {
-        const response = await fetch("/back/user/getCurrentUser", {
-          method: 'GET',
-          credentials: 'include'
-        });
-
-        if (!response.ok) {
-          return null;
-        }
-
-        const result = await response.json();
-        console.log("User data received:", result);
-        return result.success ? result.data : null;
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        return null;
-      }
-    },
+    queryFn: userQueryFn,
     onSuccess: (data) => {
       if (data) {
         setIsLoggedIn(true);
@@ -71,7 +62,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (loaderUser) {
-      queryClient.setQueryData("user", loaderUser);
+      queryClient.setQueryData(["user"], loaderUser);
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);

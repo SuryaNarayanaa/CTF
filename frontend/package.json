@@ -12,6 +12,8 @@
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",
     "@tabler/icons-react": "^3.21.0",
+    "@tanstack/react-query": "^5.67.1",
+    "@tanstack/react-query-devtools": "^5.67.1",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",

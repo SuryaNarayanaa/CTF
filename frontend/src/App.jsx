@@ -6,7 +6,8 @@ import QuestionPage from './pages/QuestionPage';
 import MainLayout from './pages/MainLayout';
 import ProtectedLayout from './pages/Protectedlayout';
 import {loader as homeloader} from './pages/HomePage'
-import {QueryClient,QueryClientProvider} from 'react-query'
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import './index.css';
 
 
@@ -17,7 +18,7 @@ const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<MainLayout />}>
     <Route index element={<HomePage />} loader={homeloader(queryClient)} />
     <Route  path='' element={<ProtectedLayout />}>
-      <Route path="admin" element={<AdminPage />} />
+      <Route path="admin/*" element={<AdminPage />} />
       <Route path="leaderboard" element={<LeaderboardPage />} />
       <Route path="challenges" element={<QuestionPage />} />
     </Route>
@@ -31,6 +32,7 @@ const App = () => {
    return (
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router}/>
+        <ReactQueryDevtools initialIsOpen={true}/>
       </QueryClientProvider>
    )
 };
