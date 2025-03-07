@@ -3,11 +3,10 @@ import '../styles/QuestionPage.css';
 import Header from '../components/Header';
 import ScoreboardBanner from '../components/ScoreboardBanner';
 import ChallengesBanner from '../components/ChallengesBanner';
-import { useOutletContext } from 'react-router-dom';
 
 
 const QuestionPage = () => {
-    const user = useOutletContext();
+    const [userData, setUserData] = useState({team_name: '',flag: 0,score: 0});
     const [categories, setCategories] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -18,7 +17,7 @@ const QuestionPage = () => {
     const [answeredQuestions, setAnsweredQuestions] = useState({});
     const [categoryLoading,setCategoryLoading] = useState(false);
 
-    console.log(user);
+
 
     const loadInitialData = async () => {
         try {
@@ -53,6 +52,25 @@ const QuestionPage = () => {
         loadInitialData();
     }, []);
     
+    useEffect(() => {
+        const fetchUserData = async () => {
+          try {
+            const response = await fetch('/back/user/getCurrentUser', {
+              credentials: 'include'
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+              console.log("Fetched user data:", result.data);
+              setUserData(result.data);
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+        
+        fetchUserData();
+      }, []);
 
     const handleCategoryClick = async (category) => {
         console.log(categories);
@@ -127,9 +145,8 @@ const QuestionPage = () => {
     return (
         <div className="question-page">
             <div className="top-space">
-                <Header team_name = {user?.team_name}/>
-            </div>
-    
+            <Header team_name={userData?.team_name} flags={userData?.flag} points={userData?.score} userId={userData?._id} />
+            </div>    
             <div className="main-content">
                 <div className="left-space">
                     <ChallengesBanner />
