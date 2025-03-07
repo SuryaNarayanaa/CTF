@@ -26,34 +26,32 @@
 /* In your HomePage.css or a separate CSS file */
 .gif-element {
     position: absolute; /* Use absolute positioning */
+    width: clamp(250px, 100vw, 120px); /* Min 70px, max 120px, 10% of viewport width */
+    height: clamp(250px, 100vw, 120px);
+    z-index: 10;
 }
 
-/* Existing positions */
-.gif-element.top-right {
-    top: -5%; /* Adjust as necessary */
-    right: -5%; /* Adjust as necessary */
-    transform: rotate(18deg) scale(0.8);
-    
-}
 
-.gif-element.top-left {
-    top: -2%; /* Adjust as necessary */
-    left: -2%; /* Adjust as necessary */
-    transform: rotate(-1deg) scale(.9);
-
-}
-
-/* New positions */
-.gif-element.bottom-left {
-    bottom: 20px; /* Adjust as necessary */
-    left: 20px; /* Adjust as necessary */
-
-}
-
-.gif-element.bottom-right {
-    bottom:2%; /* Adjust as necessary */
-    right:-6%; /* Adjust as necessary */
-
-    transform: rotate(46deg) scale(0.8);
-
-}
+  
+  .top-left {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .top-right {
+    top: 20px;
+    right: 20px;
+    transform: rotate(90deg);
+    width:clamp(200px, 100vw, 120px) ;
+    height: clamp(200px, 100vw, 120px);
+  }
+  
+  .bottom-left {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }

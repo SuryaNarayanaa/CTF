@@ -146,3 +146,10 @@
   padding-top: 16px;
   border-top: 1px solid #f0f0f0;
 }
+
+.points-container {
+  font-family: 'Press Start 2P', cursive; 
+  margin-top: 5px;
+  font-size: medium;
+  font-weight: 500;
+}

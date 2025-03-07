@@ -146,12 +146,15 @@
   color: black;
   border: none;
   border-bottom: 2px solid black;
-  padding: 15px 10px;
+  padding: 40px 50px;
   margin: 0;
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.2em;
   text-align: center; /* Align items to the left */
   border-radius: 0;
+  font-weight: semi-bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 
