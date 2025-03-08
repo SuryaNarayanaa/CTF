@@ -1,26 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Header.css';
 import MouseTracker from './ui/MouseTracker';
+import io from 'socket.io-client';
 
-const Modal = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
-  
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>{title}</h2>
-          <button className="modal-close" onClick={onClose}>×</button>
-        </div>
-        <div className="modal-body">{children}</div>
-      </div>
-    </div>
-  );
-};
+const socket = io('http://localhost:3000', { transports: ['websocket'], autoConnect: true });
 
-const Header = ({team_name, flags = 0, points = 0, userId}) => {
+const Header = ({ team_name, userId }) => {
   const teamName = team_name || "TeamName";
-  const rank = 0;  //rank logic yet to implement
+
+  // Retrieve stored values from localStorage on mount
+  const [rank, setRank] = useState(() => localStorage.getItem(`rank_${userId}`) || "-");
+  const [flags, setFlags] = useState(() => Number(localStorage.getItem(`flags_${userId}`)) || 0);
+
+  useEffect(() => {
+    // Ensure rank and flags are updated on component mount
+    setRank(localStorage.getItem(`rank_${userId}`) || "-");
+    setFlags(Number(localStorage.getItem(`flags_${userId}`)) || 0);
+
+    const handleUserRank = (userrank) => {
+      console.log("Leaderboard update received:", userrank);
+
+      if (userrank.userId === userId) {
+        setRank(userrank.rank);
+        setFlags(userrank.flag);
+
+        // Store updated values in localStorage
+        localStorage.setItem(`rank_${userId}`, userrank.rank);
+        localStorage.setItem(`flags_${userId}`, userrank.flag);
+      }
+    };
+
+    socket.on('Userrank', handleUserRank);
+
+    return () => {
+      socket.off('Userrank', handleUserRank);
+    };
+  }, [userId]); // Runs again only if userId changes
 
   return (
     <>
@@ -64,7 +79,7 @@ const Header = ({team_name, flags = 0, points = 0, userId}) => {
           <MouseTracker />
           <div className="points-container" style={{ marginLeft: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
             <h5>Flags: {flags}</h5>
-            <h5>Rank: {rank === 0 ? "-" : rank}</h5>
+            <h5>Rank: {rank}</h5>
           </div>
         </div>
       </div>

@@ -42,6 +42,7 @@ const updateLeaderboard = async (userId, score, team_name, flag) => {
 
     if (global.io) {
         global.io.emit('leaderboardUpdated', rankedLeaderboard);
+        global.io.emit("Userrank",rankedLeaderboard[insertIndex]);
     } else {
         console.error("Socket.io not initialized, cannot emit leaderboard update");
     }

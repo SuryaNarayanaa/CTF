@@ -48,11 +48,9 @@ const QuestionPage = () => {
         }
     };
 
-    useEffect(() => {
-        loadInitialData();
-    }, []);
     
     useEffect(() => {
+        loadInitialData();
         const fetchUserData = async () => {
           try {
             const response = await fetch('/back/user/getCurrentUser', {
@@ -166,7 +164,7 @@ const QuestionPage = () => {
                                 </button>
                             ))}
                         </div>
-       
+      
     
                         <div className="tab-2">
                         <div className="questions-list">
