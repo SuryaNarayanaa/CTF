@@ -1,54 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Database, Trash2, AlertCircle } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedQuestion, setShowDetails, resetSelectedQuestion } from '../../redux/slices/adminQuestionSlice';
+
+const fetchQuestions = async () => {
+  const response = await fetch('/back/Admin/questions', { 
+    method: 'GET', 
+    credentials: 'include' 
+  });
+  const json = await response.json();
+  if (!json.success) {
+    throw new Error(json.message || 'Error fetching questions');
+  }
+  return json.data;
+};
 
 const ViewQuestions = () => {
-  const [questions, setQuestions] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [showDetails, setShowDetails] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const { selectedQuestion, showDetails } = useSelector((state) => state.adminQuestions);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch('/api/Admin/questions',{method:'GET',credentials:'include'});
-        const json=await response.json();
-        setQuestions(json.data);
-      } catch (error) {
-        setError("Error fetching questions");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
-  }, []);
+  const { data: questions, isLoading, error } = useQuery({
+    queryKey:['adminQuestions'], 
+    queryFn:fetchQuestions,
+    staleTime: 300000,
+  });
 
   const handleSelectQuestion = (question) => {
-    setSelectedQuestion(question);
-    setShowDetails(true);
+    dispatch(setSelectedQuestion(question));
+    dispatch(setShowDetails(true));
   };
 
   const handleDeleteQuestion = async () => {
     if (!selectedQuestion) return;
-
     try {
-      await fetch(`/back/Admin/questions/${selectedQuestion._id}`,{method:'DELETE'});
-      setQuestions(questions.filter((q) => q._id !== selectedQuestion._id));
-      setSelectedQuestion(null);
-      setShowDetails(false);
+      const response = await fetch(`/back/Admin/questions/${selectedQuestion._id}`, { 
+        method: 'DELETE', 
+        credentials: 'include' 
+      });
+      const result = await response.json();
+      if (result.success) {
+        // Invalidate the query to refetch updated questions
+        queryClient.invalidateQueries(['adminQuestions']);
+        dispatch(resetSelectedQuestion());
 
-      // Toast notification instead of alert
-      const notification = document.createElement('div');
-      notification.className = 'fixed bottom-4 right-4 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg';
-      notification.textContent = 'Question deleted successfully';
-      document.body.appendChild(notification);
-      setTimeout(() => notification.remove(), 3000);
+        // Optional: Show a toast notification
+        const notification = document.createElement('div');
+        notification.className = 'fixed bottom-4 right-4 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg';
+        notification.textContent = 'Question deleted successfully';
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      } else {
+        throw new Error(result.message);
+      }
     } catch (error) {
       console.error("Error deleting question:", error);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12 text-gray-500">
         <div className="loader"></div>
@@ -61,7 +72,7 @@ const ViewQuestions = () => {
     return (
       <div className="flex items-center justify-center py-12 text-red-500">
         <AlertCircle className="w-12 h-12 mb-4" />
-        <p className="text-lg font-medium">{error}</p>
+        <p className="text-lg font-medium">{error.message}</p>
       </div>
     );
   }
@@ -89,7 +100,7 @@ const ViewQuestions = () => {
               key={question._id}
               onClick={() => handleSelectQuestion(question)}
               className="bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 
-                       hover:border-emerald-400 transition-all duration-200 cursor-pointer"
+                         hover:border-emerald-400 transition-all duration-200 cursor-pointer"
             >
               <div className="p-4">
                 {/* Question Header */}
@@ -108,7 +119,6 @@ const ViewQuestions = () => {
                     </span>
                   </div>
                 </div>
-
                 {/* Question Description */}
                 <p className="text-sm text-gray-600 line-clamp-2">
                   {question.description}
@@ -130,7 +140,7 @@ const ViewQuestions = () => {
                   Question Details
                 </h3>
                 <button
-                  onClick={() => setShowDetails(false)}
+                  onClick={() => dispatch(setShowDetails(false))}
                   className="text-gray-400 hover:text-gray-500 transition-colors"
                 >
                   <span className="sr-only">Close</span>
@@ -146,27 +156,22 @@ const ViewQuestions = () => {
                   <h4 className="text-sm font-medium text-gray-500">Title</h4>
                   <p className="mt-1 text-sm text-gray-900">{selectedQuestion.title}</p>
                 </div>
-                
                 <div>
                   <h4 className="text-sm font-medium text-gray-500">Category</h4>
                   <p className="mt-1 text-sm text-gray-900">{selectedQuestion.category}</p>
                 </div>
-
                 <div>
                   <h4 className="text-sm font-medium text-gray-500">Description</h4>
                   <p className="mt-1 text-sm text-gray-900">{selectedQuestion.description}</p>
                 </div>
-
                 <div>
                   <h4 className="text-sm font-medium text-gray-500">Points</h4>
                   <p className="mt-1 text-sm text-gray-900">{selectedQuestion.points}</p>
                 </div>
-
                 <div>
                   <h4 className="text-sm font-medium text-gray-500">Answer</h4>
                   <p className="mt-1 text-sm text-gray-900">{selectedQuestion.answer}</p>
                 </div>
-
                 {selectedQuestion.links?.length > 0 && (
                   <div>
                     <h4 className="text-sm font-medium text-gray-500">Resource Links</h4>
@@ -184,16 +189,16 @@ const ViewQuestions = () => {
               {/* Action Buttons */}
               <div className="mt-8 flex justify-end space-x-3">
                 <button
-                  onClick={() => setShowDetails(false)}
+                  onClick={() => dispatch(setShowDetails(false))}
                   className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md
-                           transition-colors duration-200 font-medium text-sm"
+                             transition-colors duration-200 font-medium text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDeleteQuestion}
                   className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md
-                           transition-colors duration-200 font-medium text-sm flex items-center"
+                             transition-colors duration-200 font-medium text-sm flex items-center"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
                   Delete Question

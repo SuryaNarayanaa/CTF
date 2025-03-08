@@ -51,7 +51,7 @@ const submitAnswer = asyncHandler(async (req, res) => {
             // Update user's score and flag
             user.score += question.points;
             user.flag += 1;
-            user.solved[question_id] = true;
+            user.solved = {...user.solved,[`${question_id}`]:true}
             await user.save();
 
             await updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
@@ -85,7 +85,7 @@ const getRank = asyncHandler(async (req, res) => {
     const { id: user_id } = req.session.user;
     const user = await User.findById(user_id);
     const score = user ? user.score : 0;
-    const rank = getRankForUser(user_id.toString());
+    const rank = await getRankForUser(user_id.toString());
     res.status(200).json(new ApiResponse(200, { rank, score }, "User rank and score fetched"));
 });
 

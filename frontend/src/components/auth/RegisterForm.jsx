@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { postData } from '../../utils/customFetch';
 import { SuccessMessage } from './SuccessMessage';
+import { login } from '../../redux/slices/authSlice';
 
 const RegisterForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -13,20 +15,20 @@ const RegisterForm = ({ onClose }) => {
     password: '',
     confirmPassword: '',
   });
-
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
-  const {mutate: registerfn, isPending} = useMutation({
-    mutationFn: async(formData) => {
-      const {data, success, message} = await postData('/back/auth/signup', formData);
-      if(!success) throw new Error(message);
+  const { mutate: registerfn, isPending } = useMutation({
+    mutationFn: async (formData) => {
+      const { data, success, message } = await postData('/back/auth/signup', formData);
+      if (!success) throw new Error(message);
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      dispatch(login(data));
       setShowSuccess(true);
       setFormData({ team_name: '', email: '', password: '', confirmPassword: '' });
       queryClient.invalidateQueries(['user']);
@@ -39,23 +41,17 @@ const RegisterForm = ({ onClose }) => {
     }
   });
 
-  
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
-
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match!');
       return;
     }
-
     registerfn(formData);
   };
 
@@ -66,7 +62,9 @@ const RegisterForm = ({ onClose }) => {
       )}
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-white border-2 border-black p-2 text-red-500 text-xs text-center font-['Press_Start_2P']">{error}</div>
+          <div className="bg-white border-2 border-black p-2 text-red-500 text-xs text-center font-['Press_Start_2P']">
+            {error}
+          </div>
         )}
         <div className="space-y-2">
           <Label htmlFor="username" className="font-['Press_Start_2P'] text-xs">Team Name</Label>
@@ -74,7 +72,7 @@ const RegisterForm = ({ onClose }) => {
             id="team_name"
             type="text"
             name="team_name"
-            placeholder="Enter your team_name"
+            placeholder="Enter your team name"
             value={formData.team_name}
             onChange={handleChange}
             required

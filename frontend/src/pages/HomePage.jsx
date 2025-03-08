@@ -1,13 +1,18 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Boxes } from '../components/ui/background-boxes';
 import '../styles/HomePage.css';
 import GifElement from '../components/ui/GifElement';
-import { logout } from '../api/auth';
+import { logout as logoutAPI } from '../api/auth';
 import { AuthModal } from '../components/auth/AuthModal';
 import { LoginForm } from '../components/auth/LoginForm.jsx';
 import { RegisterForm } from '../components/auth/RegisterForm.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout } from '../redux/slices/authSlice';
+
 
 const userQueryFn = async () => {
   try {
@@ -15,11 +20,7 @@ const userQueryFn = async () => {
       method: 'GET',
       credentials: 'include'
     });
-
-    if (!response.ok) {
-      return null;
-    }
-
+    if (!response.ok) return null;
     const result = await response.json();
     console.log("User data received:", result);
     return result.success ? result.data : null;
@@ -27,58 +28,61 @@ const userQueryFn = async () => {
     console.error("Error fetching user:", err);
     return null;
   }
-}
+};
 
 export const loader = (queryClient) => async () => {
-  return queryClient.ensureQueryData({queryKey:["user"], queryFn:userQueryFn});
+  return queryClient.ensureQueryData({ queryKey: ["user"], queryFn: userQueryFn });
 };
 
 const HomePage = () => {
   console.log("Rendering HomePage");
-  const loaderUser = useLoaderData(); // Data fetched by homeLoader
+  const loaderUser = useLoaderData(); 
   const queryClient = useQueryClient();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showFaqOverlay, setShowFaqOverlay] = useState(false);
   const [showRulesOverlay, setShowRulesOverlay] = useState(false);
-  const navigate = useNavigate();
   const [expandedRulesQuestion, setExpandedRulesQuestion] = useState(null);
-const [expandedFaqQuestion, setExpandedFaqQuestion] = useState(null);
+  const [expandedFaqQuestion, setExpandedFaqQuestion] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.auth);
 
-  const { isLoading } = useQuery({
+  const { data:userData,isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: userQueryFn,
     onSuccess: (data) => {
       if (data) {
-        setIsLoggedIn(true);
+        dispatch(login(data));
       } else {
-        setIsLoggedIn(false);
+        dispatch(logout());
       }
     },
     onError: () => {
-      setIsLoggedIn(false);
+      dispatch(logout());
     },
     retry: 1,
     refetchOnWindowFocus: false,
     staleTime: 300000
   });
 
+  const isLoggedIn = Boolean(userData);
+
   useEffect(() => {
     if (loaderUser) {
       queryClient.setQueryData(["user"], loaderUser);
-      setIsLoggedIn(true);
+      dispatch(login(loaderUser));
     } else {
-      setIsLoggedIn(false);
+      dispatch(logout());
     }
-  }, [loaderUser, queryClient]);
+  }, [loaderUser, queryClient, dispatch]);
 
   const handleLogout = async () => {
     try {
-      await logout();
-      setIsLoggedIn(false);
-      queryClient.invalidateQueries(["user"]); // Invalidate user query to trigger new fetch
+      await logoutAPI();  
+      dispatch(logout());
+      queryClient.invalidateQueries(["user"]);
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
@@ -106,7 +110,7 @@ const [expandedFaqQuestion, setExpandedFaqQuestion] = useState(null);
         />
       </div>
 
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="absolute z-1/2">
           <Boxes />
         </div>
@@ -127,19 +131,19 @@ const [expandedFaqQuestion, setExpandedFaqQuestion] = useState(null);
             <>
               <button
                 onClick={handleLogout}
-                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-white border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
               >
                 Log Out
               </button>
               <button
                 onClick={() => navigate('/leaderboard')}
-                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-white border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
               >
                 → Leaderboard
               </button>
               <button
                 onClick={() => navigate('/challenges')}
-                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-white border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
               >
                 → Challenges
               </button>
@@ -148,19 +152,19 @@ const [expandedFaqQuestion, setExpandedFaqQuestion] = useState(null);
             <>
               <button
                 onClick={() => {
-                  console.log('Opening login modal');
+                  console.log("Opening login modal");
                   setShowLoginModal(true);
                 }}
-                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-white border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
               >
                 Login
               </button>
               <button
                 onClick={() => {
-                  console.log('Opening register modal');
+                  console.log("Opening register modal");
                   setShowRegisterModal(true);
                 }}
-                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-white border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
+                className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 font-['Press_Start_2P']"
               >
                 Register
               </button>

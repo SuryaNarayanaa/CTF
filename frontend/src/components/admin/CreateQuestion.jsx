@@ -57,9 +57,8 @@ const CreateQuestion = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Form Fields with Refined Styling */}
+        {/* Form Fields */}
         <div className="space-y-4">
-          {/* Category Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Category
@@ -75,8 +74,6 @@ const CreateQuestion = () => {
               placeholder="Enter category"
             />
           </div>
-
-          {/* Title Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Title
@@ -92,8 +89,6 @@ const CreateQuestion = () => {
               placeholder="Enter title"
             />
           </div>
-
-          {/* Description Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Description
@@ -108,8 +103,6 @@ const CreateQuestion = () => {
               placeholder="Enter description"
             ></textarea>
           </div>
-
-          {/* Points and Answer Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -126,7 +119,6 @@ const CreateQuestion = () => {
                 placeholder="Enter points"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Answer
@@ -143,8 +135,6 @@ const CreateQuestion = () => {
               />
             </div>
           </div>
-
-          {/* Links Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Resource Links
@@ -161,8 +151,6 @@ const CreateQuestion = () => {
             />
           </div>
         </div>
-
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-md

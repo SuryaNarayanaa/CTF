@@ -61,7 +61,21 @@ const getLeaderboard = async () => {
     }));
 };
 
+
+
+const getRankForUser = async (userId) => {
+    const leaderboardDoc = await Leaderboard.findOne();
+    if (!leaderboardDoc) return 0;
+    
+    const { entries } = leaderboardDoc;
+    
+    const index = entries.findIndex(entry => entry.userId.toString() === userId);
+    
+    return index === -1 ? null : index + 1;
+  };
+
 module.exports = {
     updateLeaderboard,
-    getLeaderboard
+    getLeaderboard,
+    getRankForUser
 };

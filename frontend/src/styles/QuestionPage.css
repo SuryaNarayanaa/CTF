@@ -143,18 +143,19 @@
 .question-button {
   width: 100%;
   background-color: white;
+  display: flex;
+  justify-content: space-between;
   color: black;
   border: none;
-  border-bottom: 2px solid black;
-  padding: 40px 50px;
-  margin: 0;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.2em;
-  text-align: center; /* Align items to the left */
+  padding-block: 2.5rem;
+  text-transform: capitalize;
+  font-size: 14px;
+  text-align: center; 
   border-radius: 0;
   font-weight: semi-bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: 'Press Start 2P', cursive; 
 }
 
 
@@ -172,11 +173,11 @@
 .tab-2 {
   width: 30%;
   border: 1px dashed black;
-}
-
-
-.question-button:hover {
-  background-color:#afec33;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; 
+  overflow: hidden;
 }
 
 button.submit-button {
@@ -212,7 +213,7 @@ button:hover {
 .question-detail {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   padding: 20px;
 }
 
@@ -482,10 +483,12 @@ question-header {
 }
 
 .answer-section {
-  margin-top: 20px; 
+  margin-top: 20px;
   width: 100%;
   position: relative;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
+  margin-bottom: 20px;
+  overflow:hidden;
 }
 
 .answer-input {
@@ -495,3 +498,140 @@ question-header {
 .submit-button {
   margin-top: 5px; 
 }
+
+
+.questions-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  color: #000;
+  font-weight: 150;
+  font-family: 'Press Start 2P', cursive; 
+}
+
+.question-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2em;
+  padding: 2.5rem;
+  cursor: pointer;
+  border-bottom: 1.2px black dashed ;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.6px;
+}
+
+.question-item.even {
+  background: #f5f5f5; 
+}
+
+.question-item.odd {
+  background: #ffffff; 
+}
+
+.question-item:hover {
+  background: #cfcfcf;
+}
+
+.question-item.selected {
+  background: #cfcfcf; 
+}
+
+.question-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.question-points {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+.tab-2-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0; 
+  overflow-y: auto; 
+  font-family: 'Press Start 2P', cursive; 
+}
+
+
+/* The question list (top) */
+.questions-list {
+  flex:1;
+  overflow-y: auto;
+}
+
+.question-button:hover {
+  background: #ddd;
+  border-color: black;
+}
+
+
+/* Mark selected question */
+.question-button.selected {
+  border-color: #666;
+  background: #baff80; /* bright green highlight */
+}
+
+/* The points text */
+.points {
+  float: right;
+  font-size: 1rem;
+  color: #555;
+}
+
+.stats-section {
+  flex:1;
+  max-height:30vh;
+  border-top: 2px solid #000;
+  text-align: left;
+  padding:15px 20px;
+}
+
+/* Title */
+.stats-title {
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 6px;
+  color:black;
+  font-family: 'Press Start 2P', cursive; 
+  padding-bottom : 14px;
+}
+
+/* Container for flags */
+.stats-flags {
+  display: flex;
+  gap: 8px; 
+  align-items: center;
+}
+
+.flag {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Press Start 2P', cursive; 
+  font-size: 16px;
+  color: #666;
+}
+
+/* For unsolved: "[]" */
+.unsolved-flag {
+  /* same base styles, or custom if you like */
+}
+
+/* If using green/red GIF flags, no extra styling needed beyond .flag dimensions */
+.solved-flag {
+  width:3rem;
+  height:2.5rem;
+}
+.wrong-flag {}

@@ -1,21 +1,27 @@
+/* eslint-disable no-undef */
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 import path from 'path';
-// https://vitejs.dev/config/
+
+// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss(), // Add Tailwind
+    autoprefixer(), // Add Autoprefixer
+  ],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    }
-  },
-  server: {
-    proxy: {
-      '/back': {
-        target: 'http://localhost:3000/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/back/, ''),
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      }
+    },
+    server: {
+      proxy: {
+        '/back': {
+          target: 'http://localhost:3000/api',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/back/, ''),
+        },
       },
     },
-  },
 })
