@@ -1,0 +1,37 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      # Replace the below connection string with your actual Atlas connection string.
+      - MONGODB_URI=mongodb+srv://karthick:karthick@nodejs.ntg4omj.mongodb.net/CTF
+      - SESSION_SECRET=session_secret
+    # No local mongo dependency now
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://backend:3000/api
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
