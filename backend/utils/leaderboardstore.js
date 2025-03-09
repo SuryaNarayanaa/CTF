@@ -27,7 +27,8 @@ const updateLeaderboard = async (userId, score, team_name, flag) => {
     }
     
     const insertIndex = binarySearchInsertIndex(entries, score, flag);
-    entries.splice(insertIndex, 0, { userId, team_name, score, flag });
+    entries.splice(insertIndex, 0, { userId, team_name, score, flag, rank: insertIndex + 1 });
+    boardDoc.entries = entries;
     
 
     await boardDoc.save();
@@ -36,7 +37,7 @@ const updateLeaderboard = async (userId, score, team_name, flag) => {
         team_name: entry.team_name,
         score: entry.score,
         flag: entry.flag,
-        rank: idx + 1
+        rank: entry.rank
     }));
     console.log("Updated Leaderboard:", rankedLeaderboard);
 
@@ -71,7 +72,7 @@ const getRankForUser = async (userId) => {
     
     const index = entries.findIndex(entry => entry.userId.toString() === userId);
     
-    return index === -1 ? null : index + 1;
+    return index === -1 ? null : entries[index];
   };
 
 module.exports = {

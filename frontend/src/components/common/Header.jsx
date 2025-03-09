@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 const Header = ({team_name, flags = 0,userId}) => {
   const teamName = team_name || "TeamName";
   const [rank,setRank] = useState(0);
+  const [flag,setFlag] = useState(0);
 
   useEffect(()=>{
       const fetchRankDetails = async () =>{
@@ -16,8 +17,9 @@ const Header = ({team_name, flags = 0,userId}) => {
             });
             const response = await data.json();
             if(!response.success) throw Error(response.message);
-            console.log("Rank",response.data.rank);
+            console.log("Rank",response.data.rank,response.data.flag);
             setRank(response.data.rank);
+            setFlag(response.data.flag);
         } catch (error) {
           console.log("Error fetching The event",error);
         }
@@ -26,10 +28,10 @@ const Header = ({team_name, flags = 0,userId}) => {
       fetchRankDetails();
 
       const socket = io('http://localhost:3000', { transports: ['websocket'], autoConnect: true });
-      socket.on('leaderboardUpdated',(updatedLeaderboard)=>{
-         const userPosition =  updatedLeaderboard?.filter(data=> data.userId == userId);
-         console.log("User Position :",userPosition);
-         setRank(userPosition?.rank || 0);
+      socket.on("Userrank",(userR)=>{
+         const userPosition = userR;
+         setRank(userR?.rank || 0);
+         setFlag(userR?.flag || 0);
       })
 
       return () => { socket.disconnect(); }
@@ -76,7 +78,7 @@ const Header = ({team_name, flags = 0,userId}) => {
         <div className="header-right">          
           <MouseTracker />
           <div className="points-container" style={{ marginLeft: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
-            <h5>Flags: {flags}</h5>
+            <h5>Flags: {flag}</h5>
             <h5>Rank: {rank === 0 ? "-" : rank}</h5>
           </div>
         </div>

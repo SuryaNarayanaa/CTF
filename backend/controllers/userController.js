@@ -85,8 +85,10 @@ const getRank = asyncHandler(async (req, res) => {
     const { id: user_id } = req.session.user;
     const user = await User.findById(user_id);
     const score = user ? user.score : 0;
-    const rank = await getRankForUser(user_id.toString());
-    res.status(200).json(new ApiResponse(200, { rank, score }, "User rank and score fetched"));
+    const entry = await getRankForUser(user_id.toString());
+    console.log(entry);
+    if(!entry) throw new ApiError(404, 'User not found in leaderboard');
+    else res.status(200).json(new ApiResponse(200, { rank:entry.rank, flag:entry.flag }, "User rank and score fetched"));
 });
 
 
