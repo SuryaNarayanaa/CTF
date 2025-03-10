@@ -1,27 +1,18 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const leaderboardSchema = new Schema({
-    team: {
-        type: Schema.Types.ObjectId,
-        ref: 'Team',
-        required: true
-    },
-    score: {
-        type: Number,
-        default: 0
-    },
-    flags:
-    {
-        type: Number,
-        default: 0
-    },
-    lastUpdated: {
-        type: Date,
-        default: Date.now
+const LeaderboardItemSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    team_name: { type: String, required: true },
+    score: { type: Number, default: 0 },
+    flag: { type: Number, default: 0 },
+    rank:{type:Number,default:0}
+}, { _id: false });
+
+const LeaderboardSchema = new mongoose.Schema({
+    entries: {
+        type: [LeaderboardItemSchema],
+        default:[]
     }
 });
 
-const Leaderboard = mongoose.model('Leaderboard', leaderboardSchema);
-
-module.exports = Leaderboard;
+module.exports = mongoose.model('Leaderboard', LeaderboardSchema);

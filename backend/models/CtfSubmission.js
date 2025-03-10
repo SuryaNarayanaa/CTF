@@ -2,23 +2,23 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ctfSubmissionSchema = new Schema({
-    team: {
+    user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Team',
+        ref: 'User',
         required: true
     },
     question: {
         type: Schema.Types.ObjectId,
-        ref: 'CtfQuestion',
-        required: true
-    },
-    answer: {
-        type: String,
+        ref: 'Question',
         required: true
     },
     isCorrect: {
         type: Boolean,
         default: false
+    },
+    wrong:{
+        type:Number,
+        default:0
     },
     submittedAt: {
         type: Date,
@@ -26,4 +26,4 @@ const ctfSubmissionSchema = new Schema({
     }
 });
 
-module.exports = mongoose.models.CtfSubmission || mongoose.model('CtfSubmission', ctfSubmissionSchema);
+module.exports = mongoose.models.CtfSubmission || mongoose.model('Submission', ctfSubmissionSchema);

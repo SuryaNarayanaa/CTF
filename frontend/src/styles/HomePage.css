@@ -1,0 +1,57 @@
+.cta-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px; /* Adjust space between buttons */
+}
+
+.cta-button {
+    border: 2px solid black; /* Thicker border for better visibility */
+    padding: 12px 24px; /* Increase padding for a better look */
+    font-size: 1rem; /* Maintain font size */
+    font-family: 'Press Start 2P', cursive; /* Apply the Press Start 2P font */
+    color: black; /* Set font color to black */
+    background: none; /* No background */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Add transition for border color */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Optional: add slight rounding to the corners */
+}
+
+.cta-button:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Light gray background on hover */
+    color: #000000; /* Optional: change text color slightly on hover */
+    border-color: black; /* Ensure border remains black on hover */
+    outline: none; /* Remove default focus outline */
+}
+
+/* In your HomePage.css or a separate CSS file */
+.gif-element {
+    position: absolute; /* Use absolute positioning */
+    width: clamp(250px, 100vw, 120px); /* Min 70px, max 120px, 10% of viewport width */
+    height: clamp(250px, 100vw, 120px);
+    z-index: 10;
+}
+
+
+  
+  .top-left {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .top-right {
+    top: 20px;
+    right: 20px;
+    transform: rotate(90deg);
+    width:clamp(200px, 100vw, 120px) ;
+    height: clamp(200px, 100vw, 120px);
+  }
+  
+  .bottom-left {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }

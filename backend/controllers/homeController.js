@@ -1,17 +1,12 @@
-const homeController = {
-
-    home: (req, res) => {
-        res.status(200).json({
-            message: 'Welcome to the API! Here you can explore CTF challenges, manage teams, and more.'
-        });
-    },
+const asyncHandler = require('../utils/asyncHandler');
+const ApiResponse = require('../utils/ApiResponse');
+const { getLeaderboard } = require('../utils/leaderboardstore.js');
 
 
-    leaderboard: (req, res) => {
-        res.status(200).json({
-            message: 'Here are the current standings for the CTF!'
-        });
-    },
-};
+const getLeaderboardEndpoint = asyncHandler(async (req, res) => {
+    const leaderboardData = await getLeaderboard(); // Already sorted with ranks
+    console.log(leaderboardData);
+    res.status(200).json(new ApiResponse(200, leaderboardData, "Leaderboard fetched"));
+});
 
-module.exports = homeController;
+module.exports = { getLeaderboard: getLeaderboardEndpoint };
