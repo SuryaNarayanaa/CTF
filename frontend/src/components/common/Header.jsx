@@ -27,7 +27,7 @@ const Header = ({team_name, flags = 0,userId}) => {
 
       fetchRankDetails();
 
-      const socket = io('http://localhost:3000', { transports: ['websocket'], autoConnect: true });
+      const socket = io('wss://hidden-x-backend.onrender.com/api', { transports: ['websocket'], autoConnect: true });
       socket.on("Userrank",(userR)=>{
          const userPosition = userR;
          setRank(userR?.rank || 0);
