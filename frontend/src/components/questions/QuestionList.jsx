@@ -9,7 +9,7 @@ const QuestionList = ({
 }) => {
   console.log(answeredQuestions);
   return (
-    <div className="tab-2-container">
+    <>
       <div className="questions-list">
         {questions.map((question) => {
           const isAnswered = answeredQuestions[question._id];
@@ -21,7 +21,7 @@ const QuestionList = ({
                 ${isAnswered === true ? 'answered' : ''}
                 ${selectedQuestion?._id === question._id ? 'selected' : ''}`}
             >
-              <ScrambleText text={question.title} duration={1000} interval={30} />
+              <ScrambleText text={question.title} duration={400} interval={20} />
               {question.points && (
                 <span className="points">[{question.points} pts]</span>
               )}
@@ -67,7 +67,7 @@ const QuestionList = ({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

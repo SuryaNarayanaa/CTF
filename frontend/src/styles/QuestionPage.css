@@ -1,32 +1,29 @@
 /* Styles for the Question Page */
 .question-page {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: 100vh;
   height: 100vh;
 }
 
 .top-space {
-  height: 26vh;
+  height:auto;
   width: 100vw;
-  border: 1.3px dashed black;
+  border: 0.0813rem dashed black; /* ~1.3px */
 }
 
 .main-content {
-  border: 1px dashed black;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  border: 0.0625rem dashed black; /* 1px */
   display: flex;
-  -webkit-box-flex: 1;
-    -ms-flex: 1;
-      flex: 1;
+  flex:1;
 }
 
 .left-space {
-  border: 1.2px dashed black;
-  width: 200px;
+  border: 0.075rem dashed black; /* ~1.2px */
+  width: 12.5rem; /* 200px */
   height: 100%; 
   margin-top: 0;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .left-space img {
@@ -37,265 +34,325 @@
 }
 
 .right-space {
-  border: 1.3px dashed black;
-  width: 200px;
+  border: 0.0813rem dashed black; /* ~1.3px */
+  width: 12.5rem; /* 200px */
   height: 100%; 
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .right-space img {
   width: 100%;
   height: 90%;
-  object-fit: cover; /* Maintain aspect ratio */
+  object-fit: cover;
   object-position: center;
 }
 
 .question-table {
-  -webkit-box-flex: 1;
-    -ms-flex-positive: 1;
-      flex-grow: 1;
+  flex-grow: 1;
   margin: 0;
 }
 
-
-.question-tabs {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
+/* Tab-1: Category List */
 .tab-1 {
   display: grid;
   height: 100vh;
-  grid-template-rows: repeat(6, auto); 
+  grid-template-rows: repeat(5, auto); 
   overflow-y: auto;
   overflow-x: hidden;
   background-color: #ffffff;
+  padding-right: 0.25rem; /* 4px */
 }
-/* Style each button within tab-1 */
 
 .tab-1 .category-button {
   width: 100%;
   background-color: white;
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-inline: 2rem; 
   color: black;
   border: none;
-  border-bottom: 2px solid black;
-  padding: 15px 10px;
-  margin: 0;
+  border-bottom: 1px solid black; 
   font-family: 'Press Start 2P', cursive;
   font-size: 1.2em;
   text-align: center;
   border-radius: 0;
 }
 
-.tab-1 .category-button:hover {
-  background-color:#afec33;
-}
-
+.tab-1 .category-button:hover,
 .tab-1 .category-button:active {
-  background-color:#afec33;
+  background-color: #afec33;
 }
 
-/* Scrollbar styles for tab-1 */
-.tab-1 {
-    display: grid;
-    height: 100vh;
-    grid-template-rows: repeat(6, auto);
-    overflow-y: auto;
-    overflow-x: hidden;
-    background-color: #ffffff;
-    /* Ensure padding for scrollbar */
-    padding-right: 4px;
-}
-
-/* Webkit scrollbar styling */
+/* Scrollbar styling for tab-1 */
 .tab-1::-webkit-scrollbar {
-    width: 8px;
-    background-color: #f5f5f5;
+  width: 0.5rem; /* 8px */
+  background-color: #f5f5f5;
 }
 
 .tab-1::-webkit-scrollbar-track {
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+  background-color: #f5f5f5;
+  border-radius: 0.625rem; /* 10px */
+  box-shadow: inset 0 0 0.375rem rgba(0, 0, 0, 0.1); /* 6px */
 }
 
 .tab-1::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px;
-    border: 2px solid #f5f5f5;
-    transition: background-color 0.2s ease;
+  background-color: #888;
+  border-radius: 0.625rem;
+  border: 0.125rem solid #f5f5f5; /* 2px */
+  transition: background-color 0.2s ease;
 }
 
 .tab-1::-webkit-scrollbar-thumb:hover {
-    background-color: #666;
+  background-color: #666;
 }
 
-/* Firefox scrollbar styling */
 .tab-1 {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f5f5f5;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f5f5f5;
 }
+
+/* Tab-2: Question List & Stats */
 .tab-2 {
-  width: 30%;  
+  width: 30%;
+  border: 0.0625rem dashed black;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   background-color: white;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f5f5f5;
 }
+
+
+
+/* Scrollbar styling for tab-1 */
+.tab-2::-webkit-scrollbar {
+  width: 0.5rem; /* 8px */
+  background-color: #f5f5f5;
+}
+
+.tab-2::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+  border-radius: 0.625rem; /* 10px */
+  box-shadow: inset 0 0 0.375rem rgba(0, 0, 0, 0.1); /* 6px */
+}
+
+.tab-2::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 0.625rem;
+  border: 0.125rem solid #f5f5f5; /* 2px */
+  transition: background-color 0.2s ease;
+}
+
+.tab-2::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+.tab-2 {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f5f5f5;
+}
+
+
+
+/* The question list portion */
+.questions-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  font-family: 'Press Start 2P', cursive;
+  overflow-y: auto;
+}
+
 .question-button {
   width: 100%;
   background-color: white;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   color: black;
   border: none;
-  padding-block: 2.5rem;
+  padding-block: 2.5rem; /* already in rem */
   text-transform: capitalize;
-  font-size: 14px;
-  text-align: center; 
+  font-size: 1.7rem; /* 14px */
+  text-align: center;
   border-radius: 0;
-  font-weight: semi-bold;
   cursor: pointer;
+  padding-inline: 20px;
   transition: background-color 0.3s ease;
-  font-family: 'Press Start 2P', cursive; 
+  font-family: "Unifont";
+  font-weight: 600;
 }
 
-
-.tab-3 {
-  width: 40%;
-  padding: 20px;
-  background-color: white;
+.question-button:hover {
+  background-color:#f5f5f5;
 }
 
-.tab-1 {
-  width: 30%;
-  border:1px dashed black
+.question-button.selected {
+  border:none;
+  background-color: #f5f5f5;
 }
 
-.tab-2 {
-  width: 30%;
-  border: 1px dashed black;
-  display: flex;
-  flex-direction: column;
+/* Points text */
+.points {
+  font-size: 1.5rem; /* 14px */
+  color: #555;
+  margin-left: auto;
+}
+
+/* Stats Section */
+.stats-section {
   flex: 1;
-  min-height: 0; 
-  overflow: hidden;
+  display:flex;
+  flex-direction: column;
+  max-height: 25vh;
+  border-top: 0.125rem solid #000;
+  padding: 0.9375rem 1.25rem; /* 15px top/bottom, 20px sides */
+  text-align: left;
 }
 
-button.submit-button {
-  width: 100%;
-  background-color: white;
+.stats-title {
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 0.375rem; /* 6px */
   color: black;
-  border: 2px solid black;
-  padding: 12px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.2em;
-  cursor: pointer;
-  margin-top: 15px;
-}
-button:hover {
-   background-color:#afec33;
+  font-family: 'Press Start 2P', cursive;
+  padding-bottom: 0.875rem; /* 14px */
 }
 
-/* Updated Tab-3 and Answer Section Styles */
+.stats-flags {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1.5rem; /* 8px */
+  align-items: center;
+}
+
+.flag {
+  width: 1.5rem; /* 24px */
+  height: 1.5rem; /* 24px */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1rem; /* 16px */
+  color: #666;
+}
+
+/* Unsolved flag (unchanged styling) */
+.unsolved-flag {
+  /* your custom styles if needed */
+}
+
+/* Solved flag: using green flag image (set width/height appropriately) */
+.solved-flag {
+  width: 3rem;
+  height: 2.5rem;
+}
+
+/* Wrong flag (if needed) */
+.wrong-flag {
+  /* default styling */
+}
+
+/* Tab-3: Question Details */
 .tab-3 {
-  width: 40%;
-  padding: 20px 20px 40px 20px;
-  background-image: url('/image.png');
+  background-image: url('/image.png'); /* your existing grid background */
   background-size: cover;
   background-position: center;
-  border: 1px dashed black;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
   position: relative;
   height: 100vh;
   overflow-y: auto;
+  font-family: 'Press Start 2P', cursive; /* or any pixel/monospace font */
 }
 
+/* Main container for question details */
 .question-detail {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding: 20px;
+  height:100%;
+  max-height: 100vh;
+  flex: 1;
+  padding: 35px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.0); /* transparent or slightly tinted if you like */
 }
 
-question-header {
+.question-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  font-weight: 100;
+  margin-bottom: 1.5rem;
 }
 
 .question-header h3 {
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #000;
+  font-size: 2rem;
   margin: 0;
-  order: 2;
-  align-items: left;
-  font-family: 'Courier New', Courier, monospace;
+  flex:1;
+  letter-spacing: 0.05em;
+  color: #000; /* Or #333 if you want less contrast */
+  font-size:1.5rem;
 }
+
 
 .question-header .points {
-  font-size: 1.2em;
+  flex:1;
+  font-size: 1.2rem;
   color: #000;
-  font-weight: bold;
-  order: 1;
-  align-items: right;
-  font-family: 'Courier New', Courier, monospace;
+  margin-left:0;
 }
 
+/* Content area: description & links */
 .question-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin: 20px 0;
-  font-family: 'Courier', Courier, monospace;
-  font-weight: 540;
-  color: black;
+  margin-bottom: 2rem;
+  line-height: 1.4;
+  text-align: left;
 }
 
-.answer-section {
-  margin-top: auto;
-  width: 100%;
-  position: relative;
-}
-
+/* "solved-state" or normal input */
 .answer-input {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1em;
-  font-family: 'Courier New', Courier, monospace;
-  color: #333;
-  background-color: white;
-  border: 2px solid black;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
-}
-
-.answer-input:focus {
-  outline: none;
-  border-color: #afec33;
-}
-
-/* Solved state styling */
-.solved-state {
-  position: relative;
-  width: 100%;
+  display: block;
+  width: 80%;
+  text-align: center;
+  transition: background-color 0.2s ease;
 }
 
 .answer-input.solved {
   background-color: rgba(175, 236, 51, 0.3);
   border-color: #4CAF50;
-  color: #333;
   cursor: not-allowed;
 }
 
+.status-correct,
+.status-incorrect {
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.solved-state {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-image {
+  margin-top: 1rem;
+}
+
+
 .solved-text {
   position: absolute;
-  right: 20px;
+  right: 1.25rem;
   top: 50%;
   transform: translateY(-120%);
   color: #4CAF50;
@@ -304,34 +361,35 @@ question-header {
   pointer-events: none;
 }
 
-.submit-button {
-  width: 100%;
-  background-color: white;
-  color: black;
-  border: 2px solid black;
-  padding: 12px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
 
 .submit-button:hover:not(:disabled) {
   background-color: #afec33;
 }
 
 .submit-button:disabled {
-  background-color: #cccccc;
-  border-color: #999999;
-  cursor: not-allowed;
   opacity: 0.7;
+  cursor: not-allowed;
 }
 
-.status-correct,
+
+.status-correct {
+  color: #4CAF50;
+}
+
 .status-incorrect {
+  color: red;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Placeholder text if no question selected */
+.select-prompt {
   text-align: center;
-  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 2rem;
+}.status-incorrect {
+  text-align: center;
+  margin-top: 0.625rem;
   font-weight: bold;
   font-size: 1.1em;
 }
@@ -341,19 +399,18 @@ question-header {
 }
 
 .status-incorrect {
-   font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
   color: red;
 }
 
 /* Links section */
 .links {
-  margin-top: 20px;
-  width: 100%;
-  text-align: center;
+  margin: 1rem 0;
 }
 
 .links ul {
   list-style: none;
+  font-size:1rem;
   padding: 0;
 }
 
@@ -367,21 +424,26 @@ question-header {
   color: #003d82;
 }
 
-.select-prompt {
-  text-align: center;
-  font-size: 1.2em;
-  color: #666;
-  margin-top: 20px;
+.links strong {
+  display: inline-block;
+  margin-bottom: 0.5rem;
 }
+
 /* Updated question-tabs structure */
 .question-tabs {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 30% 25% 45%;
   width: 100%;
   height: 100%;
 }
 
-
+.tab-1,
+.tab-2,
+.tab-3 {
+  width: 100%;
+  height: 100%;
+}
 
 /* Category overlay styles */
 .category-overlay {
@@ -397,241 +459,91 @@ question-header {
   align-items: center;
 }
 
-/* Glass morphism effect for fun thing verification */
-.fun-thing-verification {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.17);
-  width: 80%;
-  max-width: 500px;
-  color: black;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.fun-thing-verification .lock-icon {
-  font-size: 2em;
-  margin-bottom: 15px;
-}
-
-.fun-thing-verification h3 {
-  font-size: 1.8em;
-  margin-bottom: 20px;
-  font-family: 'Press Start 2P', cursive;
-  color: black;
-}
-
-.fun-thing-verification p {
-  margin: 15px 0;
-  font-size: 1.1em;
-  line-height: 1.4;
-  color: black;
-}
-
-.fun-thing-verification .fun-thing {
-  font-style: italic;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 15px;
-  border-radius: 6px;
-  margin: 20px 0;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.fun-thing-verification input {
-  width: 100%;
-  padding: 12px;
-  margin: 15px 0;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  font-size: 1em;
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
-}
-
-.fun-thing-verification input:focus {
-  border-color: #afec33;
-  outline: none;
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.fun-thing-verification .submit-button {
-  width: 100%;
-  background-color: white;
-  color: black;
-  border: 2px solid black;
-  padding: 12px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1.2em;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: all 0.3s ease;
-}
-
-.fun-thing-verification .submit-button:hover {
-  background-color: #afec33;
-}
 .question-content {
-  flex-grow: 0.5; 
+  flex-grow: 0.5;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  margin: 20px 0;
+  margin: 1.25rem 0;
+  color:black;
+  font-size: 2rem;
+  font-family: "Unifont";
 }
 
 .answer-section {
-  margin-top: 20px;
-  width: 100%;
-  position: relative;
-  padding-bottom: 40px;
-  margin-bottom: 20px;
-  overflow:hidden;
-}
-
-.answer-input {
-  margin-bottom: 10px; 
-}
-
-.submit-button {
-  margin-top: 5px; 
-}
-
-
-.questions-list {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
-  color: #000;
-  font-weight: 150;
-  font-family: 'Press Start 2P', cursive; 
-}
-
-.question-item {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 2em;
-  padding: 2.5rem;
-  cursor: pointer;
-  border-bottom: 1.2px black dashed ;
+  justify-content: center;
+  margin-top: auto;
+  margin-bottom: 2rem;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+/* The input field for "Insert flag" */
+.answer-input {
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;    
+  color: #000;
+  align-items: center;                
+  border: 1px solid #000;     
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  font-weight:300;
+  padding: 0.5rem 1.4rem;
+  margin-bottom: 1.5rem;      
+  text-align: left;
+}
+
+/* Placeholder styling if desired */
+.answer-input::placeholder {
+  color: #777;
+}
+
+/* The big dashed box for "SUBMIT FLAG" */
+.submit-button {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  font-weight:300;
+  padding: 2rem;
+  margin: 0 auto;             /* Center horizontally */
+  border: 1px dashed #000;
+  background-color: transparent;
+  color: #000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.5rem;
   text-transform: uppercase;
-  transition: background 0.2s, color 0.2s;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  opacity: 0.5;               /* Default half opacity (if disabled) */
+  text-align: center;
 }
 
-.question-item.even {
-  background: #f5f5f5; 
-}
-
-.question-item.odd {
-  background: #ffffff; 
-}
-
-.question-item:hover {
-  background: #cfcfcf;
-}
-
-.question-item.selected {
-  background: #cfcfcf; 
-}
-
-.question-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 70%;
-}
-
-.question-points {
-  font-size: 14px;
-  font-weight: bold;
-}
-
-
-.tab-2-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
-  min-height: 0; 
-  overflow-y: auto; 
-  font-family: 'Press Start 2P', cursive; 
-}
-
-
-/* The question list (top) */
-.questions-list {
-  flex:1;
-  overflow-y: auto;
-}
-
-.question-button:hover {
-  background: #ddd;
+/* Hover effect for enabled button */
+.submit-button:hover:not(:disabled) {
+  background-color:rgba(185, 179, 179, 0.2);
   border-color: black;
 }
 
-
-/* Mark selected question */
-.question-button.selected {
-  border-color: #666;
-  background: #baff80; /* bright green highlight */
+/* Disabled state: half opacity & no hover pointer */
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* The points text */
-.points {
-  float: right;
-  font-size: 1rem;
-  color: #555;
+/* Enabled state: full opacity */
+.submit-button:not(:disabled) {
+  opacity: 1;
+}
+.submit-success{
+  background-color: #afec33;
 }
 
-.stats-section {
-  flex:1;
-  max-height:30vh;
-  border-top: 2px solid #000;
-  text-align: left;
-  padding:15px 20px;
-}
 
-/* Title */
-.stats-title {
-  font-weight: bold;
-  display: inline-block;
-  margin-bottom: 6px;
-  color:black;
-  font-family: 'Press Start 2P', cursive; 
-  padding-bottom : 14px;
-}
-
-/* Container for flags */
-.stats-flags {
-  display: flex;
-  gap: 8px; 
-  align-items: center;
-}
-
-.flag {
-  width: 24px;
-  height: 24px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Press Start 2P', cursive; 
-  font-size: 16px;
-  color: #666;
-}
-
-/* For unsolved: "[]" */
-.unsolved-flag {
-  /* same base styles, or custom if you like */
-}
-
-/* If using green/red GIF flags, no extra styling needed beyond .flag dimensions */
-.solved-flag {
-  width:3rem;
-  height:2.5rem;
-}
-.wrong-flag {}

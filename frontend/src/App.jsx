@@ -57,7 +57,7 @@ function App() {
             <RouterProvider router={router}/>
           </PersistGate>
         </Provider>
-        <ReactQueryDevtools initialIsOpen={false}/>
+        {/*<ReactQueryDevtools initialIsOpen={false}/>*/}
     </QueryClientProvider>
   )
 }

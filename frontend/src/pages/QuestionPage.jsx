@@ -203,10 +203,18 @@ const QuestionPage = () => {
               {selectedQuestion ? (
                 <div className="question-detail">
                   <div className="question-header">
-                    <span className="points">
-                      {selectedQuestion.points && `[${selectedQuestion.points} points]`}
-                    </span>
-                    <h3>{selectedQuestion.title}</h3>
+                    <h3 className=''>{selectedQuestion.title}</h3>
+                    <div className="relative p-6 font-['Press_Start_2P'] bg-transparent">
+                      <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-black text-black font-bold"></div>
+                      <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-black text-black font-bold"></div>
+                      <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-black text-black font-bold"></div>
+                      <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-black text-black font-bold"></div>
+                      <div className="flex flex-col items-start justify-center space-y-2">
+                        <span className="points">
+                          {selectedQuestion.points && `${selectedQuestion.points}pt`}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   <div className="question-content">
                     <p>{selectedQuestion.description}</p>
@@ -228,46 +236,55 @@ const QuestionPage = () => {
                     </div>
                   </div>
                   <div className="answer-section">
-                    {answerStatus === 'correct' ? (
-                      <div className="solved-state">
-                        <input
-                          type="text"
-                          value={userAnswer}
-                          className="answer-input solved"
-                          disabled
-                          placeholder="Question solved!"
-                        />
-                        <button className="submit-button" disabled>
-                          Submitted
-                        </button>
-                        <img 
-                          src="/FLAG_LOGO.gif" 
-                          alt="Correct Answer"
-                          className="status-image"
-                          style={{ width: '80px', height: '70px', alignItems: 'center', justifyContent: 'center' }}
-                        />
-                      </div>
-                    ) : (
-                      <>
-                        <input
-                          type="text"
-                          value={userAnswer}
-                          onChange={(e) => dispatch(setUserAnswer(e.target.value))}
-                          className={`answer-input ${answerStatus}`}
-                          placeholder="Enter your answer"
-                        />
-                        <button onClick={handleAnswerSubmit} className="submit-button" disabled={isSubmitLoading}>
-                          {isSubmitLoading  ? "Submitting..." : "Submit"}
-                        </button>
-                      </>
-                    )}
-                    {answerStatus === 'correct' && (
-                      <p className="status-correct">Correct! Well done!</p>
-                    )}
-                    {answerStatus === 'incorrect' && (
-                      <p className="status-incorrect">Try Your Best!</p>
-                    )}
-                  </div>
+                      {answerStatus === 'correct' ? (
+                        <>
+                          <input
+                            type="text"
+                            value={userAnswer}
+                            className="answer-input success"
+                            disabled
+                            placeholder="Question solved!"
+                          />
+                          <button className="submit-button submit-success" disabled>
+                            Submitted
+                          </button>
+                        </>
+                      ) : answerStatus === 'incorrect' ? (
+                        <>
+                          <input
+                            type="text"
+                            value={userAnswer}
+                            onChange={(e) => dispatch(setUserAnswer(e.target.value))}
+                            className="answer-input error"
+                            placeholder="Insert flag"
+                          />
+                          <button
+                            onClick={handleAnswerSubmit}
+                            className="submit-button"
+                            disabled={!userAnswer || isSubmitLoading}
+                          >
+                            {isSubmitLoading ? "Submitting..." : "Try Again"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <input
+                            type="text"
+                            value={userAnswer}
+                            onChange={(e) => dispatch(setUserAnswer(e.target.value))}
+                            className="answer-input"
+                            placeholder="Insert flag"
+                          />
+                          <button
+                            onClick={handleAnswerSubmit}
+                            className="submit-button"
+                            disabled={!userAnswer || isSubmitLoading}
+                          >
+                            {isSubmitLoading ? "Submitting..." : "Submit Flag"}
+                          </button>
+                        </>
+                      )}
+                    </div>
                 </div>
               ) : (
                 <p className="select-prompt">Select a question to see details</p>
