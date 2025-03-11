@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build-and-serve": "npm run build && serve -s dist -l 3000"
+    "build-and-serve": "npm run build && serve -s dist -l 8000"
 
   },
   "dependencies": {
