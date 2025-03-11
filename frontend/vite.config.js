@@ -14,6 +14,8 @@ export default defineConfig({
     },
     server: {
       host: true, // Allow external access
+      port: 8000, // Specify your desired port here
+
       allowedHosts: ['ctf-frontend-latest.onrender.com', 'https://hidden-x.vercel.app/'], 
       proxy: {
         '/back': {
