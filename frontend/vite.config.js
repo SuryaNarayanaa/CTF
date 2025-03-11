@@ -18,7 +18,7 @@ export default defineConfig({
     server: {
       proxy: {
         '/back': {
-          target: 'http://backend:3000/api',
+          target: 'https://hidden-x-backend.onrender.com/api',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/back/, ''),
         },
