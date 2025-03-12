@@ -28,17 +28,18 @@ const Header = ({team_name, flags = 0,userId}) => {
       fetchRankDetails();
 
       const socket = io('wss://hidden-x-backend.onrender.com', { transports: ['websocket'], autoConnect: true });
-      socket.on('connect', () => {
-        console.log('Socket connected');
+      
+      socket.on('leaderboardUpdated', (updatedLeaderboard) => {
+        console.log("Rank Updated:", updatedLeaderboard);
+        console.log("User Id",userId);
+        const currentUser = updatedLeaderboard.find(user => user.userId === userId);
+        console.log("Current User",currentUser);
+        if(currentUser){
+          setRank(currentUser.rank);
+          setFlag(currentUser.flag);
+        }
         
-        // Identify the user to the server
-        socket.emit('identifyUser', userId);
       });
-      socket.on("Userrank",(userR)=>{
-               const userPosition = userR;
-               setRank(userR?.rank || 0);
-               setFlag(userR?.flag || 0);
-            })
 
       return () => { socket.disconnect(); }
   },[])

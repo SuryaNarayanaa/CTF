@@ -166,7 +166,7 @@ const QuestionPage = () => {
   return (
     <div className="question-page">
       <div className="top-space">
-        <Header team_name={userData?.team_name} flags={userData?.flag} userId={userData.userId}/>
+        <Header team_name={userData?.team_name} flags={userData?.flag} userId={userData?._id}/>
       </div>
 
       <div className="main-content">
