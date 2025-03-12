@@ -67,10 +67,26 @@ app.use(errorHandler)
 const server = http.createServer(app);
 const io = socket(server,{cors:corsOptions})
 
+// Add this after initializing io
+const userSocketMap = {};
+global.userSocketMap = userSocketMap;
+
 io.on("connection", (socket) => {
     console.log("New client connected:", socket.id);
     
+    // Add listener for user authentication/identification
+    socket.on("identifyUser", (userId) => {
+        userSocketMap[userId] = socket.id;
+        console.log(`User ${userId} connected with socket ${socket.id}`);
+    });
+    
     socket.on("disconnect", () => {
+      // Remove user from mapping when disconnected
+      const userId = Object.keys(userSocketMap).find(key => userSocketMap[key] === socket.id);
+      if (userId) {
+        delete userSocketMap[userId];
+        console.log(`User ${userId} disconnected`);
+      }
       console.log("Client disconnected:", socket.id);
     });
 });

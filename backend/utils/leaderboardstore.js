@@ -61,6 +61,7 @@ const updateLeaderboard = async (userId, score, team_name, flag) => {
                 rank: entry.rank
             }));
             global.io.emit('leaderboardUpdated', rankedLeaderboard);
+            const socketId = global.userSocketMap ? global.userSocketMap[userId] : null;
             if (socketId) {
                 global.io.to(socketId).emit("Userrank", rankedLeaderboard[insertIndex]);
             } else {
