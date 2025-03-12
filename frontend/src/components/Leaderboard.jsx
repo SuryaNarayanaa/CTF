@@ -19,7 +19,7 @@ const Leaderboard = () => {
     
         fetchLeaderboard();
     
-        const socket = io('wss://hidden-x-backend.onrender.com/api', { transports: ['websocket'] });
+        const socket = io('wss://hidden-x-backend.onrender.com', { transports: ['websocket'] });
     
         socket.on('leaderboardUpdated', (updatedLeaderboard) => {
           console.log("Leaderboard update received:", updatedLeaderboard);

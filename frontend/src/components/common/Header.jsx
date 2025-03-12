@@ -27,15 +27,15 @@ const Header = ({team_name, flags = 0,userId}) => {
 
       fetchRankDetails();
 
-      const socket = io('wss://hidden-x-backend.onrender.com/api', { transports: ['websocket'], autoConnect: true });
+      const socket = io('wss://hidden-x-backend.onrender.com', { transports: ['websocket'], autoConnect: true });
       socket.on("Userrank",(userR)=>{
-         const userPosition = userR;
-         setRank(userR?.rank || 0);
-         setFlag(userR?.flag || 0);
-      })
+               const userPosition = userR;
+               setRank(userR?.rank || 0);
+               setFlag(userR?.flag || 0);
+            })
 
       return () => { socket.disconnect(); }
-  },[userId])
+  },[])
 
   return (
     <>
