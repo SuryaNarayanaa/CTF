@@ -32,11 +32,14 @@ const fetchInitialData = async () => {
   });
   const result = await response.json();
   if (result.success) {
-    const cats = result.data.categories
+    let cats = result.data.categories
       ? (Array.isArray(result.data.categories)
           ? result.data.categories
           : Object.values(result.data.categories))
       : [];
+      if (cats.length > 0) {
+        cats = [cats[cats.length - 1], ...cats.slice(0, cats.length - 1)];
+      }
     return { categories: cats, solved: result.data.solved || {} };
   } else {
     throw new Error(result.message);
@@ -111,6 +114,16 @@ const QuestionPage = () => {
     }
   }, [initialData, dispatch]);
 
+  useEffect(() => {
+    if (answerStatus === 'incorrect') {
+      const timer = setTimeout(() => {
+        dispatch(setAnswerStatus(''));
+      }, 7700);
+      return () => clearTimeout(timer);
+    }
+  }, [answerStatus, dispatch]);
+  
+
   const { mutateAsync: submitAnswerMutation ,isLoading:isSubmitting} = useMutation({
     mutationFn:async({ questionId, answer }) => submitAnswer({ questionId, answer }),
       onSuccess: (result, variables) => {
@@ -166,7 +179,7 @@ const QuestionPage = () => {
   return (
     <div className="question-page">
       <div className="top-space">
-        <Header team_name={userData?.team_name} flags={userData?.flag} userId={userData?._id}/>
+        <Header team_name={userData?.team_name} userId={userData?._id}/>
       </div>
 
       <div className="main-content">
@@ -218,73 +231,59 @@ const QuestionPage = () => {
                   </div>
                   <div className="question-content">
                     <p>{selectedQuestion.description}</p>
-                    <div className="links">
-                      <strong>Links:</strong>
-                      {selectedQuestion.links && selectedQuestion.links.length > 0 ? (
-                        <ul>
-                          {selectedQuestion.links.map((link, index) => (
-                            <li key={index}>
-                              <a href={link} target="_blank" rel="noopener noreferrer">
-                                {link}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <span> - </span>
-                      )}
-                    </div>
+                    {selectedQuestion.links && selectedQuestion.links.length > 0 && selectedQuestion.links[0] != '' && (
+                       <div className="links">
+                         <strong>Links:</strong>
+                         <ul>
+                           {selectedQuestion.links.map((link, index) => (
+                             <li key={index}>
+                               <a href={link} target="_blank" rel="noopener noreferrer">
+                                 {link}
+                               </a>
+                             </li>
+                           ))}
+                         </ul>
+                       </div>
+                     )}
                   </div>
                   <div className="answer-section">
-                      {answerStatus === 'correct' ? (
-                        <>
-                          <input
-                            type="text"
-                            value={userAnswer}
-                            className="answer-input success"
-                            disabled
-                            placeholder="Question solved!"
-                          />
-                          <button className="submit-button submit-success" disabled>
-                            Submitted
-                          </button>
-                        </>
-                      ) : answerStatus === 'incorrect' ? (
-                        <>
-                          <input
-                            type="text"
-                            value={userAnswer}
-                            onChange={(e) => dispatch(setUserAnswer(e.target.value))}
-                            className="answer-input error"
-                            placeholder="Insert flag"
-                          />
-                          <button
-                            onClick={handleAnswerSubmit}
-                            className="submit-button"
-                            disabled={!userAnswer || isSubmitLoading}
-                          >
-                            {isSubmitLoading ? "Submitting..." : "Try Again"}
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <input
-                            type="text"
-                            value={userAnswer}
-                            onChange={(e) => dispatch(setUserAnswer(e.target.value))}
-                            className="answer-input"
-                            placeholder="Insert flag"
-                          />
-                          <button
-                            onClick={handleAnswerSubmit}
-                            className="submit-button"
-                            disabled={!userAnswer || isSubmitLoading}
-                          >
-                            {isSubmitLoading ? "Submitting..." : "Submit Flag"}
-                          </button>
-                        </>
+                    <input
+                      type="text"
+                      value={userAnswer}
+                      onChange={(e) => dispatch(setUserAnswer(e.target.value))}
+                      className={`answer-input ${answerStatus === 'incorrect' ? 'error' : ''}`}
+                      placeholder={answerStatus === 'correct' ? "Question solved!" : "Insert flag"}
+                      disabled={answerStatus === 'correct'}
+                    />
+                    <button
+                      onClick={handleAnswerSubmit}
+                      className="submit-button"
+                      disabled={!userAnswer || isSubmitLoading || answerStatus === 'correct'}
+                    >
+                      {isSubmitLoading
+                        ? "Submitting..."
+                        : answerStatus === 'correct'
+                        ? <span style={{ visibility: 'hidden' }}>Try Again</span>
+                        : answerStatus === 'incorrect'
+                        ? <span style={{ visibility: 'hidden' }}>Try Again</span>
+                        : "Submit Flag"}
+                      {!isSubmitLoading && answerStatus === 'correct' && (
+                        <img
+                          alt="flag submit success"
+                          src="https://capturetheflag.withgoogle.com/img/flag_submit_success_compressed.gif"
+                          className="flag-submit-success"
+                        />
                       )}
-                    </div>
+                      {!isSubmitLoading && answerStatus === 'incorrect' && (
+                        <img
+                          alt="flag submit failure"
+                          src="https://capturetheflag.withgoogle.com/img/flag_submit_failure_compressed.gif"
+                          className="flag-submit-failure"
+                        />
+                      )}
+                    </button>
+                  </div>
+
                 </div>
               ) : (
                 <p className="select-prompt">Select a question to see details</p>
