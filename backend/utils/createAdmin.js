@@ -12,7 +12,7 @@ const adminData = {
 
 const createAdmin = async() =>{
     try {
-        await mongoose.connect(process.env.MONGODB_URI)
+        await mongoose.connect('mongodb+srv://thangarajsurya001:Ntsn03062005@ctf-cluster.drm7f.mongodb.net/CTF_DB?retryWrites=true&w=majority&appName=CTF-Cluster')
         const deletedUser = await User.findOneAndDelete({role:'admin'});
         console.log(deletedUser);
         const user = await User.create(adminData)

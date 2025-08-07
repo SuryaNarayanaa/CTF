@@ -5,7 +5,9 @@
   "type": "commonjs",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --watchAll",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build": "node index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",

@@ -1,18 +1,17 @@
-# Use Node.js v20.13.1 as base image
-FROM node:20.13.1
+FROM node:20.13.1-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package files and install dependencies (including dev dependencies)
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the frontend code
 COPY . .
 
-# Expose the port Vite uses (here, assumed 5173)
-EXPOSE 5173
+# Expose dev server port (adjust if your dev server uses a different port)
+EXPOSE 3000
 
-# Start the frontend dev server
+# Start the development server
 CMD ["npm", "run", "dev"]

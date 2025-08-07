@@ -1,38 +1,28 @@
+version: '3.8'
 
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    working_dir: /app
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+    image: suryanarayanaant/ctf-backend:latest  # Add this line
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-      # Replace the below connection string with your actual Atlas connection string.
+      - NODE_ENV=production
       - SESSION_SECRET=session_secret
     env_file:
       - ./backend/.env
-    # No local mongo dependency now
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+    image: suryanarayanaant/ctf-frontend:latest  # Add this line
     ports:
       - "5173:5173"
     environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://backend:3000/api
+      - NODE_ENV=production
+      - VITE_API_URL=https://backend-service.onrender.com/api
     depends_on:
       - backend
-
-volumes:
-  mongo-data:
