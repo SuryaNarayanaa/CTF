@@ -27,15 +27,22 @@ const Header = ({team_name, flags = 0,userId}) => {
 
       fetchRankDetails();
 
-      const socket = io('http://localhost:3000', { transports: ['websocket'], autoConnect: true });
-      socket.on("Userrank",(userR)=>{
-         const userPosition = userR;
-         setRank(userR?.rank || 0);
-         setFlag(userR?.flag || 0);
-      })
+      const socket = io('wss://hidden-x-backend.onrender.com', { transports: ['websocket'], autoConnect: true });
+      
+      socket.on('leaderboardUpdated', (updatedLeaderboard) => {
+        console.log("Rank Updated:", updatedLeaderboard);
+        console.log("User Id",userId);
+        const currentUser = updatedLeaderboard.find(user => user.userId === userId);
+        console.log("Current User",currentUser);
+        if(currentUser){
+          setRank(currentUser.rank);
+          setFlag(currentUser.flag);
+        }
+        
+      });
 
       return () => { socket.disconnect(); }
-  },[userId])
+  },[])
 
   return (
     <>

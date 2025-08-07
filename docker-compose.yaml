@@ -23,6 +23,6 @@ services:
       - "5173:5173"
     environment:
       - NODE_ENV=production
-      - VITE_API_URL=https://backend-service.onrender.com/api
+      - VITE_API_URL=https://hidden-x-backend.onrender.com/api
     depends_on:
       - backend

@@ -59,7 +59,7 @@ const submitAnswer = asyncHandler(async (req, res) => {
     }else{
         const user = await User.findById(user_id);
         if (user) {
-            user.score -= 10;
+            user.score -= 5;
             await user.save();
             await updateLeaderboard(user_id.toString(), user.score,user.team_name, user.flag);
     }

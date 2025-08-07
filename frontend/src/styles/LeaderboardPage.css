@@ -8,7 +8,7 @@
 
 /* Top space to occupy 26vh */
 .top-space {
-    height: 26vh; /* 26% of viewport height */
+    padding-block: 1rem;
     width: 100vw; /* Full viewport width */
     border: 1.3px dashed black; /* dashed dashed black border for all div elements */
 }

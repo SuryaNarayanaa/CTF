@@ -4,12 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build-and-serve": "npm run build && serve -s dist -l 8000"
+
   },
   "dependencies": {
+    "@fontsource/unifont": "^5.2.5",
     "@radix-ui/react-label": "^2.1.0",
     "@reduxjs/toolkit": "^2.6.0",
     "@tabler/icons-react": "^3.21.0",
