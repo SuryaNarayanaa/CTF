@@ -11,7 +11,7 @@ import ProtectedAdminRoute from './components/ProtectedAdminRoute.jsx'
 import CreateQuestion from './components/admin/CreateQuestion.jsx'
 import ViewQuestions from './components/admin/ViewQuestions.jsx'
 import {loader as homeloader} from './pages/HomePage.jsx'
-
+import React  from 'react'
 
 
 import store, { persistor } from './redux/store';
@@ -31,7 +31,7 @@ const queryclient = new QueryClient({
 
 
 const router = createBrowserRouter(createRoutesFromElements(
-  <Route path='/'>
+  <Route path='/' >
       <Route index element={<HomePage/>} loader={homeloader(queryclient)}/>
       <Route element={<ProtectedRoute/>}>
         <Route path='challenges' element={<QuestionPage/>}/>

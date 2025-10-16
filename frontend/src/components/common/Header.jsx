@@ -12,7 +12,7 @@ const Header = ({team_name, flags = 0,userId}) => {
   useEffect(()=>{
       const fetchRankDetails = async () =>{
         try {
-            const data = await fetch('/back/user/rank',{
+            const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}user/rank`,{
               method:'GET',crentials:'include'
             });
             const response = await data.json();

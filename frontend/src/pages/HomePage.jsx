@@ -16,7 +16,7 @@ import { login, logout } from '../redux/slices/authSlice';
 
 const userQueryFn = async () => {
   try {
-    const response = await fetch("/back/user/getCurrentUser", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/getCurrentUser`, {
       method: 'GET',
       credentials: 'include'
     });

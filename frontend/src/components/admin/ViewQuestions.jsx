@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedQuestion, setShowDetails, resetSelectedQuestion } from '../../redux/slices/adminQuestionSlice';
 
 const fetchQuestions = async () => {
-  const response = await fetch('/back/Admin/questions', { 
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}Admin/questions`, {
     method: 'GET', 
     credentials: 'include' 
   });
@@ -35,7 +35,7 @@ const ViewQuestions = () => {
   const handleDeleteQuestion = async () => {
     if (!selectedQuestion) return;
     try {
-      const response = await fetch(`/back/Admin/questions/${selectedQuestion._id}`, { 
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}Admin/questions/${selectedQuestion._id}`, { 
         method: 'DELETE', 
         credentials: 'include' 
       });

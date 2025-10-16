@@ -25,7 +25,7 @@ import {
 
 
 const fetchInitialData = async () => {
-  const response = await fetch('/back/user/categories', {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}user/categories`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include'
@@ -48,7 +48,7 @@ const fetchInitialData = async () => {
 
 
 const fetchCategoryQuestions = async (categoryId) => {
-  const response = await fetch(`/back/user/category-question/${categoryId}`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}user/category-question/${categoryId}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include'
@@ -62,7 +62,7 @@ const fetchCategoryQuestions = async (categoryId) => {
 };
 
 const submitAnswer = async ({ questionId, answer }) => {
-  const response = await fetch('/back/user/submit', {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}user/submit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
