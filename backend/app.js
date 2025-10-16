@@ -19,7 +19,7 @@ const errorHandler = require('./middlewares/errorHandler')
 
 const app = express()
 const corsOptions = {
-    origin: ['https://ctf.cseatheeye.com','https://hidden-x.onrender.com', 'https://hidden-x.vercel.app', 'http://localhost:5173'], // Exact frontend URLs
+    origin: ['https://ctf.cseatheeye.com','https://hidden-x.onrender.com', 'https://hidden-x.vercel.app', 'http://localhost:5173','https://l14dbr7n-5173.inc1.devtunnels.ms/'], // Exact frontend URLs
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
     credentials: true // Allow cookies and credentials
   };
