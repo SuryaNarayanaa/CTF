@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "https://hidden-x-backend.onrender.com/api/"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}
