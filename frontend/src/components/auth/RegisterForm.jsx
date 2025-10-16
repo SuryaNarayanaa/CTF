@@ -23,7 +23,7 @@ const RegisterForm = ({ onClose }) => {
 
   const { mutate: registerfn, isPending } = useMutation({
     mutationFn: async (formData) => {
-      const { data, success, message } = await postData(`${import.meta.env.VITE_BACKEND_URL}auth/signup`, formData);
+      const { data, success, message } = await postData(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, formData);
       if (!success) throw new Error(message);
       return data;
     },

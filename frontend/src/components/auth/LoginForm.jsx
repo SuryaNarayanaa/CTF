@@ -21,7 +21,7 @@ const LoginForm = ({ onClose }) => {
 
   const { mutate: loginfn, isPending } = useMutation({
     mutationFn: async (formData) => {
-      const { data, success, message } = await postData(`${import.meta.env.VITE_BACKEND_URL}auth/login`, formData);
+      const { data, success, message } = await postData(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, formData);
       if (!success) throw new Error(message);
       return data;
     },

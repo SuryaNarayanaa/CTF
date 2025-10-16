@@ -2,7 +2,7 @@
 
 export const getLeaderboard = async () => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}home/leaderboard`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/home/leaderboard`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

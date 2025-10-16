@@ -21,7 +21,7 @@ const CreateQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}Admin/questions`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/Admin/questions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
