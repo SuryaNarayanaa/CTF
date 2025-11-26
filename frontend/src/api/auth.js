@@ -38,6 +38,10 @@ export const signup = async (userData) => {
       credentials: 'include',
       body: JSON.stringify(userData)
     });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error ${response.status}`);
+    }
     const { data, message, success } = await response.json();
     if(!success) throw new Error(message);
     return data;
