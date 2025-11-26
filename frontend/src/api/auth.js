@@ -30,7 +30,19 @@ export const login = async (credentials) => {
 
 export const signup = async (userData) => {
   try {
-    const { data:{data,message,success} } = await fetch('/api/auth/login')
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(userData)
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error ${response.status}`);
+    }
+    const { data, message, success } = await response.json();
     if(!success) throw new Error(message);
     return data;
   } catch (error) {

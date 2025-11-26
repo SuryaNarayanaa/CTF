@@ -46,7 +46,7 @@ const logout = asyncHandler(async(req, res) => {
 
 const sessionUser = asyncHandler(async(req,res)=>{
     if(req.session.user){
-        res.send(200).json(new ApiResponse(200,req.session,"Session initialized"))
+        res.status(200).json(new ApiResponse(200,req.session,"Session initialized"))
     }
     else
         throw new ApiError(403,"Session uninitized")
